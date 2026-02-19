@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Bell, ChevronLeft, ChevronRight, LogOut, MessageSquare, Search, Settings } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Bell, ChevronLeft, ChevronRight, LogOut, MessageSquare, Search } from "lucide-react";
+import { useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { getAccounts } from "../api/backend";
 import { useAuth } from "../auth/AuthProvider";
@@ -78,21 +78,6 @@ export function AppLayout({ userName }: AppLayoutProps) {
   const location = useLocation();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [pendingChatUser, setPendingChatUser] = useState<{ id: string; name: string; avatarUrl: string | null; isOnline: boolean } | null>(null);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [userMenuPos, setUserMenuPos] = useState({ top: 0, right: 0 });
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const userMenuButtonRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (!isUserMenuOpen) return;
-    function handleClickOutside(event: MouseEvent) {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) &&
-          userMenuButtonRef.current && !userMenuButtonRef.current.contains(event.target as Node)) {
-        setIsUserMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => { document.removeEventListener("mousedown", handleClickOutside); };
-  }, [isUserMenuOpen]);
   const activeMainNavItem = useMemo(() => getActiveMainNavItem(location.pathname), [location.pathname]);
   const activeSubNavItem = useMemo(
     () => getActiveSubNavItem(location.pathname, activeMainNavItem.subItems),
@@ -391,51 +376,20 @@ export function AppLayout({ userName }: AppLayoutProps) {
                 >
                   <MessageSquare className="h-5 w-5" />
                 </button>
-                <div className="relative hidden sm:block">
-                  <button
-                    ref={userMenuButtonRef}
-                    type="button"
-                    onClick={() => {
-                      const rect = userMenuButtonRef.current?.getBoundingClientRect();
-                      if (rect) {
-                        setUserMenuPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
-                      }
-                      setIsUserMenuOpen((prev) => !prev);
-                    }}
-                    className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 transition hover:bg-slate-200"
-                  >
-                    <div className={`grid h-7 w-7 place-items-center rounded-full text-xs font-semibold text-white ${getAvatarColor(userName)}`}>
-                      {userInitials}
-                    </div>
-                    <p className="text-sm font-medium text-slate-700">Czesc, {userName}</p>
-                  </button>
-
-                  {isUserMenuOpen && (
-                    <div
-                      ref={userMenuRef}
-                      style={{ top: userMenuPos.top, right: userMenuPos.right }}
-                      className="fixed z-[200] w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
-                    >
-                      <NavLink
-                        to="/account"
-                        onClick={() => { setIsUserMenuOpen(false); }}
-                        className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
-                      >
-                        <Settings className="h-4 w-4 text-slate-400" />
-                        Ustawienia konta
-                      </NavLink>
-                      <div className="mx-3 border-t border-slate-100" />
-                      <button
-                        type="button"
-                        onClick={() => { setIsUserMenuOpen(false); void signOut(); }}
-                        className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 transition hover:bg-red-50"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Wyloguj
-                      </button>
-                    </div>
-                  )}
+                <div className="hidden items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 sm:flex">
+                  <div className={`grid h-7 w-7 place-items-center rounded-full text-xs font-semibold text-white ${getAvatarColor(userName)}`}>
+                    {userInitials}
+                  </div>
+                  <p className="text-sm font-medium text-slate-700">Czesc, {userName}</p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => void signOut()}
+                  title="Wyloguj"
+                  className="grid h-9 w-9 place-items-center rounded-xl text-slate-500 transition hover:bg-red-50 hover:text-red-500"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
               </div>
             </div>
           </div>
