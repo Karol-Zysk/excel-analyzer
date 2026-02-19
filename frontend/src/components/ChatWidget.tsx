@@ -394,13 +394,10 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
     const totalUnread = unreadGlobal + Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0);
     if (totalUnread === 0 || isOpen) {
       document.title = BASE_TITLE;
-      return;
+    } else {
+      const senderPart = lastSenderName ? `${lastSenderName} napisał(a)` : "Nowa wiadomość";
+      document.title = `(${totalUnread}) ${senderPart} – ${BASE_TITLE}`;
     }
-    const senderPart = lastSenderName ? `${lastSenderName} napisał(a)` : "Nowa wiadomość";
-    document.title = `(${totalUnread}) ${senderPart} – ${BASE_TITLE}`;
-    return () => {
-      document.title = BASE_TITLE;
-    };
   }, [unreadGlobal, unreadPrivate, isOpen, lastSenderName]);
 
   function handleSelectUser(user: ChatUser) {
