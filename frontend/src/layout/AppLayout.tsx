@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Bell, ChevronLeft, ChevronRight, MessageSquare, Search } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight, LogOut, MessageSquare, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { getAccounts } from "../api/backend";
@@ -74,7 +74,7 @@ function getActiveSubNavItem(pathname: string, subItems: AppSubNavItem[]) {
 }
 
 export function AppLayout({ userName }: AppLayoutProps) {
-  const { session, isUserOnline } = useAuth();
+  const { session, isUserOnline, signOut } = useAuth();
   const location = useLocation();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [pendingChatUser, setPendingChatUser] = useState<{ id: string; name: string; avatarUrl: string | null; isOnline: boolean } | null>(null);
@@ -192,6 +192,14 @@ export function AppLayout({ userName }: AppLayoutProps) {
                     <p className="truncate text-sm font-medium text-slate-100">{userName}</p>
                     <p className="truncate text-xs text-slate-300">Kierownik projektu</p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => void signOut()}
+                    title="Wyloguj"
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-red-500/15 hover:text-red-400"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
 
