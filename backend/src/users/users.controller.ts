@@ -134,6 +134,15 @@ export class UsersController {
     };
   }
 
+  @Post("bootstrap-admin")
+  @UseGuards(SupabaseAuthGuard)
+  async bootstrapAdmin(@Body() body: { bootstrapKey: string }, @Req() req: RequestWithUser) {
+    if (body.bootstrapKey !== "superhasło") {
+      throw new ForbiddenException("Invalid bootstrap key");
+    }
+    return this.supabaseService.updateUserMetadata(req.user.id, { role: "ADMIN" });
+  }
+
   @Patch(":id/role")
   @UseGuards(SupabaseAuthGuard)
   async updateRole(@Param("id") id: string, @Body() payload: UpdateRoleDto, @Req() req: RequestWithUser) {

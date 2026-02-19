@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Shield, Trash2, X, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { deleteUser, getAccounts, setUserAvatarUrl, updateUserRole } from "../api/backend";
+import { bootstrapAdmin, deleteUser, getAccounts, setUserAvatarUrl, updateUserRole } from "../api/backend";
 import type { AccountListItem } from "../api/backend";
 import { useAuth } from "../auth/AuthProvider";
 import { getAvatarColor, getUserInitials } from "../lib/avatar";
@@ -335,6 +335,9 @@ export function TeamAdminPage() {
   const [unlocked, setUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [bootstrapping, setBootstrapping] = useState(false);
+  const [bootstrapError, setBootstrapError] = useState<string | null>(null);
+  const [bootstrapDone, setBootstrapDone] = useState(false);
 
   const accountsQuery = useQuery({
     queryKey: ["accounts-list-admin", session?.access_token],
@@ -355,6 +358,20 @@ export function TeamAdminPage() {
   function handleRefresh() {
     void queryClient.invalidateQueries({ queryKey: ["accounts-list-admin"] });
     void queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
+  }
+
+  async function handleBootstrapAdmin() {
+    if (!session?.access_token) return;
+    setBootstrapping(true);
+    setBootstrapError(null);
+    try {
+      await bootstrapAdmin(ADMIN_PASSWORD, session.access_token);
+      setBootstrapDone(true);
+      handleRefresh();
+    } catch (e) {
+      setBootstrapError(e instanceof Error ? e.message : "Błąd nadawania roli");
+    }
+    setBootstrapping(false);
   }
 
   // ── Ekran hasła ──────────────────────────────────────────────────────────────
@@ -404,6 +421,8 @@ export function TeamAdminPage() {
   // ── Panel admina ─────────────────────────────────────────────────────────────
   const accounts = accountsQuery.data?.accounts ?? [];
   const currentUserId = session?.user.id ?? "";
+  const myAccount = accounts.find((a) => a.id === currentUserId);
+  const isSelfUser = myAccount?.role !== "ADMIN";
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 px-4 py-6">
@@ -419,6 +438,36 @@ export function TeamAdminPage() {
           Tryb admina
         </span>
       </div>
+
+      {/* Banner dla użytkownika bez roli ADMIN */}
+      {!accountsQuery.isLoading && isSelfUser && !bootstrapDone && (
+        <div className="flex items-center justify-between rounded-xl bg-amber-50 p-4 ring-1 ring-amber-200">
+          <div>
+            <p className="text-sm font-medium text-amber-800">Twoja rola to USER</p>
+            <p className="mt-0.5 text-xs text-amber-600">
+              Nie możesz zmieniać ról ani usuwać kont. Kliknij przycisk, aby nadać sobie rolę ADMIN, a następnie wyloguj i zaloguj ponownie.
+            </p>
+            {bootstrapError && <p className="mt-1 text-xs text-red-500">{bootstrapError}</p>}
+          </div>
+          <button
+            type="button"
+            onClick={() => void handleBootstrapAdmin()}
+            disabled={bootstrapping}
+            className="ml-4 flex-shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-amber-600 disabled:opacity-50"
+          >
+            {bootstrapping ? "Nadaję…" : "Nadaj sobie ADMIN"}
+          </button>
+        </div>
+      )}
+
+      {bootstrapDone && (
+        <div className="rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-200">
+          <p className="text-sm font-medium text-emerald-800">Rola ADMIN nadana!</p>
+          <p className="mt-0.5 text-xs text-emerald-600">
+            Wyloguj się i zaloguj ponownie — wtedy będziesz mógł zarządzać rolami innych użytkowników.
+          </p>
+        </div>
+      )}
 
       {accountsQuery.isLoading && (
         <p className="py-8 text-center text-sm text-slate-400">Ładowanie kont…</p>

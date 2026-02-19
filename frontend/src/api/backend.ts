@@ -440,6 +440,19 @@ export async function updateMyProfile(payload: UpdateProfilePayload, accessToken
   return parseJsonOrThrow<UpdateProfileResponse>(response);
 }
 
+export async function bootstrapAdmin(bootstrapKey: string, accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/users/bootstrap-admin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify({ bootstrapKey })
+  });
+
+  return parseJsonOrThrow<{ updated: boolean; error?: string }>(response);
+}
+
 export async function updateUserRole(userId: string, role: "ADMIN" | "USER", accessToken: string) {
   const response = await fetch(`${BACKEND_URL}/api/users/${userId}/role`, {
     method: "PATCH",
