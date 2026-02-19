@@ -28,6 +28,7 @@ type AccountSummary = {
   name: string;
   position: string | null;
   avatarUrl: string | null;
+  role: "ADMIN" | "USER";
   createdAt: string;
   lastSignInAt: string | null;
   emailConfirmedAt: string | null;
@@ -184,12 +185,15 @@ export class SupabaseService {
   }
 
   private toAccountSummary(user: User): AccountSummary {
+    const rawRole = user.user_metadata?.["role"];
+    const role: "ADMIN" | "USER" = rawRole === "ADMIN" ? "ADMIN" : "USER";
     return {
       id: user.id,
       email: user.email ?? null,
       name: this.resolveUserDisplayName(user),
       position: this.getMetadataStringValue(user, "position"),
       avatarUrl: this.getMetadataStringValue(user, "avatar_url"),
+      role,
       createdAt: user.created_at,
       lastSignInAt: user.last_sign_in_at ?? null,
       emailConfirmedAt: user.email_confirmed_at ?? null
@@ -308,5 +312,13 @@ export class SupabaseService {
     return this.updateUserMetadata(userId, {
       avatar_url: avatarUrl
     });
+  }
+
+  async deleteUser(userId: string) {
+    const { error } = await this.client.auth.admin.deleteUser(userId);
+    if (error) {
+      return { deleted: false, error: error.message };
+    }
+    return { deleted: true };
   }
 }

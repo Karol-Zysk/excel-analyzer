@@ -39,12 +39,16 @@ export function buildFallbackAccountFromSession(
     displayName?.trim() ??
     getNameFromEmail(session.user.email ?? null);
 
+  const rawRole = metadata["role"];
+  const role: "ADMIN" | "USER" = rawRole === "ADMIN" ? "ADMIN" : "USER";
+
   return {
     id: session.user.id,
     email: session.user.email ?? null,
     name: metadataName,
     position: getMetadataStringValue(metadata, "position"),
     avatarUrl: getMetadataStringValue(metadata, "avatar_url"),
+    role,
     createdAt: session.user.created_at ?? new Date().toISOString(),
     lastSignInAt: session.user.last_sign_in_at ?? null,
     emailConfirmedAt: session.user.email_confirmed_at ?? null

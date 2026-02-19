@@ -164,6 +164,7 @@ export type AccountListItem = {
   name: string;
   position: string | null;
   avatarUrl: string | null;
+  role: "ADMIN" | "USER";
   createdAt: string;
   lastSignInAt: string | null;
   emailConfirmedAt: string | null;
@@ -437,4 +438,41 @@ export async function updateMyProfile(payload: UpdateProfilePayload, accessToken
   });
 
   return parseJsonOrThrow<UpdateProfileResponse>(response);
+}
+
+export async function updateUserRole(userId: string, role: "ADMIN" | "USER", accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/users/${userId}/role`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify({ role })
+  });
+
+  return parseJsonOrThrow<{ updated: boolean; error?: string }>(response);
+}
+
+export async function setUserAvatarUrl(userId: string, avatarUrl: string, accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/users/${userId}/avatar-url`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify({ avatarUrl })
+  });
+
+  return parseJsonOrThrow<{ updated: boolean; error?: string }>(response);
+}
+
+export async function deleteUser(userId: string, accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return parseJsonOrThrow<{ deleted: boolean; error?: string }>(response);
 }

@@ -134,7 +134,23 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
               (newMsg.sender_id === recipientId && newMsg.recipient_id === currentUserId);
             if (!isRelevant) return;
           }
-          setMessages((prev) => [...prev, newMsg]);
+          setMessages((prev) => {
+            // Zastąp pending wiadomość jeśli to nasza własna (optimistic update)
+            if (newMsg.sender_id === currentUserId) {
+              const pendingIdx = prev.findIndex(
+                (m) =>
+                  m.id.startsWith("pending-") &&
+                  m.content === newMsg.content &&
+                  Math.abs(new Date(m.created_at).getTime() - new Date(newMsg.created_at).getTime()) < 10000
+              );
+              if (pendingIdx !== -1) {
+                const next = [...prev];
+                next[pendingIdx] = newMsg;
+                return next;
+              }
+            }
+            return [...prev, newMsg];
+          });
         }
       )
       .subscribe();
@@ -154,12 +170,29 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
     setSending(true);
     setInput("");
 
-    await supabase.from("messages").insert({
+    // Optimistic update – dodaj wiadomość lokalnie natychmiast
+    const pendingId = `pending-${Date.now()}`;
+    const pendingMsg: Message = {
+      id: pendingId,
+      sender_id: currentUserId,
+      sender_name: currentUserName,
+      recipient_id: tab === "private" ? recipientId : null,
+      content: text,
+      created_at: new Date().toISOString(),
+    };
+    setMessages((prev) => [...prev, pendingMsg]);
+
+    const { error } = await supabase.from("messages").insert({
       sender_id: currentUserId,
       sender_name: currentUserName,
       recipient_id: tab === "private" ? recipientId : null,
       content: text,
     });
+
+    if (error) {
+      // Cofnij optimistic update przy błędzie
+      setMessages((prev) => prev.filter((m) => m.id !== pendingId));
+    }
 
     setSending(false);
   }

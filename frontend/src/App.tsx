@@ -9,6 +9,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { FeatureInProgressPage } from "./pages/FeatureInProgressPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TeamAdminPage } from "./pages/TeamAdminPage";
 
 export default function App() {
   const { session, displayName } = useAuth();
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/account">
             <Route index element={<SettingsPage />} />
             <Route path="security" element={<FeatureInProgressPage title="Bezpieczeństwo konta" />} />
+            <Route path="team" element={<TeamAdminPage />} />
           </Route>
 
           {/* Legacy redirects */}

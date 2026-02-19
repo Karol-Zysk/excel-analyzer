@@ -112,6 +112,13 @@ export const APP_MAIN_NAV_ITEMS: AppMainNavItem[] = [
         label: "Bezpieczeństwo",
         description: "Sesje i bezpieczeństwo",
         icon: ShieldCheck
+      },
+      {
+        key: "settings-team",
+        to: "/account/team",
+        label: "Zarządzanie zespołem",
+        description: "Role i konta użytkowników",
+        icon: UsersRound
       }
     ]
   }

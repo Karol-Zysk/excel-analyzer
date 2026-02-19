@@ -2,7 +2,10 @@ import {
   Body,
   BadRequestException,
   Controller,
+  Delete,
+  ForbiddenException,
   Get,
+  Param,
   Patch,
   Post,
   Req,
@@ -17,6 +20,8 @@ import { SupabaseAuthGuard } from "../auth/supabase-auth.guard";
 import { CloudinaryService } from "../cloudinary/cloudinary.service";
 import { SupabaseService } from "../supabase/supabase.service";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
+import { UpdateRoleDto } from "./dto/update-role.dto";
+import { UpdateAvatarUrlDto } from "./dto/update-avatar-url.dto";
 
 type RequestWithUser = Request & {
   user: User;
@@ -30,6 +35,10 @@ type UploadedImage = {
   size: number;
   originalname: string;
 };
+
+function isAdmin(user: User): boolean {
+  return user.user_metadata?.["role"] === "ADMIN";
+}
 
 @Controller("users")
 export class UsersController {
@@ -123,5 +132,39 @@ export class UsersController {
       },
       metadataUpdate
     };
+  }
+
+  @Patch(":id/role")
+  @UseGuards(SupabaseAuthGuard)
+  async updateRole(@Param("id") id: string, @Body() payload: UpdateRoleDto, @Req() req: RequestWithUser) {
+    if (!isAdmin(req.user)) {
+      throw new ForbiddenException("Only admins can change roles");
+    }
+
+    return this.supabaseService.updateUserMetadata(id, { role: payload.role });
+  }
+
+  @Patch(":id/avatar-url")
+  @UseGuards(SupabaseAuthGuard)
+  async setAvatarUrl(@Param("id") id: string, @Body() payload: UpdateAvatarUrlDto, @Req() req: RequestWithUser) {
+    if (!isAdmin(req.user)) {
+      throw new ForbiddenException("Only admins can set avatar URLs");
+    }
+
+    return this.supabaseService.setUserAvatarUrl(id, payload.avatarUrl);
+  }
+
+  @Delete(":id")
+  @UseGuards(SupabaseAuthGuard)
+  async deleteUser(@Param("id") id: string, @Req() req: RequestWithUser) {
+    if (!isAdmin(req.user)) {
+      throw new ForbiddenException("Only admins can delete accounts");
+    }
+
+    if (id === req.user.id) {
+      throw new BadRequestException("Cannot delete your own account");
+    }
+
+    return this.supabaseService.deleteUser(id);
   }
 }
