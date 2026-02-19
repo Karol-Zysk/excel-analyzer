@@ -254,43 +254,55 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
 
 type UserListProps = {
   users: ChatUser[];
+  unreadPerUser: Map<string, number>;
   onSelect: (user: ChatUser) => void;
 };
 
-function UserList({ users, onSelect }: UserListProps) {
+function UserList({ users, unreadPerUser, onSelect }: UserListProps) {
   return (
     <div className="flex-1 overflow-y-auto p-2">
       {users.length === 0 && (
         <p className="py-8 text-center text-xs text-slate-500">Brak innych użytkowników</p>
       )}
-      {users.map((user) => (
-        <button
-          key={user.id}
-          type="button"
-          onClick={() => onSelect(user)}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-slate-700"
-        >
-          <div className="relative">
-            {user.avatarUrl ? (
-              <img src={user.avatarUrl} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
+      {users.map((user) => {
+        const unread = unreadPerUser.get(user.id) ?? 0;
+        return (
+          <button
+            key={user.id}
+            type="button"
+            onClick={() => onSelect(user)}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-slate-700"
+          >
+            <div className="relative">
+              {user.avatarUrl ? (
+                <img src={user.avatarUrl} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-600 text-xs font-semibold text-white">
+                  {getUserInitials(user.name)}
+                </div>
+              )}
+              <span
+                className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-slate-800 ${
+                  user.isOnline ? "bg-emerald-400" : "bg-slate-500"
+                }`}
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className={`truncate text-sm font-medium ${unread > 0 ? "text-white" : "text-slate-200"}`}>
+                {user.name}
+              </p>
+              <p className="text-[11px] text-slate-500">{user.isOnline ? "Online" : "Offline"}</p>
+            </div>
+            {unread > 0 ? (
+              <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                {unread > 9 ? "9+" : unread}
+              </span>
             ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-600 text-xs font-semibold text-white">
-                {getUserInitials(user.name)}
-              </div>
+              <MessageSquare className="h-4 w-4 flex-shrink-0 text-slate-600" />
             )}
-            <span
-              className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-slate-800 ${
-                user.isOnline ? "bg-emerald-400" : "bg-slate-500"
-              }`}
-            />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-slate-200">{user.name}</p>
-            <p className="text-[11px] text-slate-500">{user.isOnline ? "Online" : "Offline"}</p>
-          </div>
-          <MessageSquare className="h-4 w-4 flex-shrink-0 text-slate-600" />
-        </button>
-      ))}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -306,8 +318,10 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("global");
   const [selectedUser, setSelectedUser] = useState<ChatUser | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const lastSeenRef = useRef<string>(new Date().toISOString());
+  // unreadGlobal: liczba nieprzeczytanych w czacie ogólnym
+  const [unreadGlobal, setUnreadGlobal] = useState(0);
+  // unreadPrivate: mapa userId -> liczba nieprzeczytanych prywatnych
+  const [unreadPrivate, setUnreadPrivate] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
     if (pendingUser) {
@@ -321,23 +335,49 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
   const currentUserId = session?.user.id ?? "";
   const otherUsers = chatUsers.filter((u) => u.id !== currentUserId);
 
-  // Track unread messages when widget is closed
+  // Zeruj liczniki przy otwieraniu odpowiedniej zakładki
   useEffect(() => {
-    if (isOpen) {
-      setUnreadCount(0);
-      lastSeenRef.current = new Date().toISOString();
-      return;
+    if (!isOpen) return;
+    if (tab === "global") {
+      setUnreadGlobal(0);
+    } else if (tab === "private" && selectedUser) {
+      setUnreadPrivate((prev) => {
+        const next = new Map(prev);
+        next.delete(selectedUser.id);
+        return next;
+      });
     }
+  }, [isOpen, tab, selectedUser]);
+
+  // Subskrybuj nowe wiadomości i aktualizuj liczniki
+  useEffect(() => {
+    if (!currentUserId) return;
 
     const channel = supabase
-      .channel("chat:unread-tracker")
+      .channel("chat:unread-global-tracker")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
           const msg = payload.new as Message;
-          if (msg.sender_id !== currentUserId) {
-            setUnreadCount((n) => n + 1);
+          if (msg.sender_id === currentUserId) return;
+
+          const isGlobal = msg.recipient_id === null;
+          const isForMe = msg.recipient_id === currentUserId;
+
+          if (isGlobal) {
+            // Nie licz jeśli widget otwarty na zakładce globalnej
+            if (isOpen && tab === "global") return;
+            setUnreadGlobal((n) => n + 1);
+          } else if (isForMe) {
+            const senderId = msg.sender_id;
+            // Nie licz jeśli aktualnie ta rozmowa jest otwarta
+            if (isOpen && tab === "private" && selectedUser?.id === senderId) return;
+            setUnreadPrivate((prev) => {
+              const next = new Map(prev);
+              next.set(senderId, (next.get(senderId) ?? 0) + 1);
+              return next;
+            });
           }
         }
       )
@@ -346,7 +386,7 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [isOpen, currentUserId]);
+  }, [currentUserId, isOpen, tab, selectedUser]);
 
   function handleSelectUser(user: ChatUser) {
     setSelectedUser(user);
@@ -379,6 +419,11 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               >
                 <Users className="h-3.5 w-3.5" />
                 Ogólny
+                {unreadGlobal > 0 && (
+                  <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                    {unreadGlobal > 9 ? "9+" : unreadGlobal}
+                  </span>
+                )}
               </button>
               <button
                 type="button"
@@ -391,6 +436,11 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               >
                 <Lock className="h-3.5 w-3.5" />
                 Prywatny
+                {Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0) > 0 && (
+                  <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                    {Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0) > 9 ? "9+" : Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0)}
+                  </span>
+                )}
               </button>
             </div>
             <button
@@ -422,7 +472,7 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               onBackToUsers={() => setSelectedUser(null)}
             />
           ) : (
-            <UserList users={otherUsers} onSelect={handleSelectUser} />
+            <UserList users={otherUsers} unreadPerUser={unreadPrivate} onSelect={handleSelectUser} />
           )}
         </div>
       )}
@@ -434,9 +484,9 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
         className="relative flex h-12 w-12 items-center justify-center rounded-full bg-sky-500 text-white shadow-lg transition hover:bg-sky-600 hover:shadow-xl"
       >
         {isOpen ? <X className="h-5 w-5" /> : <MessageSquare className="h-5 w-5" />}
-        {!isOpen && unreadCount > 0 && (
+        {!isOpen && (unreadGlobal + Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0)) > 0 && (
           <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-            {unreadCount > 9 ? "9+" : unreadCount}
+            {(unreadGlobal + Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0)) > 9 ? "9+" : (unreadGlobal + Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0))}
           </span>
         )}
       </button>
