@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DEMBUD">
+  <rect width="64" height="64" rx="14" fill="#0B4FA6"/>
+  <path d="M10 44 L32 14 L54 44 Z" fill="#FFFFFF"/>
+  <path d="M18 43 L32 22 L46 43 Z" fill="#0B4FA6"/>
+  <path d="M36 44 L48 26 L60 44 Z" fill="#FFFFFF" opacity="0.95"/>
+  <rect x="14" y="46" width="36" height="4" rx="2" fill="#FFFFFF"/>
+</svg>

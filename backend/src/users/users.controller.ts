@@ -1,0 +1,127 @@
+import {
+  Body,
+  BadRequestException,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Request } from "express";
+import type { User } from "@supabase/supabase-js";
+import { SupabaseAuthGuard } from "../auth/supabase-auth.guard";
+import { CloudinaryService } from "../cloudinary/cloudinary.service";
+import { SupabaseService } from "../supabase/supabase.service";
+import { UpdateProfileDto } from "./dto/update-profile.dto";
+
+type RequestWithUser = Request & {
+  user: User;
+};
+
+type UploadedImage = {
+  buffer: {
+    toString: (encoding: "base64") => string;
+  };
+  mimetype: string;
+  size: number;
+  originalname: string;
+};
+
+@Controller("users")
+export class UsersController {
+  constructor(
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly supabaseService: SupabaseService
+  ) {}
+
+  @Get("accounts")
+  @UseGuards(SupabaseAuthGuard)
+  async listAccounts(@Req() req: RequestWithUser) {
+    try {
+      const accounts = await this.supabaseService.listAccounts();
+
+      return {
+        count: accounts.length,
+        accounts
+      };
+    } catch (error) {
+      const currentAccount = await this.supabaseService.getAccountById(req.user.id);
+      if (currentAccount) {
+        return {
+          count: 1,
+          accounts: [currentAccount],
+          partial: true,
+          warning: "Falling back to current user account only"
+        };
+      }
+
+      throw new BadRequestException(
+        error instanceof Error ? error.message : "Unable to load user accounts"
+      );
+    }
+  }
+
+  @Patch("profile")
+  @UseGuards(SupabaseAuthGuard)
+  async updateProfile(@Body() payload: UpdateProfileDto, @Req() req: RequestWithUser) {
+    const normalizedName = typeof payload.name === "string" ? payload.name.trim() : undefined;
+    const normalizedPosition = typeof payload.position === "string" ? payload.position.trim() : undefined;
+
+    if (!normalizedName && !normalizedPosition) {
+      throw new BadRequestException("At least one field is required: name or position");
+    }
+
+    const result = await this.supabaseService.updateUserProfile(req.user.id, {
+      name: normalizedName,
+      position: normalizedPosition
+    });
+
+    return result;
+  }
+
+  @Post("avatar")
+  @UseGuards(SupabaseAuthGuard)
+  @UseInterceptors(
+    FileInterceptor("file", {
+      limits: {
+        fileSize: 5 * 1024 * 1024
+      }
+    })
+  )
+  async uploadAvatar(@UploadedFile() file: UploadedImage | undefined, @Req() req: RequestWithUser) {
+    if (!file) {
+      throw new BadRequestException("Missing file field in multipart/form-data");
+    }
+
+    if (!file.mimetype.startsWith("image/")) {
+      throw new BadRequestException("Only image files are allowed");
+    }
+
+    const uploaded = await this.cloudinaryService.uploadUserAvatar({
+      fileBase64: file.buffer.toString("base64"),
+      mimeType: file.mimetype,
+      userId: req.user.id
+    });
+
+    const metadataUpdate = await this.supabaseService.setUserAvatarUrl(req.user.id, uploaded.secureUrl);
+
+    return {
+      uploaded: true,
+      file: {
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        bytes: file.size
+      },
+      avatar: uploaded,
+      user: {
+        id: req.user.id,
+        email: req.user.email ?? null
+      },
+      metadataUpdate
+    };
+  }
+}
