@@ -33,21 +33,33 @@ function formatTime(iso: string) {
 type MessageBubbleProps = {
   msg: Message;
   isMine: boolean;
+  avatarUrl?: string | null;
 };
 
-function MessageBubble({ msg, isMine }: MessageBubbleProps) {
+function MessageBubble({ msg, isMine, avatarUrl }: MessageBubbleProps) {
   return (
     <div className={`flex gap-2 ${isMine ? "flex-row-reverse" : "flex-row"}`}>
-      <div
-        className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white ${getAvatarColor(msg.sender_name)}`}
-        title={msg.sender_name}
-      >
-        {getUserInitials(msg.sender_name)}
-      </div>
-      <div className={`max-w-[75%] ${isMine ? "items-end" : "items-start"} flex flex-col gap-0.5`}>
-        {!isMine && (
-          <span className="px-1 text-[10px] text-slate-400">{msg.sender_name}</span>
+      <div className="flex flex-shrink-0 flex-col items-center gap-0.5">
+        {avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt={msg.sender_name}
+            className="h-7 w-7 rounded-full object-cover"
+            title={msg.sender_name}
+          />
+        ) : (
+          <div
+            className={`flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-semibold text-white ${getAvatarColor(msg.sender_name)}`}
+            title={msg.sender_name}
+          >
+            {getUserInitials(msg.sender_name)}
+          </div>
         )}
+        <span className="w-8 truncate text-center text-[9px] font-medium leading-tight text-slate-400">
+          {msg.sender_name.split(" ")[0]}
+        </span>
+      </div>
+      <div className={`max-w-[70%] ${isMine ? "items-end" : "items-start"} flex flex-col gap-0.5`}>
         <div
           className={`rounded-2xl px-3 py-2 text-sm leading-relaxed ${
             isMine
@@ -67,12 +79,14 @@ type ChatPanelProps = {
   tab: Tab;
   currentUserId: string;
   currentUserName: string;
+  currentUserAvatarUrl?: string | null;
   recipientId: string | null;
   recipientName: string | null;
+  chatUsers: ChatUser[];
   onBackToUsers: () => void;
 };
 
-function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipientName, onBackToUsers }: ChatPanelProps) {
+function ChatPanel({ tab, currentUserId, currentUserName, currentUserAvatarUrl, recipientId, recipientName, chatUsers, onBackToUsers }: ChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -228,9 +242,15 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
             {tab === "global" ? "Brak wiadomości. Napisz pierwszą!" : `Napisz do ${recipientName}`}
           </p>
         )}
-        {messages.map((msg) => (
-          <MessageBubble key={msg.id} msg={msg} isMine={msg.sender_id === currentUserId} />
-        ))}
+        {messages.map((msg) => {
+          const senderUser = chatUsers.find((u) => u.id === msg.sender_id);
+          const resolvedAvatarUrl = msg.sender_id === currentUserId
+            ? (currentUserAvatarUrl ?? null)
+            : (senderUser?.avatarUrl ?? null);
+          return (
+            <MessageBubble key={msg.id} msg={msg} isMine={msg.sender_id === currentUserId} avatarUrl={resolvedAvatarUrl} />
+          );
+        })}
         <div ref={bottomRef} />
       </div>
 
@@ -365,6 +385,7 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
   }, [pendingUser, onPendingUserConsumed]);
 
   const currentUserId = session?.user.id ?? "";
+  const currentUserAvatarUrl = chatUsers.find((u) => u.id === currentUserId)?.avatarUrl ?? null;
   const otherUsers = chatUsers.filter((u) => u.id !== currentUserId);
 
   // Zeruj liczniki przy otwieraniu odpowiedniej zakładki
@@ -503,8 +524,10 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               tab="global"
               currentUserId={currentUserId}
               currentUserName={displayName}
+              currentUserAvatarUrl={currentUserAvatarUrl}
               recipientId={null}
               recipientName={null}
+              chatUsers={chatUsers}
               onBackToUsers={() => {}}
             />
           ) : selectedUser ? (
@@ -512,8 +535,10 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               tab="private"
               currentUserId={currentUserId}
               currentUserName={displayName}
+              currentUserAvatarUrl={currentUserAvatarUrl}
               recipientId={selectedUser.id}
               recipientName={selectedUser.name}
+              chatUsers={chatUsers}
               onBackToUsers={() => setSelectedUser(null)}
             />
           ) : (

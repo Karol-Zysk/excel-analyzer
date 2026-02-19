@@ -79,11 +79,14 @@ export function AppLayout({ userName }: AppLayoutProps) {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [pendingChatUser, setPendingChatUser] = useState<{ id: string; name: string; avatarUrl: string | null; isOnline: boolean } | null>(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [userMenuPos, setUserMenuPos] = useState({ top: 0, right: 0 });
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!isUserMenuOpen) return;
     function handleClickOutside(event: MouseEvent) {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) &&
+          userMenuButtonRef.current && !userMenuButtonRef.current.contains(event.target as Node)) {
         setIsUserMenuOpen(false);
       }
     }
@@ -388,10 +391,17 @@ export function AppLayout({ userName }: AppLayoutProps) {
                 >
                   <MessageSquare className="h-5 w-5" />
                 </button>
-                <div ref={userMenuRef} className="relative hidden sm:block">
+                <div className="relative hidden sm:block">
                   <button
+                    ref={userMenuButtonRef}
                     type="button"
-                    onClick={() => { setIsUserMenuOpen((prev) => !prev); }}
+                    onClick={() => {
+                      const rect = userMenuButtonRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setUserMenuPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+                      }
+                      setIsUserMenuOpen((prev) => !prev);
+                    }}
                     className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 transition hover:bg-slate-200"
                   >
                     <div className={`grid h-7 w-7 place-items-center rounded-full text-xs font-semibold text-white ${getAvatarColor(userName)}`}>
@@ -401,7 +411,11 @@ export function AppLayout({ userName }: AppLayoutProps) {
                   </button>
 
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                    <div
+                      ref={userMenuRef}
+                      style={{ top: userMenuPos.top, right: userMenuPos.right }}
+                      className="fixed z-[200] w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+                    >
                       <NavLink
                         to="/account"
                         onClick={() => { setIsUserMenuOpen(false); }}
