@@ -1,11 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { getAccounts, setUserAvatarUrl, updateMyProfile, uploadUserAvatar } from "../api/backend";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { getAccounts, setUserAvatarUrl, updateMyProfile } from "../api/backend";
 import { useAuth } from "../auth/AuthProvider";
 import { buildFallbackAccountFromSession } from "../lib/accountFallback";
 import { AvatarModal } from "../components/AvatarModal";
-
-const MAX_AVATAR_SIZE_MB = 5;
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) {
@@ -30,8 +28,6 @@ export function SettingsPage() {
   const [profileName, setProfileName] = useState("");
   const [profilePosition, setProfilePosition] = useState("");
   const [profileNotice, setProfileNotice] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const [uploadedAvatarUrl, setUploadedAvatarUrl] = useState<string | null>(null);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
@@ -69,36 +65,6 @@ export function SettingsPage() {
       .sort((left, right) => Number(right.isOnline) - Number(left.isOnline) || left.name.localeCompare(right.name));
   }, [accountsQuery.data?.accounts, fallbackAccount, isUserOnline]);
 
-  const previewUrl = useMemo(() => {
-    if (!selectedFile) {
-      return null;
-    }
-
-    return URL.createObjectURL(selectedFile);
-  }, [selectedFile]);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  const uploadMutation = useMutation({
-    mutationFn: ({ file, accessToken }: { file: File; accessToken: string }) =>
-      uploadUserAvatar(file, accessToken),
-    onSuccess: async (result) => {
-      setUploadedAvatarUrl(result.avatar.secureUrl);
-      setUploadNotice("Avatar zostal zaimportowany.");
-      await refreshUser();
-      void accountsQuery.refetch();
-    },
-    onError: (error) => {
-      setUploadNotice(`Blad uploadu: ${getErrorMessage(error)}`);
-    }
-  });
-
   const profileMutation = useMutation({
     mutationFn: ({
       name,
@@ -124,30 +90,6 @@ export function SettingsPage() {
     }
   });
 
-  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] ?? null;
-    setUploadNotice(null);
-
-    if (!file) {
-      setSelectedFile(null);
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      setSelectedFile(null);
-      setUploadNotice("Wybierz plik graficzny (image/*).");
-      return;
-    }
-
-    if (file.size > MAX_AVATAR_SIZE_MB * 1024 * 1024) {
-      setSelectedFile(null);
-      setUploadNotice(`Maksymalny rozmiar pliku to ${MAX_AVATAR_SIZE_MB} MB.`);
-      return;
-    }
-
-    setSelectedFile(file);
-  };
-
   const onProfileSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -168,26 +110,6 @@ export function SettingsPage() {
     profileMutation.mutate({
       name: normalizedName || undefined,
       position: normalizedPosition || undefined,
-      accessToken: session.access_token
-    });
-  };
-
-  const onAvatarSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!session?.access_token) {
-      setUploadNotice("Zaloguj sie, aby importowac avatar.");
-      return;
-    }
-
-    if (!selectedFile) {
-      setUploadNotice("Najpierw wybierz plik.");
-      return;
-    }
-
-    setUploadNotice(null);
-    uploadMutation.mutate({
-      file: selectedFile,
       accessToken: session.access_token
     });
   };
@@ -264,79 +186,25 @@ export function SettingsPage() {
         {profileNotice && <p className="mt-3 text-sm text-slate-700">{profileNotice}</p>}
       </form>
 
-      <form onSubmit={onAvatarSubmit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex items-start justify-between gap-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="text-base font-semibold text-slate-900">Avatar</h3>
-            <p className="mt-1 text-sm text-slate-600">
-              Import avatarow uzytkownikow do Cloudinary. Maksymalny rozmiar pliku: {MAX_AVATAR_SIZE_MB} MB.
-            </p>
+            <p className="mt-1 text-sm text-slate-600">Wygeneruj avatar na podstawie swojej nazwy użytkownika.</p>
           </div>
-          <button
-            type="button"
-            onClick={() => setShowAvatarModal(true)}
-            className="flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-          >
-            Generuj avatar DiceBear
-          </button>
+          {currentAvatarUrl && (
+            <img src={currentAvatarUrl} alt="Aktualny avatar" className="h-12 w-12 rounded-full border border-slate-200 object-cover" />
+          )}
         </div>
-
-        <label htmlFor="avatar-file" className="mb-2 block text-sm font-medium text-slate-800">
-          Wybierz avatar
-        </label>
-        <input
-          id="avatar-file"
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          className="block w-full text-sm text-slate-700 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-900 hover:file:bg-slate-200"
-        />
-
-        {selectedFile && (
-          <p className="mt-3 text-sm text-slate-600">
-            Wybrany plik: {selectedFile.name} ({Math.round(selectedFile.size / 1024)} KB)
-          </p>
-        )}
-
-        {previewUrl && (
-          <div className="mt-4">
-            <p className="mb-2 text-sm font-medium text-slate-800">Podglad</p>
-            <img
-              src={previewUrl}
-              alt="Avatar preview"
-              className="h-28 w-28 rounded-full border border-slate-200 object-cover"
-            />
-          </div>
-        )}
-
         <button
-          type="submit"
-          disabled={uploadMutation.isPending || !session}
-          className="mt-5 inline-flex items-center rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
+          type="button"
+          onClick={() => setShowAvatarModal(true)}
+          disabled={!session}
+          className="mt-4 inline-flex items-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-900 disabled:opacity-50"
         >
-          {uploadMutation.isPending ? "Importowanie..." : "Importuj avatar"}
+          Generuj avatar
         </button>
-
-        {uploadNotice && <p className="mt-3 text-sm text-slate-700">{uploadNotice}</p>}
-
-        {currentAvatarUrl && (
-          <div className="mt-4 rounded-xl bg-slate-50 p-4">
-            <p className="text-sm font-medium text-slate-900">Aktualny avatar</p>
-            <img
-              src={currentAvatarUrl}
-              alt="Uploaded avatar"
-              className="mt-2 h-20 w-20 rounded-full border border-slate-200 object-cover"
-            />
-            <p className="mt-2 break-all text-xs text-slate-600">{currentAvatarUrl}</p>
-          </div>
-        )}
-
-        {uploadMutation.data && (
-          <pre className="mt-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-xs text-slate-100">
-            {JSON.stringify(uploadMutation.data, null, 2)}
-          </pre>
-        )}
-      </form>
+      </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h3 className="text-base font-semibold text-slate-900">Konta w aplikacji</h3>
