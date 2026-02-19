@@ -1,18 +1,13 @@
 import {
+  ArchiveIcon,
   BarChart3,
-  ClipboardList,
   FileSpreadsheet,
-  Files,
   Home,
-  KeyRound,
   LayoutDashboard,
-  PlugZap,
   Settings2,
   ShieldCheck,
-  Upload,
   UserCog,
-  UsersRound,
-  Webhook
+  UsersRound
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -39,68 +34,61 @@ export const APP_MAIN_NAV_ITEMS: AppMainNavItem[] = [
     key: "dashboard",
     to: "/dashboard",
     label: "Panel",
-    description: "Glowne podsumowanie",
+    description: "Główne podsumowanie",
     icon: LayoutDashboard,
     subItems: [
       {
         key: "dashboard-overview",
         to: "/dashboard/overview",
-        label: "Przeglad",
-        description: "Widok glowny",
+        label: "Przegląd",
+        description: "Widok główny",
         icon: Home
       },
       {
         key: "dashboard-team",
         to: "/dashboard/team",
-        label: "Zespol",
-        description: "Zespol i statusy",
+        label: "Zespół",
+        description: "Zespół i statusy",
         icon: UsersRound
       }
     ]
   },
   {
-    key: "analytics",
-    to: "/analytics",
-    label: "Analizy Excel",
+    key: "accounting",
+    to: "/accounting",
+    label: "Księgowość",
     description: "Raporty i przetwarzanie",
     icon: FileSpreadsheet,
     subItems: [
       {
-        key: "analytics-imported-files",
-        to: "/analytics/imported-files",
-        label: "Wgrane pliki",
-        description: "Upload plikow Excel",
-        icon: Upload
-      },
-      {
-        key: "analytics-summarized",
-        to: "/analytics/summarized",
-        label: "Podsumowania",
-        description: "Podsumowania i wnioski",
-        icon: BarChart3
+        key: "accounting-analyze",
+        to: "/accounting/analyze",
+        label: "Analizuj Excel",
+        description: "Wgraj i analizuj pliki Excel",
+        icon: FileSpreadsheet
       }
     ]
   },
   {
-    key: "orders",
-    to: "/orders",
-    label: "Zlecenia",
-    description: "Lista zadan roboczych",
-    icon: ClipboardList,
+    key: "results",
+    to: "/results",
+    label: "Wyniki",
+    description: "Archiwum i analizy",
+    icon: BarChart3,
     subItems: [
       {
-        key: "orders-list",
-        to: "/orders/list",
-        label: "Lista zlecen",
-        description: "Biezace zlecenia",
-        icon: ClipboardList
+        key: "results-archive",
+        to: "/results/archive",
+        label: "Archiwum",
+        description: "Historia analiz",
+        icon: ArchiveIcon
       },
       {
-        key: "orders-archive",
-        to: "/orders/archive",
-        label: "Archiwum",
-        description: "Historia zlecen",
-        icon: Files
+        key: "results-analysis",
+        to: "/results/analysis",
+        label: "Analiza",
+        description: "Raporty i wnioski",
+        icon: BarChart3
       }
     ]
   },
@@ -121,39 +109,9 @@ export const APP_MAIN_NAV_ITEMS: AppMainNavItem[] = [
       {
         key: "settings-security",
         to: "/account/security",
-        label: "Bezpieczenstwo",
-        description: "Sesje i bezpieczenstwo",
+        label: "Bezpieczeństwo",
+        description: "Sesje i bezpieczeństwo",
         icon: ShieldCheck
-      }
-    ]
-  },
-  {
-    key: "integrations",
-    to: "/integrations",
-    label: "Integracje API",
-    description: "Testy backend + auth",
-    icon: PlugZap,
-    subItems: [
-      {
-        key: "integrations-connections",
-        to: "/integrations/connections",
-        label: "Polaczenia",
-        description: "Polaczenia systemowe",
-        icon: PlugZap
-      },
-      {
-        key: "integrations-api-keys",
-        to: "/integrations/api-keys",
-        label: "Klucze API",
-        description: "Klucze dostepu",
-        icon: KeyRound
-      },
-      {
-        key: "integrations-webhooks",
-        to: "/integrations/webhooks",
-        label: "Webhooki",
-        description: "Zdarzenia i callbacki",
-        icon: Webhook
       }
     ]
   }
