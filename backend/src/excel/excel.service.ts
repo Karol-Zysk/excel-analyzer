@@ -1134,7 +1134,7 @@ export class ExcelService {
           return addressCompare;
         }
 
-        const apartmentCompare = left.apartment.localeCompare(right.apartment);
+        const apartmentCompare = this.compareApartments(left.apartment, right.apartment);
         if (apartmentCompare !== 0) {
           return apartmentCompare;
         }
@@ -1281,7 +1281,7 @@ export class ExcelService {
           return addressCompare;
         }
 
-        const apartmentCompare = left.apartment.localeCompare(right.apartment);
+        const apartmentCompare = this.compareApartments(left.apartment, right.apartment);
         if (apartmentCompare !== 0) {
           return apartmentCompare;
         }
@@ -1568,7 +1568,7 @@ export class ExcelService {
         return addressCompare;
       }
 
-      const apartmentCompare = left.apartment.localeCompare(right.apartment);
+      const apartmentCompare = this.compareApartments(left.apartment, right.apartment);
       if (apartmentCompare !== 0) {
         return apartmentCompare;
       }
@@ -1918,6 +1918,23 @@ export class ExcelService {
     return addressPart && addressPart.length > 0 ? addressPart : trimmed;
   }
 
+  private compareApartments(a: string, b: string): number {
+    const parseApartment = (s: string) => {
+      const match = s.match(/^(\d+)(.*)/);
+      if (match) {
+        return { num: parseInt(match[1], 10), rest: match[2] };
+      }
+      return { num: NaN, rest: s };
+    };
+    const pa = parseApartment(a);
+    const pb = parseApartment(b);
+    if (!isNaN(pa.num) && !isNaN(pb.num)) {
+      if (pa.num !== pb.num) return pa.num - pb.num;
+      return pa.rest.localeCompare(pb.rest);
+    }
+    return a.localeCompare(b);
+  }
+
   private splitApartment(apartmentValue: string) {
     const trimmed = apartmentValue.trim();
     if (!trimmed) {
@@ -1955,7 +1972,7 @@ export class ExcelService {
           .map((record) => record.apartment)
           .filter((value) => value.length > 0)
       )
-    ).sort((left, right) => left.localeCompare(right));
+    ).sort((left, right) => this.compareApartments(left, right));
     const addresses = Array.from(
       new Set(
         apartments
