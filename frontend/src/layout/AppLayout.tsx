@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { getAccounts } from "../api/backend";
 import { useAuth } from "../auth/AuthProvider";
+import { ChatWidget } from "../components/ChatWidget";
 import { APP_MAIN_NAV_ITEMS } from "../config/navigation";
 import type { AppSubNavItem } from "../config/navigation";
 import { buildFallbackAccountFromSession } from "../lib/accountFallback";
@@ -422,6 +423,15 @@ export function AppLayout({ userName }: AppLayoutProps) {
           <Outlet />
         </main>
       </div>
+
+      <ChatWidget
+        chatUsers={teamPreviewMembers.map((m) => ({
+          id: m.id,
+          name: m.name,
+          avatarUrl: m.avatarUrl,
+          isOnline: m.isOnline,
+        }))}
+      />
     </div>
   );
 }
