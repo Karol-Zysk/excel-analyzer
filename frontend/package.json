@@ -12,6 +12,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@supabase/supabase-js": "^2.56.0",
     "@tanstack/react-query": "^5.62.0",
+    "emoji-picker-react": "^4.18.0",
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

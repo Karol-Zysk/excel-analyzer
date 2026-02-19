@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageSquare, X, Send, ChevronLeft, Users, Lock } from "lucide-react";
+import { MessageSquare, X, Send, ChevronLeft, Users, Lock, Smile } from "lucide-react";
+import EmojiPicker from "emoji-picker-react";
+import { Theme } from "emoji-picker-react";
+import type { EmojiClickData } from "emoji-picker-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../auth/AuthProvider";
 
@@ -78,7 +81,21 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (emojiPickerRef.current && !emojiPickerRef.current.contains(e.target as Node)) {
+        setShowEmojiPicker(false);
+      }
+    }
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showEmojiPicker]);
 
   useEffect(() => {
     setMessages([]);
@@ -190,8 +207,28 @@ function ChatPanel({ tab, currentUserId, currentUserName, recipientId, recipient
       </div>
 
       {/* Input */}
-      <div className="border-t border-slate-700 p-2">
+      <div className="relative border-t border-slate-700 p-2">
+        {showEmojiPicker && (
+          <div ref={emojiPickerRef} className="absolute bottom-16 left-2 z-50">
+            <EmojiPicker
+              onEmojiClick={(data: EmojiClickData) => {
+                setInput((prev) => prev + data.emoji);
+                setShowEmojiPicker(false);
+              }}
+              theme={Theme.DARK}
+              width={280}
+              height={350}
+            />
+          </div>
+        )}
         <div className="flex items-end gap-2">
+          <button
+            type="button"
+            onClick={() => setShowEmojiPicker((v) => !v)}
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-slate-400 transition hover:bg-slate-700 hover:text-slate-200"
+          >
+            <Smile className="h-5 w-5" />
+          </button>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
