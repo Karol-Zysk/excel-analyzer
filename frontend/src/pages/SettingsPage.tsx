@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { getAccounts, updateMyProfile, uploadUserAvatar } from "../api/backend";
+import { getAccounts, setUserAvatarUrl, updateMyProfile, uploadUserAvatar } from "../api/backend";
 import { useAuth } from "../auth/AuthProvider";
 import { buildFallbackAccountFromSession } from "../lib/accountFallback";
+import { AvatarModal } from "../components/AvatarModal";
 
 const MAX_AVATAR_SIZE_MB = 5;
 
@@ -32,6 +33,7 @@ export function SettingsPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const [uploadedAvatarUrl, setUploadedAvatarUrl] = useState<string | null>(null);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
     const metadata = (session?.user.user_metadata ?? {}) as Record<string, unknown>;
@@ -190,6 +192,15 @@ export function SettingsPage() {
     });
   };
 
+  async function handleApplyDicebear(url: string) {
+    if (!session?.access_token) return;
+    await setUserAvatarUrl(session.user.id, url, session.access_token);
+    setUploadedAvatarUrl(url);
+    setShowAvatarModal(false);
+    await refreshUser();
+    void accountsQuery.refetch();
+  }
+
   const currentAvatarUrl =
     uploadedAvatarUrl ??
     (typeof session?.user.user_metadata?.avatar_url === "string"
@@ -254,10 +265,21 @@ export function SettingsPage() {
       </form>
 
       <form onSubmit={onAvatarSubmit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="text-base font-semibold text-slate-900">Avatar</h3>
-        <p className="mt-1 text-sm text-slate-600">
-          Import avatarow uzytkownikow do Cloudinary. Maksymalny rozmiar pliku: {MAX_AVATAR_SIZE_MB} MB.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-base font-semibold text-slate-900">Avatar</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Import avatarow uzytkownikow do Cloudinary. Maksymalny rozmiar pliku: {MAX_AVATAR_SIZE_MB} MB.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowAvatarModal(true)}
+            className="flex-shrink-0 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+          >
+            Generuj avatar DiceBear
+          </button>
+        </div>
 
         <label htmlFor="avatar-file" className="mb-2 block text-sm font-medium text-slate-800">
           Wybierz avatar
@@ -386,6 +408,15 @@ export function SettingsPage() {
           <p className="mt-4 text-sm text-slate-600">Brak kont do wyswietlenia.</p>
         )}
       </div>
+
+      {showAvatarModal && session && (
+        <AvatarModal
+          userName={displayName ?? session.user.email ?? ""}
+          userEmail={session.user.email}
+          onClose={() => setShowAvatarModal(false)}
+          onApply={handleApplyDicebear}
+        />
+      )}
     </section>
   );
 }
