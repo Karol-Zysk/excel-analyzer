@@ -156,8 +156,8 @@ export class UsersController {
   @Patch(":id/avatar-url")
   @UseGuards(SupabaseAuthGuard)
   async setAvatarUrl(@Param("id") id: string, @Body() payload: UpdateAvatarUrlDto, @Req() req: RequestWithUser) {
-    if (!isAdmin(req.user)) {
-      throw new ForbiddenException("Only admins can set avatar URLs");
+    if (id !== req.user.id && !isAdmin(req.user)) {
+      throw new ForbiddenException("Only admins can set avatar URLs for other users");
     }
 
     return this.supabaseService.setUserAvatarUrl(id, payload.avatarUrl);
