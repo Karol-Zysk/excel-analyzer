@@ -348,25 +348,27 @@ function Wizard({ reportType, onClose }: WizardProps) {
                   </select>
                 </div>
               )}
-              <div>
-                <label className="mb-2 block text-xs font-medium text-slate-600">Kolumny w raporcie</label>
-                <div className="flex flex-wrap gap-2">
-                  {EXPORT_COLUMN_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.key}
-                      type="button"
-                      onClick={() => toggleExportColumn(opt.key)}
-                      className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
-                        selectedExportColumns.includes(opt.key)
-                          ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                          : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
-                      }`}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
+              {reportType === "standard" && (
+                <div>
+                  <label className="mb-2 block text-xs font-medium text-slate-600">Kolumny w raporcie</label>
+                  <div className="flex flex-wrap gap-2">
+                    {EXPORT_COLUMN_OPTIONS.map((opt) => (
+                      <button
+                        key={opt.key}
+                        type="button"
+                        onClick={() => toggleExportColumn(opt.key)}
+                        className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                          selectedExportColumns.includes(opt.key)
+                            ? "border-emerald-400 bg-emerald-50 text-emerald-700"
+                            : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
               {processError && (
                 <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{processError}</p>
               )}
@@ -411,10 +413,10 @@ function Wizard({ reportType, onClose }: WizardProps) {
             Zamknij
           </button>
           <div className="flex gap-2">
-            {step === "configure" && (
+            {(step === "configure" || step === "download") && (
               <button
                 type="button"
-                onClick={() => setStep("upload")}
+                onClick={() => setStep(step === "configure" ? "upload" : "configure")}
                 className="flex items-center gap-1 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
               >
                 <ChevronLeft className="h-4 w-4" />
