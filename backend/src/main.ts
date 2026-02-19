@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://excel-analyzer-two.vercel.app"],
     credentials: false,
   });
   app.useGlobalPipes(
