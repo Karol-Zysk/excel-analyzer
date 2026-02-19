@@ -93,6 +93,7 @@ export function AppLayout({ userName }: AppLayoutProps) {
   const { session, isUserOnline } = useAuth();
   const location = useLocation();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const [pendingChatUser, setPendingChatUser] = useState<{ id: string; name: string; avatarUrl: string | null; isOnline: boolean } | null>(null);
   const activeMainNavItem = useMemo(() => getActiveMainNavItem(location.pathname), [location.pathname]);
   const activeSubNavItem = useMemo(
     () => getActiveSubNavItem(location.pathname, activeMainNavItem.subItems),
@@ -285,6 +286,11 @@ export function AppLayout({ userName }: AppLayoutProps) {
                           <button
                             key={member.id}
                             type="button"
+                            onClick={() => {
+                              if (member.id !== session?.user.id) {
+                                setPendingChatUser(member);
+                              }
+                            }}
                             className="group/item flex w-full items-center justify-between rounded-lg p-2 text-left transition-all hover:bg-sky-500"
                           >
                             <div className="flex min-w-0 items-center gap-3">
@@ -431,6 +437,8 @@ export function AppLayout({ userName }: AppLayoutProps) {
           avatarUrl: m.avatarUrl,
           isOnline: m.isOnline,
         }))}
+        pendingUser={pendingChatUser}
+        onPendingUserConsumed={() => setPendingChatUser(null)}
       />
     </div>
   );

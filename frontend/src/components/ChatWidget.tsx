@@ -260,15 +260,26 @@ function UserList({ users, onSelect }: UserListProps) {
 
 type ChatWidgetProps = {
   chatUsers: ChatUser[];
+  pendingUser?: ChatUser | null;
+  onPendingUserConsumed?: () => void;
 };
 
-export function ChatWidget({ chatUsers }: ChatWidgetProps) {
+export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: ChatWidgetProps) {
   const { session, displayName } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("global");
   const [selectedUser, setSelectedUser] = useState<ChatUser | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const lastSeenRef = useRef<string>(new Date().toISOString());
+
+  useEffect(() => {
+    if (pendingUser) {
+      setSelectedUser(pendingUser);
+      setTab("private");
+      setIsOpen(true);
+      onPendingUserConsumed?.();
+    }
+  }, [pendingUser, onPendingUserConsumed]);
 
   const currentUserId = session?.user.id ?? "";
   const otherUsers = chatUsers.filter((u) => u.id !== currentUserId);
