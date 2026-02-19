@@ -8,6 +8,7 @@ import { ChatWidget } from "../components/ChatWidget";
 import { APP_MAIN_NAV_ITEMS } from "../config/navigation";
 import type { AppSubNavItem } from "../config/navigation";
 import { buildFallbackAccountFromSession } from "../lib/accountFallback";
+import { getAvatarColor, getUserInitials } from "../lib/avatar";
 
 type AppLayoutProps = {
   userName: string;
@@ -52,23 +53,6 @@ function mobileSubNavClassName(isActive: boolean) {
   }
 
   return "inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600";
-}
-
-function getUserInitials(userName: string) {
-  if (!userName.trim()) {
-    return "U";
-  }
-
-  const parts = userName
-    .trim()
-    .split(/\s+/)
-    .filter((part) => part.length > 0);
-
-  if (parts.length === 1) {
-    return parts[0].slice(0, 2).toUpperCase();
-  }
-
-  return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
 }
 
 function getActiveMainNavItem(pathname: string) {
@@ -201,7 +185,7 @@ export function AppLayout({ userName }: AppLayoutProps) {
 
               <div className="mb-4 shrink-0 border-b border-slate-700/70 pb-4">
                 <div className="mb-2 flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-slate-800 text-sm font-semibold text-slate-100 ring-2 ring-sky-500/25">
+                  <div className={`grid h-12 w-12 place-items-center rounded-full text-sm font-semibold text-white ring-2 ring-sky-500/25 ${getAvatarColor(userName)}`}>
                     {userInitials}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -302,8 +286,8 @@ export function AppLayout({ userName }: AppLayoutProps) {
                                     className="h-9 w-9 rounded-full border border-slate-700 object-cover"
                                   />
                                 ) : (
-                                  <div className="grid h-9 w-9 place-items-center rounded-full bg-slate-700 text-xs font-semibold text-white">
-                                    {getUserInitials(member.name).slice(0, 1)}
+                                  <div className={`grid h-9 w-9 place-items-center rounded-full text-xs font-semibold text-white ${getAvatarColor(member.name)}`}>
+                                    {getUserInitials(member.name)}
                                   </div>
                                 )}
                                 <span
@@ -385,7 +369,7 @@ export function AppLayout({ userName }: AppLayoutProps) {
                   <MessageSquare className="h-5 w-5" />
                 </button>
                 <div className="hidden items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 sm:flex">
-                  <div className="grid h-7 w-7 place-items-center rounded-full bg-slate-800 text-xs font-semibold text-white">
+                  <div className={`grid h-7 w-7 place-items-center rounded-full text-xs font-semibold text-white ${getAvatarColor(userName)}`}>
                     {userInitials}
                   </div>
                   <p className="text-sm font-medium text-slate-700">Czesc, {userName}</p>

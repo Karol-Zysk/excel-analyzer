@@ -5,6 +5,7 @@ import { Theme } from "emoji-picker-react";
 import type { EmojiClickData } from "emoji-picker-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../auth/AuthProvider";
+import { getAvatarColor, getUserInitials } from "../lib/avatar";
 
 type Message = {
   id: string;
@@ -29,12 +30,6 @@ function formatTime(iso: string) {
   return d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
 }
 
-function getUserInitials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-  return name.slice(0, 2).toUpperCase();
-}
-
 type MessageBubbleProps = {
   msg: Message;
   isMine: boolean;
@@ -44,7 +39,7 @@ function MessageBubble({ msg, isMine }: MessageBubbleProps) {
   return (
     <div className={`flex gap-2 ${isMine ? "flex-row-reverse" : "flex-row"}`}>
       <div
-        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-slate-700 text-[10px] font-semibold text-white"
+        className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white ${getAvatarColor(msg.sender_name)}`}
         title={msg.sender_name}
       >
         {getUserInitials(msg.sender_name)}
@@ -277,7 +272,7 @@ function UserList({ users, unreadPerUser, onSelect }: UserListProps) {
               {user.avatarUrl ? (
                 <img src={user.avatarUrl} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
               ) : (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-600 text-xs font-semibold text-white">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold text-white ${getAvatarColor(user.name)}`}>
                   {getUserInitials(user.name)}
                 </div>
               )}
@@ -313,6 +308,8 @@ type ChatWidgetProps = {
   onPendingUserConsumed?: () => void;
 };
 
+const BASE_TITLE = document.title || "Dem-Bud";
+
 export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: ChatWidgetProps) {
   const { session, displayName } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -322,6 +319,8 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
   const [unreadGlobal, setUnreadGlobal] = useState(0);
   // unreadPrivate: mapa userId -> liczba nieprzeczytanych prywatnych
   const [unreadPrivate, setUnreadPrivate] = useState<Map<string, number>>(new Map());
+  // ostatni nadawca do wyświetlenia w tytule zakładki
+  const [lastSenderName, setLastSenderName] = useState<string | null>(null);
 
   useEffect(() => {
     if (pendingUser) {
@@ -369,6 +368,7 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
             // Nie licz jeśli widget otwarty na zakładce globalnej
             if (isOpen && tab === "global") return;
             setUnreadGlobal((n) => n + 1);
+            setLastSenderName(msg.sender_name);
           } else if (isForMe) {
             const senderId = msg.sender_id;
             // Nie licz jeśli aktualnie ta rozmowa jest otwarta
@@ -378,6 +378,7 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
               next.set(senderId, (next.get(senderId) ?? 0) + 1);
               return next;
             });
+            setLastSenderName(msg.sender_name);
           }
         }
       )
@@ -387,6 +388,20 @@ export function ChatWidget({ chatUsers, pendingUser, onPendingUserConsumed }: Ch
       void supabase.removeChannel(channel);
     };
   }, [currentUserId, isOpen, tab, selectedUser]);
+
+  // Aktualizuj tytuł zakładki przeglądarki
+  useEffect(() => {
+    const totalUnread = unreadGlobal + Array.from(unreadPrivate.values()).reduce((a, b) => a + b, 0);
+    if (totalUnread === 0 || isOpen) {
+      document.title = BASE_TITLE;
+      return;
+    }
+    const senderPart = lastSenderName ? `${lastSenderName} napisał(a)` : "Nowa wiadomość";
+    document.title = `(${totalUnread}) ${senderPart} – ${BASE_TITLE}`;
+    return () => {
+      document.title = BASE_TITLE;
+    };
+  }, [unreadGlobal, unreadPrivate, isOpen, lastSenderName]);
 
   function handleSelectUser(user: ChatUser) {
     setSelectedUser(user);
