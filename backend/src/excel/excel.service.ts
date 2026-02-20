@@ -1767,7 +1767,8 @@ export class ExcelService {
     );
 
     const recordMap = new Map<string, ParsedExcelRecord>();
-    for (const workbook of workbooks) {
+    for (let workbookIdx = 0; workbookIdx < workbooks.length; workbookIdx++) {
+      const workbook = workbooks[workbookIdx];
       for (const record of workbook.records) {
         const metricByName = new Map(
           record.metrics.map((metric) => [metric.metric, metric] as const)
@@ -1785,7 +1786,7 @@ export class ExcelService {
             }
           );
         });
-        const key = `${record.apartment}|${record.dateFrom}|${record.dateTo}`;
+        const key = `${workbookIdx}|${record.apartment}|${record.dateFrom}|${record.dateTo}`;
         recordMap.set(key, {
           apartment: record.apartment,
           dateFrom: record.dateFrom,
