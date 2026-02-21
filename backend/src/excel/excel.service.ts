@@ -694,19 +694,6 @@ export class ExcelService {
 
       const dataRow = ws.addRow(values);
 
-      // Thick top border to visually separate apartments
-      if (isNewApartment) {
-        const separatorBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
-        const totalCols = 3 + exportRow.cells.length;
-        for (let c = 1; c <= totalCols; c++) {
-          const cell = dataRow.getCell(c);
-          cell.border = {
-            ...cell.border,
-            top: separatorBorder,
-          };
-        }
-      }
-
       // Apply styles to cells (offset by 3 for address/apartment/metric)
       for (let cellIdx = 0; cellIdx < exportRow.cells.length; cellIdx++) {
         const sourceValue = exportRow.cells[cellIdx].value;
@@ -734,8 +721,19 @@ export class ExcelService {
         this.applyExactZeroRedFont(cell, sourceValue);
       }
 
-      // Accumulate fixed-fee totals (metric name contains "opłat" case-insensitive)
-      const isFixedFee = exportRow.metric.toLowerCase().includes("opłat");
+      // Thick top border to visually separate apartments — applied AFTER cell styles
+      // so it is not overwritten by applyExcelJSCellStyle or outlier handler
+      if (isNewApartment) {
+        const separatorBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
+        const totalCols = 3 + exportRow.cells.length;
+        for (let c = 1; c <= totalCols; c++) {
+          const cell = dataRow.getCell(c);
+          cell.border = { ...cell.border, top: separatorBorder };
+        }
+      }
+
+      // Accumulate fixed-fee totals — exact metric name "Opłata stała" (case-insensitive)
+      const isFixedFee = exportRow.metric.toLowerCase() === "opłata stała";
       if (isFixedFee) {
         const colCount = payload.columnLabels.length;
         const reportedTotalIndex = payload.columnLabels.indexOf("Suma raportowana");
