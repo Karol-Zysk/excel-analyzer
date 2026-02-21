@@ -672,8 +672,17 @@ export class ExcelService {
     }
 
     // Data rows
+    // Collect fixed-fee totals per period column index for summary row
+    const fixedFeeColSums = new Map<number, number>(); // colIndex (0-based in cells) -> sum
+
     for (let rowIdx = 0; rowIdx < payload.rows.length; rowIdx++) {
       const exportRow = payload.rows[rowIdx];
+      const prevRow = rowIdx > 0 ? payload.rows[rowIdx - 1] : null;
+      const isNewApartment =
+        prevRow === null ||
+        prevRow.apartment !== exportRow.apartment ||
+        prevRow.address !== exportRow.address;
+
       const values: Array<string | number | null> = [
         exportRow.address,
         exportRow.apartment,
@@ -684,6 +693,19 @@ export class ExcelService {
       }
 
       const dataRow = ws.addRow(values);
+
+      // Thick top border to visually separate apartments
+      if (isNewApartment) {
+        const separatorBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
+        const totalCols = 3 + exportRow.cells.length;
+        for (let c = 1; c <= totalCols; c++) {
+          const cell = dataRow.getCell(c);
+          cell.border = {
+            ...cell.border,
+            top: separatorBorder,
+          };
+        }
+      }
 
       // Apply styles to cells (offset by 3 for address/apartment/metric)
       for (let cellIdx = 0; cellIdx < exportRow.cells.length; cellIdx++) {
@@ -710,6 +732,57 @@ export class ExcelService {
         }
 
         this.applyExactZeroRedFont(cell, sourceValue);
+      }
+
+      // Accumulate fixed-fee totals (metric name contains "opłat" case-insensitive)
+      const isFixedFee = exportRow.metric.toLowerCase().includes("opłat");
+      if (isFixedFee) {
+        const colCount = payload.columnLabels.length;
+        const reportedTotalIndex = payload.columnLabels.indexOf("Suma raportowana");
+        if (reportedTotalIndex >= 0) {
+          for (let periodIdx = 0; periodIdx < payload.periods.length; periodIdx++) {
+            const cellIdx = periodIdx * colCount + reportedTotalIndex;
+            const cellValue = exportRow.cells[cellIdx]?.value;
+            if (typeof cellValue === "number") {
+              fixedFeeColSums.set(cellIdx, (fixedFeeColSums.get(cellIdx) ?? 0) + cellValue);
+            }
+          }
+        }
+      }
+    }
+
+    // Fixed-fee summary row
+    if (fixedFeeColSums.size > 0) {
+      ws.addRow([]);
+      const totalCellCount = payload.rows[0]?.cells.length ?? 0;
+      const summaryValues: Array<string | number | null> = [
+        "",
+        "SUMA opłat stałych",
+        "",
+        ...Array(totalCellCount).fill(null),
+      ];
+      for (const [cellIdx, sum] of fixedFeeColSums.entries()) {
+        summaryValues[3 + cellIdx] = Math.round(sum * 100) / 100;
+      }
+      const summaryRow = ws.addRow(summaryValues);
+      summaryRow.font = { bold: true };
+      summaryRow.getCell(2).fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFF2CC" },
+      };
+      const summaryBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
+      const totalCols = 3 + totalCellCount;
+      for (let c = 1; c <= totalCols; c++) {
+        const cell = summaryRow.getCell(c);
+        cell.border = { top: summaryBorder, bottom: summaryBorder };
+        if (c >= 4 && fixedFeeColSums.has(c - 4)) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "FFFFF2CC" },
+          };
+        }
       }
     }
 
