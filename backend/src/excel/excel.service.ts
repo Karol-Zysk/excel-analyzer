@@ -136,6 +136,8 @@ type ExcelExportPayload = {
   rateOutliers: Set<RateOutlierKey>;
   yearlyHeaders: string[];
   yearlyRows: ExportYearlyRow[];
+  /** periodKey -> total sum of "Opłata stała" reportedTotal across all apartments */
+  fixedFeeSummary: Map<string, number>;
   generatedAt: string;
 };
 
@@ -672,9 +674,6 @@ export class ExcelService {
     }
 
     // Data rows
-    // Collect fixed-fee totals per period column index for summary row
-    const fixedFeeColSums = new Map<number, number>(); // colIndex (0-based in cells) -> sum
-
     for (let rowIdx = 0; rowIdx < payload.rows.length; rowIdx++) {
       const exportRow = payload.rows[rowIdx];
       const prevRow = rowIdx > 0 ? payload.rows[rowIdx - 1] : null;
@@ -731,40 +730,38 @@ export class ExcelService {
           cell.border = { ...cell.border, top: separatorBorder };
         }
       }
-
-      // Accumulate fixed-fee totals — exact metric name "Opłata stała" (case-insensitive)
-      const isFixedFee = exportRow.metric.toLowerCase() === "opłata stała";
-      if (isFixedFee) {
-        const colCount = payload.columnLabels.length;
-        const reportedTotalIndex = payload.columnLabels.indexOf("Suma raportowana");
-        if (reportedTotalIndex >= 0) {
-          for (let periodIdx = 0; periodIdx < payload.periods.length; periodIdx++) {
-            const cellIdx = periodIdx * colCount + reportedTotalIndex;
-            const cellValue = exportRow.cells[cellIdx]?.value;
-            if (typeof cellValue === "number") {
-              fixedFeeColSums.set(cellIdx, (fixedFeeColSums.get(cellIdx) ?? 0) + cellValue);
-            }
-          }
-        }
-      }
     }
 
-    // Fixed-fee summary row
-    if (fixedFeeColSums.size > 0) {
+    // Fixed-fee summary row — uses pre-computed sums from payload.fixedFeeSummary
+    if (payload.fixedFeeSummary.size > 0) {
       ws.addRow([]);
+      const colCount = payload.columnLabels.length;
+      const reportedTotalIndex = payload.columnLabels.indexOf("Suma raportowana");
       const totalCellCount = payload.rows[0]?.cells.length ?? 0;
       const summaryValues: Array<string | number | null> = [
         "",
         "SUMA opłat stałych",
         "",
-        ...Array(totalCellCount).fill(null),
+        ...Array<null>(totalCellCount).fill(null),
       ];
-      for (const [cellIdx, sum] of fixedFeeColSums.entries()) {
+
+      // Place each period's sum in the correct cell column
+      const periodKeys = Array.from(payload.fixedFeeSummary.keys());
+      for (const periodKey of periodKeys) {
+        const sum = payload.fixedFeeSummary.get(periodKey)!;
+        // find period index by matching periodKey to periods order
+        const periodIdx = payload.periods.findIndex((p) => p.label === periodKey ||
+          // periodKey may be stored as "dateFrom|dateTo", periods have label "dateFrom - dateTo"
+          p.label.replace(" - ", "|") === periodKey
+        );
+        if (periodIdx < 0 || reportedTotalIndex < 0) continue;
+        const cellIdx = periodIdx * colCount + reportedTotalIndex;
         summaryValues[3 + cellIdx] = Math.round(sum * 100) / 100;
       }
+
       const summaryRow = ws.addRow(summaryValues);
       summaryRow.font = { bold: true };
-      summaryRow.getCell(2).fill = {
+      const yellowFill: ExcelJS.FillPattern = {
         type: "pattern",
         pattern: "solid",
         fgColor: { argb: "FFFFF2CC" },
@@ -774,12 +771,8 @@ export class ExcelService {
       for (let c = 1; c <= totalCols; c++) {
         const cell = summaryRow.getCell(c);
         cell.border = { top: summaryBorder, bottom: summaryBorder };
-        if (c >= 4 && fixedFeeColSums.has(c - 4)) {
-          cell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FFFFF2CC" },
-          };
+        if (c <= 3 || (summaryValues[c - 1] !== null && typeof summaryValues[c - 1] === "number")) {
+          cell.fill = yellowFill;
         }
       }
     }
@@ -1269,6 +1262,15 @@ export class ExcelService {
       }
     }
 
+    // Fixed-fee summary: sum reportedTotal for "Opłata stała" per period
+    const fixedFeeSummary = new Map<string, number>();
+    for (const row of detailedRows) {
+      if (row.metric.toLowerCase() === "opłata stała" && row.reportedTotal !== null) {
+        const prev = fixedFeeSummary.get(row.periodKey) ?? 0;
+        fixedFeeSummary.set(row.periodKey, prev + row.reportedTotal);
+      }
+    }
+
     const result = {
       headers,
       periods: periods.map((period) => ({
@@ -1280,6 +1282,7 @@ export class ExcelService {
       ),
       rows,
       rateOutliers,
+      fixedFeeSummary,
       yearlyHeaders,
       yearlyRows: includeYearlySummary
         ? this.buildYearlyExportRows(detailedRows)
