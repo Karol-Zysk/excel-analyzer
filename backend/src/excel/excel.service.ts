@@ -705,6 +705,7 @@ export class ExcelService {
       const dataRow = ws.addRow(values);
 
       // Apply styles to cells (offset by 3 for address/apartment/metric)
+      const colCount = payload.columnLabels.length;
       for (let cellIdx = 0; cellIdx < exportRow.cells.length; cellIdx++) {
         const sourceValue = exportRow.cells[cellIdx].value;
         const styleKey = exportRow.cells[cellIdx].style;
@@ -726,6 +727,13 @@ export class ExcelService {
             left: redBorder,
             right: redBorder,
           };
+        }
+
+        // Thick left border to visually separate periods vertically
+        // Each period takes up colCount columns, so mark the first column of each period
+        if (cellIdx % colCount === 0 && cellIdx > 0) {
+          const separatorBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
+          cell.border = { ...cell.border, left: separatorBorder };
         }
 
         this.applyExactZeroRedFont(cell, sourceValue);
