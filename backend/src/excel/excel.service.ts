@@ -547,7 +547,10 @@ export class ExcelService {
       return Buffer.from(arrayBuffer);
     }
 
+    let prevApartment: string | null = null;
     for (const row of rows) {
+      const isNewApartment = prevApartment === null || prevApartment !== row.apartment;
+
       const dataRow = ws.addRow([
         row.address,
         row.apartment,
@@ -561,6 +564,12 @@ export class ExcelService {
         row.trend,
         row.note,
       ]);
+
+      // Thick left border to visually separate apartments vertically
+      if (isNewApartment) {
+        const separatorBorder: ExcelJS.Border = { style: "medium", color: { argb: "FF000000" } };
+        dataRow.getCell(1).border = { ...dataRow.getCell(1).border, left: separatorBorder };
+      }
 
       const baseCell = dataRow.getCell(5);
       const compareCell = dataRow.getCell(7);
@@ -590,6 +599,8 @@ export class ExcelService {
       this.applyExactZeroRedFont(compareCell, row.compareConsumption);
       this.applyExactZeroRedFont(differenceCell, row.difference);
       this.applyExactZeroRedFont(dataRow.getCell(9), row.changePercent);
+
+      prevApartment = row.apartment;
     }
 
     ws.getColumn(1).width = 26;
