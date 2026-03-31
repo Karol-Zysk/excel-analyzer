@@ -1,6 +1,7 @@
 import {
   ArchiveIcon,
   BarChart3,
+  FileCode2,
   FileSpreadsheet,
   Home,
   LayoutDashboard,
@@ -66,6 +67,13 @@ export const APP_MAIN_NAV_ITEMS: AppMainNavItem[] = [
         label: "Analizuj Excel",
         description: "Wgraj i analizuj pliki Excel",
         icon: FileSpreadsheet
+      },
+      {
+        key: "accounting-ksef-generator",
+        to: "/accounting/ksef-generator",
+        label: "KSeF XML Generator",
+        description: "Walidacja i generowanie XML FA(3)",
+        icon: FileCode2
       }
     ]
   },

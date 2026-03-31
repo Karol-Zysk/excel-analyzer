@@ -121,6 +121,380 @@ export type ExportExcelSummaryResponse = {
   fileName: string;
 };
 
+export type KsefBuyerIdentifierType = "NIP" | "EU_VAT" | "OTHER" | "NONE";
+export type KsefPaymentMethodValue = "1" | "2" | "3" | "4" | "5" | "6" | "7";
+export type KsefMyCompanyRole = "SELLER" | "BUYER";
+export type KsefTaxRateValue =
+  | "23"
+  | "22"
+  | "8"
+  | "7"
+  | "5"
+  | "4"
+  | "3"
+  | "0 KR"
+  | "0 WDT"
+  | "0 EX"
+  | "zw"
+  | "oo"
+  | "np I"
+  | "np II";
+
+export type KsefAddressPayload = {
+  countryCode: string;
+  line1: string;
+  line2?: string;
+};
+
+export type KsefSellerPayload = {
+  nip: string;
+  name: string;
+  address: KsefAddressPayload;
+  email?: string;
+  phone?: string;
+};
+
+export type KsefBuyerPayload = {
+  identifierType: KsefBuyerIdentifierType;
+  nip?: string;
+  euCode?: string;
+  euVatNumber?: string;
+  taxCountryCode?: string;
+  taxId?: string;
+  name: string;
+  address?: KsefAddressPayload;
+  email?: string;
+  phone?: string;
+};
+
+export type KsefPaymentPayload = {
+  dueDate?: string;
+  method?: KsefPaymentMethodValue;
+  bankAccount?: string;
+};
+
+export type KsefInvoiceItemPayload = {
+  name: string;
+  description?: string;
+  productCode?: string;
+  unit: string;
+  quantity: number;
+  unitNetPrice: number;
+  taxRate: KsefTaxRateValue;
+  annex15?: boolean;
+};
+
+export type GenerateKsefXmlPayload = {
+  seller: KsefSellerPayload;
+  buyer: KsefBuyerPayload;
+  issueDate: string;
+  saleDate?: string;
+  invoiceNumber: string;
+  placeOfIssue?: string;
+  currency?: string;
+  cashAccounting?: boolean;
+  selfBilling?: boolean;
+  splitPayment?: boolean;
+  simplifiedProcedure?: boolean;
+  relatedEntities?: boolean;
+  exemptionReason?: string;
+  systemName?: string;
+  payment?: KsefPaymentPayload;
+  items: KsefInvoiceItemPayload[];
+};
+
+export type GenerateKsefXmlResponse = {
+  valid: boolean;
+  xml: string | null;
+  fileName: string | null;
+  schema: {
+    code: "FA(3)";
+    version: "1-0E";
+  };
+  businessErrors: string[];
+  schemaErrors: Array<{
+    message: string;
+    lineNumber: number | null;
+  }>;
+  warnings: string[];
+  summary: {
+    issueDate: string;
+    currency: string;
+    lineCount: number;
+    netTotal: number;
+    taxTotal: number;
+    grossTotal: number;
+    taxBreakdown: Array<{
+      taxRate: KsefTaxRateValue;
+      net: number;
+      tax: number;
+      gross: number;
+    }>;
+  } | null;
+};
+
+export type KsefExcelImportInvoiceResponse = GenerateKsefXmlResponse & {
+  invoiceNumber: string;
+  rowNumbers: number[];
+};
+
+export type KsefExcelImportResponse = {
+  imported: boolean;
+  fileName: string;
+  sheetName: string;
+  templateColumns: string[];
+  summary: {
+    rowsCount: number;
+    invoicesCount: number;
+    validInvoices: number;
+    invalidInvoices: number;
+  };
+  globalErrors: string[];
+  invoices: KsefExcelImportInvoiceResponse[];
+};
+
+export type KsefExcelFlexibleFieldKey =
+  | "invoiceNumber"
+  | "issueDate"
+  | "saleDate"
+  | "buyerName"
+  | "buyerNip"
+  | "buyerAddressLine1"
+  | "buyerAddressLine2"
+  | "buyerCountryCode"
+  | "currency"
+  | "itemName"
+  | "itemDescription"
+  | "itemProductCode"
+  | "itemUnit"
+  | "itemQuantity"
+  | "itemUnitNetPrice"
+  | "itemTaxRate"
+  | "netTotal"
+  | "vatTotal"
+  | "grossTotal"
+  | "paymentDueDate"
+  | "paymentMethod"
+  | "paymentBankAccount";
+
+export type KsefExcelSupplementFieldKey =
+  | "sellerNip"
+  | "sellerName"
+  | "sellerCountryCode"
+  | "sellerAddressLine1"
+  | "sellerAddressLine2"
+  | "sellerEmail"
+  | "sellerPhone"
+  | "buyerIdentifierType"
+  | "defaultBuyerName"
+  | "defaultBuyerNip"
+  | "defaultBuyerAddressLine1"
+  | "defaultBuyerAddressLine2"
+  | "defaultBuyerCountryCode"
+  | "defaultIssueDate"
+  | "defaultSaleDate"
+  | "currency"
+  | "placeOfIssue"
+  | "systemName"
+  | "paymentMethod"
+  | "paymentBankAccount"
+  | "defaultItemName"
+  | "defaultItemDescription"
+  | "defaultItemUnit"
+  | "defaultItemQuantity"
+  | "defaultTaxRate";
+
+export type AnalyzeKsefExcelResponse = {
+  analyzed: boolean;
+  fileName: string;
+  sheetName: string;
+  rowsCount: number;
+  inferredInvoicesCount: number;
+  columns: Array<{
+    id: string;
+    label: string;
+    sampleValues: string[];
+  }>;
+  previewRows: Array<{
+    rowNumber: number;
+    values: Record<string, string>;
+  }>;
+  suggestedMapping: Partial<Record<KsefExcelFlexibleFieldKey, string>>;
+  suggestedSupplementFields: Array<{
+    key: KsefExcelSupplementFieldKey;
+    label: string;
+    reason: string;
+  }>;
+};
+
+export type KsefMappedImportConfig = {
+  context?: {
+    myCompanyRole?: KsefMyCompanyRole;
+  };
+  mapping: Partial<Record<KsefExcelFlexibleFieldKey, string>>;
+  defaults: {
+    sellerNip?: string;
+    sellerName?: string;
+    sellerCountryCode?: string;
+    sellerAddressLine1?: string;
+    sellerAddressLine2?: string;
+    sellerEmail?: string;
+    sellerPhone?: string;
+    buyerIdentifierType?: KsefBuyerIdentifierType;
+    defaultBuyerName?: string;
+    defaultBuyerNip?: string;
+    defaultBuyerAddressLine1?: string;
+    defaultBuyerAddressLine2?: string;
+    defaultBuyerCountryCode?: string;
+    defaultIssueDate?: string;
+    defaultSaleDate?: string;
+    currency?: string;
+    placeOfIssue?: string;
+    systemName?: string;
+    paymentMethod?: KsefPaymentMethodValue;
+    paymentBankAccount?: string;
+    defaultItemName?: string;
+    defaultItemDescription?: string;
+    defaultItemUnit?: string;
+    defaultItemQuantity?: number;
+    defaultTaxRate?: KsefTaxRateValue;
+    splitPayment?: boolean;
+    cashAccounting?: boolean;
+    selfBilling?: boolean;
+    simplifiedProcedure?: boolean;
+    relatedEntities?: boolean;
+    annex15?: boolean;
+  };
+  options: {
+    deriveTaxRateFromAmounts?: boolean;
+  };
+  overrides?: {
+    invoices?: Array<{
+      rowNumbers: number[];
+      invoiceNumber?: string;
+      issueDate?: string;
+      saleDate?: string;
+      buyerName?: string;
+      buyerNip?: string;
+      buyerAddressLine1?: string;
+      buyerAddressLine2?: string;
+      buyerCountryCode?: string;
+      paymentDueDate?: string;
+      paymentMethod?: KsefPaymentMethodValue;
+      paymentBankAccount?: string;
+      currency?: string;
+      items?: Array<{
+        rowNumber: number;
+        name?: string;
+        description?: string;
+        productCode?: string;
+        unit?: string;
+        quantity?: number;
+        unitNetPrice?: number;
+        taxRate?: KsefTaxRateValue;
+      }>;
+    }>;
+  };
+};
+
+export type KsefMappedImportInvoiceResponse = GenerateKsefXmlResponse & {
+  invoiceNumber: string;
+  rowNumbers: number[];
+  status: "generated" | "needs_completion" | "invalid";
+  resolvedFields: Array<{
+    key: KsefExcelFlexibleFieldKey | KsefExcelSupplementFieldKey;
+    label: string;
+    value: string;
+    source: "excel" | "default" | "derived" | "manual";
+  }>;
+  missingFields: Array<{
+    key: KsefExcelFlexibleFieldKey | KsefExcelSupplementFieldKey;
+    label: string;
+  }>;
+  preview: {
+    buyerName?: string;
+    buyerNip?: string;
+    buyerAddressLine1?: string;
+    buyerAddressLine2?: string;
+    buyerCountryCode?: string;
+    issueDate?: string;
+    saleDate?: string;
+    currency?: string;
+    paymentDueDate?: string;
+    paymentMethod?: string;
+    paymentBankAccount?: string;
+    items: Array<{
+      rowNumber: number;
+      name?: string;
+      description?: string;
+      productCode?: string;
+      quantity?: number;
+      unit?: string;
+      unitNetPrice?: number;
+      taxRate?: string;
+    }>;
+    netTotal?: number;
+    vatTotal?: number;
+    grossTotal?: number;
+  };
+};
+
+export type KsefMappedImportResponse = {
+  imported: boolean;
+  fileName: string;
+  sheetName: string;
+  appliedMapping: Partial<Record<KsefExcelFlexibleFieldKey, string>>;
+  summary: {
+    rowsCount: number;
+    invoicesCount: number;
+    generatedValid: number;
+    needsCompletion: number;
+    invalidInvoices: number;
+  };
+  globalErrors: string[];
+  completionSummary: Array<{
+    key: KsefExcelFlexibleFieldKey | KsefExcelSupplementFieldKey;
+    label: string;
+    count: number;
+  }>;
+  invoices: KsefMappedImportInvoiceResponse[];
+};
+
+export type KsefCompanyProfile = {
+  id: string;
+  companyName: string;
+  nip: string;
+  countryCode: string;
+  addressLine1: string;
+  addressLine2: string | null;
+  email: string | null;
+  phone: string | null;
+  currency: string | null;
+  paymentMethod: string | null;
+  bankAccount: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type KsefCompanyProfilesResponse = {
+  count: number;
+  profiles: KsefCompanyProfile[];
+};
+
+export type SaveKsefCompanyProfilePayload = {
+  id?: string;
+  companyName: string;
+  nip: string;
+  countryCode: string;
+  addressLine1: string;
+  addressLine2?: string;
+  email?: string;
+  phone?: string;
+  currency?: string;
+  paymentMethod?: string;
+  bankAccount?: string;
+};
+
 export type MeResponse = {
   id: string;
   email: string | null;
@@ -400,6 +774,114 @@ export async function exportExcelYearOverYear(payload: BuildExcelSummaryPayload,
   } finally {
     clearTimeout(timeoutHandle);
   }
+}
+
+export async function generateKsefXml(payload: GenerateKsefXmlPayload, accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/ksef/generate-xml`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  return parseJsonOrThrow<GenerateKsefXmlResponse>(response);
+}
+
+export async function getKsefCompanyProfiles(accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/ksef/company-profiles`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return parseJsonOrThrow<KsefCompanyProfilesResponse>(response);
+}
+
+export async function saveKsefCompanyProfile(
+  payload: SaveKsefCompanyProfilePayload,
+  accessToken: string
+) {
+  const response = await fetch(`${BACKEND_URL}/api/ksef/company-profiles`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  return parseJsonOrThrow<{
+    saved: boolean;
+    profile: KsefCompanyProfile;
+    profiles: KsefCompanyProfile[];
+  }>(response);
+}
+
+export async function deleteKsefCompanyProfile(profileId: string, accessToken: string) {
+  const response = await fetch(`${BACKEND_URL}/api/ksef/company-profiles/${profileId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  return parseJsonOrThrow<{
+    deleted: boolean;
+    error?: string;
+    profiles: KsefCompanyProfile[];
+  }>(response);
+}
+
+export async function importKsefExcel(file: File, accessToken: string) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${BACKEND_URL}/api/ksef/import-excel`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: formData
+  });
+
+  return parseJsonOrThrow<KsefExcelImportResponse>(response);
+}
+
+export async function analyzeKsefExcel(file: File, accessToken: string) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${BACKEND_URL}/api/ksef/analyze-excel`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: formData
+  });
+
+  return parseJsonOrThrow<AnalyzeKsefExcelResponse>(response);
+}
+
+export async function importKsefExcelMapped(
+  file: File,
+  config: KsefMappedImportConfig,
+  accessToken: string
+) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("config", JSON.stringify(config));
+
+  const response = await fetch(`${BACKEND_URL}/api/ksef/import-excel-mapped`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+    body: formData
+  });
+
+  return parseJsonOrThrow<KsefMappedImportResponse>(response);
 }
 
 export async function uploadUserAvatar(file: File, accessToken: string) {

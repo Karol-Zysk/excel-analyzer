@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { randomUUID } from "node:crypto";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import type { User } from "@supabase/supabase-js";
 
@@ -32,6 +33,36 @@ type AccountSummary = {
   createdAt: string;
   lastSignInAt: string | null;
   emailConfirmedAt: string | null;
+};
+
+type KsefCompanyProfileInput = {
+  id?: string;
+  companyName: string;
+  nip: string;
+  countryCode: string;
+  addressLine1: string;
+  addressLine2?: string;
+  email?: string;
+  phone?: string;
+  currency?: string;
+  paymentMethod?: string;
+  bankAccount?: string;
+};
+
+export type KsefCompanyProfile = {
+  id: string;
+  companyName: string;
+  nip: string;
+  countryCode: string;
+  addressLine1: string;
+  addressLine2: string | null;
+  email: string | null;
+  phone: string | null;
+  currency: string | null;
+  paymentMethod: string | null;
+  bankAccount: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 @Injectable()
@@ -258,6 +289,126 @@ export class SupabaseService {
       acc[key] = value;
       return acc;
     }, { ...currentMetadata });
+  }
+
+  private normalizeOptionalMetadataText(value: unknown) {
+    if (typeof value !== "string") {
+      return null;
+    }
+
+    const trimmed = value.trim();
+    return trimmed ? trimmed : null;
+  }
+
+  private normalizeKsefCompanyProfiles(rawProfiles: unknown) {
+    if (!Array.isArray(rawProfiles)) {
+      return [] as KsefCompanyProfile[];
+    }
+
+    return rawProfiles
+      .map((item) => {
+        if (typeof item !== "object" || item === null) {
+          return null;
+        }
+
+        const candidate = item as Record<string, unknown>;
+        const id = this.normalizeOptionalMetadataText(candidate.id);
+        const companyName = this.normalizeOptionalMetadataText(candidate.companyName);
+        const nip = this.normalizeOptionalMetadataText(candidate.nip);
+        const countryCode = this.normalizeOptionalMetadataText(candidate.countryCode)?.toUpperCase();
+        const addressLine1 = this.normalizeOptionalMetadataText(candidate.addressLine1);
+        const createdAt = this.normalizeOptionalMetadataText(candidate.createdAt);
+        const updatedAt = this.normalizeOptionalMetadataText(candidate.updatedAt);
+
+        if (!id || !companyName || !nip || !countryCode || !addressLine1 || !createdAt || !updatedAt) {
+          return null;
+        }
+
+        return {
+          id,
+          companyName,
+          nip,
+          countryCode,
+          addressLine1,
+          addressLine2: this.normalizeOptionalMetadataText(candidate.addressLine2),
+          email: this.normalizeOptionalMetadataText(candidate.email),
+          phone: this.normalizeOptionalMetadataText(candidate.phone),
+          currency: this.normalizeOptionalMetadataText(candidate.currency)?.toUpperCase() ?? null,
+          paymentMethod: this.normalizeOptionalMetadataText(candidate.paymentMethod),
+          bankAccount: this.normalizeOptionalMetadataText(candidate.bankAccount),
+          createdAt,
+          updatedAt
+        } satisfies KsefCompanyProfile;
+      })
+      .filter((profile): profile is KsefCompanyProfile => profile !== null)
+      .sort((left, right) => left.companyName.localeCompare(right.companyName, "pl"));
+  }
+
+  async listKsefCompanyProfiles(userId: string) {
+    const metadata = await this.getCurrentUserMetadata(userId);
+    return this.normalizeKsefCompanyProfiles(metadata["ksef_company_profiles"]);
+  }
+
+  async saveKsefCompanyProfile(userId: string, payload: KsefCompanyProfileInput) {
+    const profiles = await this.listKsefCompanyProfiles(userId);
+    const existingProfile = payload.id
+      ? profiles.find((profile) => profile.id === payload.id)
+      : undefined;
+    const now = new Date().toISOString();
+
+    const savedProfile: KsefCompanyProfile = {
+      id: existingProfile?.id ?? randomUUID(),
+      companyName: payload.companyName.trim(),
+      nip: payload.nip.trim(),
+      countryCode: payload.countryCode.trim().toUpperCase(),
+      addressLine1: payload.addressLine1.trim(),
+      addressLine2: this.normalizeOptionalMetadataText(payload.addressLine2),
+      email: this.normalizeOptionalMetadataText(payload.email),
+      phone: this.normalizeOptionalMetadataText(payload.phone),
+      currency: this.normalizeOptionalMetadataText(payload.currency)?.toUpperCase() ?? null,
+      paymentMethod: this.normalizeOptionalMetadataText(payload.paymentMethod),
+      bankAccount: this.normalizeOptionalMetadataText(payload.bankAccount),
+      createdAt: existingProfile?.createdAt ?? now,
+      updatedAt: now
+    };
+
+    const nextProfiles = [
+      ...profiles.filter((profile) => profile.id !== savedProfile.id),
+      savedProfile
+    ].sort((left, right) => left.companyName.localeCompare(right.companyName, "pl"));
+
+    const updateResult = await this.updateUserMetadata(userId, {
+      ksef_company_profiles: nextProfiles
+    });
+
+    return {
+      ...updateResult,
+      profile: savedProfile,
+      profiles: nextProfiles
+    };
+  }
+
+  async deleteKsefCompanyProfile(userId: string, profileId: string) {
+    const profiles = await this.listKsefCompanyProfiles(userId);
+    const nextProfiles = profiles.filter((profile) => profile.id !== profileId);
+
+    if (nextProfiles.length === profiles.length) {
+      return {
+        deleted: false,
+        error: "Nie znaleziono wybranego podmiotu.",
+        profiles
+      };
+    }
+
+    const updateResult = await this.updateUserMetadata(userId, {
+      ksef_company_profiles: nextProfiles
+    });
+
+    return {
+      deleted: updateResult.updated,
+      error: updateResult.updated ? undefined : updateResult.error,
+      profiles: nextProfiles
+    };
   }
 
   async updateUserProfile(userId: string, payload: ProfileUpdatePayload) {

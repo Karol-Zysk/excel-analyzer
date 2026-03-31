@@ -1,0 +1,3950 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/" xmlns:tns="http://crd.gov.pl/wzor/2025/06/25/13775/" targetNamespace="http://crd.gov.pl/wzor/2025/06/25/13775/" elementFormDefault="qualified" attributeFormDefault="unqualified" xml:lang="pl">
+	<xsd:import namespace="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/" schemaLocation="StrukturyDanych_v10-0E.xsd"/>
+	<xsd:simpleType name="TKodyKrajowUE">
+		<xsd:annotation>
+			<xsd:documentation>Kody krajĂłw czĹ‚onkowskich Unii Europejskiej, w tym kod dla obszaru Irlandii PĂłĹ‚nocnej</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="AT">
+				<xsd:annotation>
+					<xsd:documentation>AUSTRIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BE">
+				<xsd:annotation>
+					<xsd:documentation>BELGIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BG">
+				<xsd:annotation>
+					<xsd:documentation>BUĹGARIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CY">
+				<xsd:annotation>
+					<xsd:documentation>CYPR</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CZ">
+				<xsd:annotation>
+					<xsd:documentation>CZECHY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DK">
+				<xsd:annotation>
+					<xsd:documentation>DANIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EE">
+				<xsd:annotation>
+					<xsd:documentation>ESTONIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FI">
+				<xsd:annotation>
+					<xsd:documentation>FINLANDIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FR">
+				<xsd:annotation>
+					<xsd:documentation>FRANCJA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DE">
+				<xsd:annotation>
+					<xsd:documentation>NIEMCY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EL">
+				<xsd:annotation>
+					<xsd:documentation>GRECJA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HR">
+				<xsd:annotation>
+					<xsd:documentation>CHORWACJA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HU">
+				<xsd:annotation>
+					<xsd:documentation>WÄGRY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IE">
+				<xsd:annotation>
+					<xsd:documentation>IRLANDIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IT">
+				<xsd:annotation>
+					<xsd:documentation>WĹOCHY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LV">
+				<xsd:annotation>
+					<xsd:documentation>ĹOTWA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LT">
+				<xsd:annotation>
+					<xsd:documentation>LITWA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LU">
+				<xsd:annotation>
+					<xsd:documentation>LUKSEMBURG</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MT">
+				<xsd:annotation>
+					<xsd:documentation>MALTA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NL">
+				<xsd:annotation>
+					<xsd:documentation>HOLANDIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PL">
+				<xsd:annotation>
+					<xsd:documentation>POLSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PT">
+				<xsd:annotation>
+					<xsd:documentation>PORTUGALIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RO">
+				<xsd:annotation>
+					<xsd:documentation>RUMUNIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SK">
+				<xsd:annotation>
+					<xsd:documentation>SĹOWACJA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SI">
+				<xsd:annotation>
+					<xsd:documentation>SĹOWENIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ES">
+				<xsd:annotation>
+					<xsd:documentation>HISZPANIA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SE">
+				<xsd:annotation>
+					<xsd:documentation>SZWECJA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XI">
+				<xsd:annotation>
+					<xsd:documentation>IRLANDIA PĂ“ĹNOCNA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TKodWaluty">
+		<xsd:annotation>
+			<xsd:documentation>SĹ‚ownik kodĂłw walut</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="AED">
+				<xsd:annotation>
+					<xsd:documentation>DIRHAM ZEA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AFN">
+				<xsd:annotation>
+					<xsd:documentation>AFGANI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ALL">
+				<xsd:annotation>
+					<xsd:documentation>LEK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AMD">
+				<xsd:annotation>
+					<xsd:documentation>DRAM</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ANG">
+				<xsd:annotation>
+					<xsd:documentation>GULDEN ANTYLI HOLENDERSKICH</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AOA">
+				<xsd:annotation>
+					<xsd:documentation>KWANZA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ARS">
+				<xsd:annotation>
+					<xsd:documentation>PESO ARGENTYĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AUD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR AUSTRALIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AWG">
+				<xsd:annotation>
+					<xsd:documentation>GULDEN ARUBAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AZN">
+				<xsd:annotation>
+					<xsd:documentation>MANAT AZERBEJDĹ»AĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BAM">
+				<xsd:annotation>
+					<xsd:documentation>MARKA ZAMIENNA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BBD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR BARBADOSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BDT">
+				<xsd:annotation>
+					<xsd:documentation>TAKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BGN">
+				<xsd:annotation>
+					<xsd:documentation>LEW</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BHD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR BAHRAJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BIF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK BURUNDYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BMD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR BERMUDZKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BND">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR BRUNEJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BOB">
+				<xsd:annotation>
+					<xsd:documentation>BOLIWIANO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BOV">
+				<xsd:annotation>
+					<xsd:documentation>BOLIWIANO MVDOL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BRL">
+				<xsd:annotation>
+					<xsd:documentation>REAL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BSD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR BAHAMSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BTN">
+				<xsd:annotation>
+					<xsd:documentation>NGULTRUM</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BWP">
+				<xsd:annotation>
+					<xsd:documentation>PULA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BYN">
+				<xsd:annotation>
+					<xsd:documentation>RUBEL BIAĹORUSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BZD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR BELIZEĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CAD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR KANADYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CDF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK KONGIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CHE">
+				<xsd:annotation>
+					<xsd:documentation>FRANK SZWAJCARSKI VIR EURO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CHF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK SZWAJCARSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CHW">
+				<xsd:annotation>
+					<xsd:documentation>FRANK SZWAJCARSKI VIR FRANK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CLF">
+				<xsd:annotation>
+					<xsd:documentation>JEDNOSTKA ROZLICZENIOWA CHILIJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CLP">
+				<xsd:annotation>
+					<xsd:documentation>PESO CHILIJSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CNY">
+				<xsd:annotation>
+					<xsd:documentation>YUAN RENMINBI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="COP">
+				<xsd:annotation>
+					<xsd:documentation>PESO KOLUMBIJSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="COU">
+				<xsd:annotation>
+					<xsd:documentation>UNIDAD DE VALOR REAL KOLUMBILSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CRC">
+				<xsd:annotation>
+					<xsd:documentation>COLON KOSTARYKAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CUC">
+				<xsd:annotation>
+					<xsd:documentation>PESO WYMIENIALNE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CUP">
+				<xsd:annotation>
+					<xsd:documentation>PESO KUBAĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CVE">
+				<xsd:annotation>
+					<xsd:documentation>ESCUDO REPUBLIKI ZIELONEGO PRZYLÄ„DKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CZK">
+				<xsd:annotation>
+					<xsd:documentation>KORONA CZESKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DJF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK DĹ»IBUTI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DKK">
+				<xsd:annotation>
+					<xsd:documentation>KORONA DUĹSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DOP">
+				<xsd:annotation>
+					<xsd:documentation>PESO DOMINIKAĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DZD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR ALGIERSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EGP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT EGIPSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ERN">
+				<xsd:annotation>
+					<xsd:documentation>NAKFA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ETB">
+				<xsd:annotation>
+					<xsd:documentation>BIRR</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EUR">
+				<xsd:annotation>
+					<xsd:documentation>EURO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FJD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR FIDĹ»I</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FKP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT FALKLANDZKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GBP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT SZTERLING</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GEL">
+				<xsd:annotation>
+					<xsd:documentation>LARI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GGP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT GUERNSEY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GHS">
+				<xsd:annotation>
+					<xsd:documentation>GHANA CEDI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GIP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT GIBRALTARSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GMD">
+				<xsd:annotation>
+					<xsd:documentation>DALASI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GNF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK GWINEJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTQ">
+				<xsd:annotation>
+					<xsd:documentation>QUETZAL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GYD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR GUJAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HKD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR HONGKONGU</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HNL">
+				<xsd:annotation>
+					<xsd:documentation>LEMPIRA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HRK">
+				<xsd:annotation>
+					<xsd:documentation>KUNA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HTG">
+				<xsd:annotation>
+					<xsd:documentation>GOURDE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HUF">
+				<xsd:annotation>
+					<xsd:documentation>FORINT</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IDR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA INDONEZYJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ILS">
+				<xsd:annotation>
+					<xsd:documentation>SZEKEL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IMP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT MANX</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="INR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA INDYJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IQD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR IRACKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IRR">
+				<xsd:annotation>
+					<xsd:documentation>RIAL IRAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ISK">
+				<xsd:annotation>
+					<xsd:documentation>KORONA ISLANDZKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JEP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT JERSEY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JMD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR JAMAJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JOD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR JORDAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="JPY">
+				<xsd:annotation>
+					<xsd:documentation>JEN</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KES">
+				<xsd:annotation>
+					<xsd:documentation>SZYLING KENIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KGS">
+				<xsd:annotation>
+					<xsd:documentation>SOM</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KHR">
+				<xsd:annotation>
+					<xsd:documentation>RIEL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KMF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK KOMORĂ“W</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KPW">
+				<xsd:annotation>
+					<xsd:documentation>WON PĂ“ĹNOCNOÂ­KOREAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KRW">
+				<xsd:annotation>
+					<xsd:documentation>WON POĹUDNIOWOÂ­KOREAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KWD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR KUWEJCKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KYD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR KAJMAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KZT">
+				<xsd:annotation>
+					<xsd:documentation>TENGE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LAK">
+				<xsd:annotation>
+					<xsd:documentation>KIP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LBP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT LIBAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LKR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA LANKIJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LRD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR LIBERYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LSL">
+				<xsd:annotation>
+					<xsd:documentation>LOTI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LYD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR LIBIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MAD">
+				<xsd:annotation>
+					<xsd:documentation>DIRHAM MAROKAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MDL">
+				<xsd:annotation>
+					<xsd:documentation>LEJ MOĹDAWII</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MGA">
+				<xsd:annotation>
+					<xsd:documentation>ARIARY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MKD">
+				<xsd:annotation>
+					<xsd:documentation>DENAR</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MMK">
+				<xsd:annotation>
+					<xsd:documentation>KYAT</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MNT">
+				<xsd:annotation>
+					<xsd:documentation>TUGRIK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MOP">
+				<xsd:annotation>
+					<xsd:documentation>PATACA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MRU">
+				<xsd:annotation>
+					<xsd:documentation>OUGUIYA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MUR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA MAURITIUSU</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MVR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA MALEDIWSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MWK">
+				<xsd:annotation>
+					<xsd:documentation>KWACHA MALAWIJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MXN">
+				<xsd:annotation>
+					<xsd:documentation>PESO MEKSYKAĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MXV">
+				<xsd:annotation>
+					<xsd:documentation>UNIDAD DE INVERSION (UDI) MEKSYKAĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MYR">
+				<xsd:annotation>
+					<xsd:documentation>RINGGIT</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MZN">
+				<xsd:annotation>
+					<xsd:documentation>METICAL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NAD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR NAMIBIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NGN">
+				<xsd:annotation>
+					<xsd:documentation>NAIRA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NIO">
+				<xsd:annotation>
+					<xsd:documentation>CORDOBA ORO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NOK">
+				<xsd:annotation>
+					<xsd:documentation>KORONA NORWESKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NPR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA NEPALSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NZD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR NOWOZELANDZKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OMR">
+				<xsd:annotation>
+					<xsd:documentation>RIAL OMAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PAB">
+				<xsd:annotation>
+					<xsd:documentation>BALBOA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PEN">
+				<xsd:annotation>
+					<xsd:documentation>SOL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PGK">
+				<xsd:annotation>
+					<xsd:documentation>KINA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PHP">
+				<xsd:annotation>
+					<xsd:documentation>PESO FILIPIĹSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PKR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA PAKISTAĹSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PLN">
+				<xsd:annotation>
+					<xsd:documentation>ZĹOTY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PYG">
+				<xsd:annotation>
+					<xsd:documentation>GUARANI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="QAR">
+				<xsd:annotation>
+					<xsd:documentation>RIAL KATARSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RON">
+				<xsd:annotation>
+					<xsd:documentation>LEJ RUMUĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RSD">
+				<xsd:annotation>
+					<xsd:documentation>DINAR SERBSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RUB">
+				<xsd:annotation>
+					<xsd:documentation>RUBEL ROSYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RWF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK RWANDYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SAR">
+				<xsd:annotation>
+					<xsd:documentation>RIAL SAUDYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SBD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR WYSP SALOMONA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SCR">
+				<xsd:annotation>
+					<xsd:documentation>RUPIA SESZELSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SDG">
+				<xsd:annotation>
+					<xsd:documentation>FUNT SUDAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SEK">
+				<xsd:annotation>
+					<xsd:documentation>KORONA SZWEDZKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SGD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR SINGAPURSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SHP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT ĹšWIÄTEJ HELENY (ĹšWIÄTA HELENA IÂ WYSPA WNIEBOWSTÄ„PIENIA)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SLL">
+				<xsd:annotation>
+					<xsd:documentation>LEONE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SOS">
+				<xsd:annotation>
+					<xsd:documentation>SZYLING SOMALIJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SRD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR SURINAMSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SSP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT POĹUDNIOWOSUDAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="STN">
+				<xsd:annotation>
+					<xsd:documentation>DOBRA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SVC">
+				<xsd:annotation>
+					<xsd:documentation>COLON SALWADORSKI (SV1)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SYP">
+				<xsd:annotation>
+					<xsd:documentation>FUNT SYRYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SZL">
+				<xsd:annotation>
+					<xsd:documentation>LILANGENI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="THB">
+				<xsd:annotation>
+					<xsd:documentation>BAT</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TJS">
+				<xsd:annotation>
+					<xsd:documentation>SOMONI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TMT">
+				<xsd:annotation>
+					<xsd:documentation>MANAT TURKMEĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TND">
+				<xsd:annotation>
+					<xsd:documentation>DINAR TUNEZYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TOP">
+				<xsd:annotation>
+					<xsd:documentation>PAANGA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TRY">
+				<xsd:annotation>
+					<xsd:documentation>LIRA TURECKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TTD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR TRYNIDADU IÂ TOBAGO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TWD">
+				<xsd:annotation>
+					<xsd:documentation>NOWY DOLAR TAJWAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TZS">
+				<xsd:annotation>
+					<xsd:documentation>SZYLING TANZAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UAH">
+				<xsd:annotation>
+					<xsd:documentation>HRYWNA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UGX">
+				<xsd:annotation>
+					<xsd:documentation>SZYLING UGANDYJSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="USD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR AMERYKAĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="USN">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR AMERYKAĹSKI (NEXT DAY)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UYI">
+				<xsd:annotation>
+					<xsd:documentation>PESO EN UNIDADES INDEXADAS URUGWAJSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UYU">
+				<xsd:annotation>
+					<xsd:documentation>PESO URUGWAJSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UYW">
+				<xsd:annotation>
+					<xsd:documentation>PESO EN UNIDADES INDEXADAS URUGWAJSKIE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UZS">
+				<xsd:annotation>
+					<xsd:documentation>SUM</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VES">
+				<xsd:annotation>
+					<xsd:documentation>BOLIWAR SOBERANOÂ </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VND">
+				<xsd:annotation>
+					<xsd:documentation>DONG</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VUV">
+				<xsd:annotation>
+					<xsd:documentation>VATU</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="WST">
+				<xsd:annotation>
+					<xsd:documentation>TALA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XAF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK CFA (BEAC)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XAG">
+				<xsd:annotation>
+					<xsd:documentation>SREBRO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XAU">
+				<xsd:annotation>
+					<xsd:documentation>ZĹOTO</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XBA">
+				<xsd:annotation>
+					<xsd:documentation>BOND MARKETS UNIT EUROPEAN COMPOSITE UNIT (EURCO)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XBB">
+				<xsd:annotation>
+					<xsd:documentation>BOND MARKETS UNIT EUROPEAN MONETARY UNIT (E.M.U.-6)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XBC">
+				<xsd:annotation>
+					<xsd:documentation>BOND MARKETS UNIT EUROPEAN UNIT OF ACCOUNT 9 (E.U.A.-9)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XBD">
+				<xsd:annotation>
+					<xsd:documentation>BOND MARKETS UNIT EUROPEAN UNIT OF ACCOUNT 17 (E.U.A.-17)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XCD">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR WSCHODNIOÂ­KARAIBSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XCG">
+				<xsd:annotation>
+					<xsd:documentation>GULDEN KARAIBSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XDR">
+				<xsd:annotation>
+					<xsd:documentation>SDR MIÄDZYNARODOWY FUNDUSZ WALUTOWY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XOF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK CFA (BCEAO)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XPD">
+				<xsd:annotation>
+					<xsd:documentation>PALLAD</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XPF">
+				<xsd:annotation>
+					<xsd:documentation>FRANK CFP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XPT">
+				<xsd:annotation>
+					<xsd:documentation>PLATYNA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XSU">
+				<xsd:annotation>
+					<xsd:documentation>SUCRE SISTEMA UNITARIO DE COMPENSACION REGIONAL DE PAGOS SUCRE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XUA">
+				<xsd:annotation>
+					<xsd:documentation>ADB UNIT OF ACCOUNT MEMBER COUNTRIES OF THE AFRICAN DEVELOPMENT BANK GROUP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="XXX">
+				<xsd:annotation>
+					<xsd:documentation>BRAK WALUTY</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="YER">
+				<xsd:annotation>
+					<xsd:documentation>RIAL JEMEĹSKI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZAR">
+				<xsd:annotation>
+					<xsd:documentation>RAND</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZMW">
+				<xsd:annotation>
+					<xsd:documentation>KWACHA ZAMBIJSKA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZWL">
+				<xsd:annotation>
+					<xsd:documentation>DOLAR ZIMBABWE</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TKodFormularza">
+		<xsd:annotation>
+			<xsd:documentation>Symbol wzoru formularza</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="FA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TNaglowek">
+		<xsd:annotation>
+			<xsd:documentation>NagĹ‚Ăłwek</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KodFormularza">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="tns:TKodFormularza">
+							<xsd:attribute name="kodSystemowy" type="xsd:string" use="required" fixed="FA (3)"/>
+							<xsd:attribute name="wersjaSchemy" type="xsd:string" use="required" fixed="1-0E"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="WariantFormularza">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:byte">
+						<xsd:enumeration value="3"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="DataWytworzeniaFa">
+				<xsd:annotation>
+					<xsd:documentation>Data i czas wytworzenia faktury</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="etd:TDataCzas">
+						<xsd:minInclusive value="2025-09-01T00:00:00Z"/>
+						<xsd:maxInclusive value="2050-01-01T23:59:59Z"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="SystemInfo" type="tns:TZnakowy" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa systemu teleinformatycznego, z ktĂłrego korzysta podatnik</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TAdres">
+		<xsd:annotation>
+			<xsd:documentation>Informacje opisujÄ…ce adres</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="KodKraju" type="etd:TKodKraju">
+				<xsd:annotation>
+					<xsd:documentation>Kod Kraju [Country Code]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AdresL1" type="tns:TZnakowy512">
+				<xsd:annotation>
+					<xsd:documentation>Adres [Address]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AdresL2" type="tns:TZnakowy512" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Adres [Address]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="GLN" type="tns:TGLN" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Globalny Numer Lokalizacyjny [Global Location Number]</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TKwotowy">
+		<xsd:annotation>
+			<xsd:documentation>WartoĹ›Ä‡ numeryczna 18 znakĂłw max, w tym 2 znaki po przecinku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="18"/>
+			<xsd:fractionDigits value="2"/>
+			<xsd:pattern value="-?([1-9]\d{0,15}|0)(\.\d{1,2})?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TKwotowy2">
+		<xsd:annotation>
+			<xsd:documentation>WartoĹ›Ä‡ numeryczna 22 znaki max, w tym 8 znakĂłw po przecinku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="22"/>
+			<xsd:fractionDigits value="8"/>
+			<xsd:pattern value="-?([1-9]\d{0,13}|0)(\.\d{1,8})?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNaturalny">
+		<xsd:annotation>
+			<xsd:documentation>Liczby naturalne wiÄ™ksze od zera</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TNaturalny">
+			<xsd:minExclusive value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TZnakowy">
+		<xsd:annotation>
+			<xsd:documentation>Typ znakowy ograniczony do 256 znakĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="256"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TZnakowy2">
+		<xsd:annotation>
+			<xsd:documentation>Typ znakowy ograniczony do 256 znakĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="0"/>
+			<xsd:maxLength value="256"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TZnakowy20">
+		<xsd:annotation>
+			<xsd:documentation>Typ znakowy ograniczony do 20 znakĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TZnakowy50">
+		<xsd:annotation>
+			<xsd:documentation>Typ znakowy ograniczony do 50 znakĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TZnakowy512">
+		<xsd:annotation>
+			<xsd:documentation>Typ znakowy ograniczony do 512 znakĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="512"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNumerKSeF">
+		<xsd:annotation>
+			<xsd:documentation>Numer identyfikujÄ…cy fakturÄ™ w Krajowym Systemie e-Faktur (KSeF)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:pattern value="([1-9]((\d[1-9])|([1-9]\d))\d{7}|M\d{9}|[A-Z]{3}\d{7})-(20[2-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])-([0-9A-F]{6})-?([0-9A-F]{6})-([0-9A-F]{2})"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TKluczWartosc">
+		<xsd:annotation>
+			<xsd:documentation>Typ zĹ‚oĹĽony, klucz-wartoĹ›Ä‡</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NrWiersza" type="tns:TNaturalny" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeĹ›li informacja odnosi siÄ™ wyĹ‚Ä…cznie do danej pozycji faktury</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Klucz" type="tns:TZnakowy">
+				<xsd:annotation>
+					<xsd:documentation>Klucz</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Wartosc" type="tns:TZnakowy">
+				<xsd:annotation>
+					<xsd:documentation>WartoĹ›Ä‡</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TIlosci">
+		<xsd:annotation>
+			<xsd:documentation>Typ wykorzystywany do okreĹ›lenia iloĹ›ci. WartoĹ›Ä‡ numeryczna 22 znaki max, w tym 6 po przecinku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="22"/>
+			<xsd:fractionDigits value="6"/>
+			<xsd:pattern value="-?([1-9]\d{0,15}|0)(\.\d{1,6})?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TData">
+		<xsd:annotation>
+			<xsd:documentation>Data zdarzenia w okresie od 2016-07-01 do 2050-01-01</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TData">
+			<xsd:minInclusive value="2016-07-01"/>
+			<xsd:maxInclusive value="2050-01-01"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TDataT">
+		<xsd:annotation>
+			<xsd:documentation>Data zdarzenia w okresie od 2006-01-01 do 2050-01-01</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TData">
+			<xsd:minInclusive value="2006-01-01"/>
+			<xsd:maxInclusive value="2050-01-01"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TDataU">
+		<xsd:annotation>
+			<xsd:documentation>Data zdarzenia w okresie od 1990-01-01 do 2050-01-01</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TData">
+			<xsd:minInclusive value="1990-01-01"/>
+			<xsd:maxInclusive value="2050-01-01"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TDataCzas">
+		<xsd:annotation>
+			<xsd:documentation>Data i czas zdarzenia w okresie od 01.10.2021T00:00:00Z do 01.01.2050T23:59:59Z</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="etd:TDataCzas">
+			<xsd:minInclusive value="2021-10-01T00:00:00Z"/>
+			<xsd:maxInclusive value="2050-01-01T23:59:59Z"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNrVatUE">
+		<xsd:annotation>
+			<xsd:documentation>Numer Identyfikacyjny VAT kontrahenta UE</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d|[A-Z]|\+|\*){1,12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNIPIdWew">
+		<xsd:annotation>
+			<xsd:documentation>Identyfikator wewnÄ™trzny</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy20">
+			<xsd:pattern value="[1-9]((\d[1-9])|([1-9]\d))\d{7}-\d{5}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNrRB">
+		<xsd:annotation>
+			<xsd:documentation>Numer rachunku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="10"/>
+			<xsd:maxLength value="34"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SWIFT_Type">
+		<xsd:annotation>
+			<xsd:documentation>Kod SWIFT</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3}){0,1}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TFormaPlatnosci">
+		<xsd:annotation>
+			<xsd:documentation>Typy form pĹ‚atnoĹ›ci</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>GotĂłwka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Karta</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Bon</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Czek</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation>Kredyt</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation>Przelew</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation>Mobilna</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TLadunek">
+		<xsd:annotation>
+			<xsd:documentation>Typy Ĺ‚adunkĂłw</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>BaĹ„ka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Beczka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Butla</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Karton</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation>Kanister</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation>Klatka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation>Kontener</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation>Kosz/koszyk</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation>Ĺubianka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation>Opakowanie zbiorcze</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation>Paczka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation>Pakiet</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="13">
+				<xsd:annotation>
+					<xsd:documentation>Paleta</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation>Pojemnik</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="15">
+				<xsd:annotation>
+					<xsd:documentation>Pojemnik do Ĺ‚adunkĂłw masowych staĹ‚ych</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="16">
+				<xsd:annotation>
+					<xsd:documentation>Pojemnik do Ĺ‚adunkĂłw masowych w postaci pĹ‚ynnej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="17">
+				<xsd:annotation>
+					<xsd:documentation>PudeĹ‚ko</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="18">
+				<xsd:annotation>
+					<xsd:documentation>Puszka</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="19">
+				<xsd:annotation>
+					<xsd:documentation>Skrzynia</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="20">
+				<xsd:annotation>
+					<xsd:documentation>Worek</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TProcentowy">
+		<xsd:annotation>
+			<xsd:documentation>WartoĹ›Ä‡ procentowa z dokĹ‚adnoĹ›ciÄ… do 6 miejsc po przecinku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="9"/>
+			<xsd:fractionDigits value="6"/>
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="100"/>
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TRachunekWlasnyBanku">
+		<xsd:annotation>
+			<xsd:documentation>Typy rachunkĂłw wĹ‚asnych</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Rachunek banku lub rachunek spĂłĹ‚dzielczej kasy oszczÄ™dnoĹ›ciowo-kredytowej sĹ‚uĹĽÄ…cy do dokonywania rozliczeĹ„ z tytuĹ‚u nabywanych przez ten bank lub tÄ™ kasÄ™ wierzytelnoĹ›ci pieniÄ™ĹĽnych</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Rachunek banku lub rachunek spĂłĹ‚dzielczej kasy oszczÄ™dnoĹ›ciowo-kredytowej wykorzystywany przez ten bank lub tÄ™ kasÄ™ do pobrania naleĹĽnoĹ›ci od nabywcy towarĂłw lub usĹ‚ug za dostawÄ™ towarĂłw lub Ĺ›wiadczenie usĹ‚ug, potwierdzone fakturÄ…, i przekazania jej w caĹ‚oĹ›ci albo czÄ™Ĺ›ci dostawcy towarĂłw lub usĹ‚ugodawcy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Rachunek banku lub rachunek spĂłĹ‚dzielczej kasy oszczÄ™dnoĹ›ciowo-kredytowej prowadzony przez ten bank lub tÄ™ kasÄ™ w ramach gospodarki wĹ‚asnej, niebÄ™dÄ…cy rachunkiem rozliczeniowym</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="TRachunekBankowy">
+		<xsd:annotation>
+			<xsd:documentation>Informacje o rachunku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="NrRB" type="tns:TNrRB">
+					<xsd:annotation>
+						<xsd:documentation>PeĹ‚ny numer rachunku</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="SWIFT" type="tns:SWIFT_Type" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Kod SWIFT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:element name="RachunekWlasnyBanku" type="tns:TRachunekWlasnyBanku" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Rachunek wĹ‚asny</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NazwaBanku" type="tns:TZnakowy" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Nazwa</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OpisRachunku" type="tns:TZnakowy" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Opis rachunku</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPodmiot1">
+		<xsd:annotation>
+			<xsd:documentation>Zestaw danych identyfikacyjnych oraz danych adresowych podatnika</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NIP" type="etd:TNrNIP">
+				<xsd:annotation>
+					<xsd:documentation>Identyfikator podatkowy NIP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Nazwa" type="tns:TZnakowy512">
+				<xsd:annotation>
+					<xsd:documentation>ImiÄ™ i nazwisko lub nazwa</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPodmiot2">
+		<xsd:annotation>
+			<xsd:documentation>Zestaw danych identyfikacyjnych oraz danych adresowych nabywcy</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:annotation>
+					<xsd:documentation>Numer, za pomocÄ… ktĂłrego nabywca towarĂłw lub usĹ‚ug jest zidentyfikowany na potrzeby podatku lub podatku od wartoĹ›ci dodanej, pod ktĂłrym otrzymaĹ‚ on towary lub usĹ‚ugi, z zastrzeĹĽeniem art. 106e ust. 1 pkt 24 lit. b ustawy. Pole opcjonalne dla przypadku okreĹ›lonego w art. 106e ust. 5 pkt 2 ustawy. W przypadku faktur wystawianych w procedurze uproszczonej przez drugiego w kolejnoĹ›ci podatnika, o ktĂłrym mowa w art. 135 ust. 1 pkt 4 lit. b i c oraz ust. 2 ustawy - numer, o ktĂłrym mowa w art. 136 ust. 1 pkt 4 ustawy</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="NIP" type="etd:TNrNIP">
+					<xsd:annotation>
+						<xsd:documentation>Identyfikator podatkowy NIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:sequence>
+					<xsd:element name="KodUE" type="tns:TKodyKrajowUE">
+						<xsd:annotation>
+							<xsd:documentation>Kod (prefiks) nabywcy VAT UE, o ktĂłrym mowa w art. 106e ust. 1 pkt 24 ustawy oraz w przypadku, o ktĂłrym mowa w art. 136 ust. 1 pkt 4 ustawy</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NrVatUE" type="tns:TNrVatUE">
+						<xsd:annotation>
+							<xsd:documentation>Numer Identyfikacyjny VAT kontrahenta UE</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="KodKraju" type="etd:TKodKraju" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Kod kraju nadania identyfikatora podatkowego</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NrID">
+						<xsd:annotation>
+							<xsd:documentation>Identyfikator podatkowy inny</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="etd:TNrIdentyfikacjiPodatkowej"/>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:element name="BrakID" type="etd:TWybor1">
+					<xsd:annotation>
+						<xsd:documentation>Podmiot nie posiada identyfikatora podatkowego lub identyfikator nie wystÄ™puje na fakturze: 1- tak</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:sequence minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Dane opcjonalne dla przypadkĂłw, o ktĂłrych mowa w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="Nazwa" type="tns:TZnakowy512">
+					<xsd:annotation>
+						<xsd:documentation>ImiÄ™ i nazwisko lub nazwa</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TPodmiot3">
+		<xsd:annotation>
+			<xsd:documentation>Zestaw danych identyfikacyjnych oraz danych adresowych podmiotĂłw trzecich</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:annotation>
+					<xsd:documentation>Numer, za pomocÄ… ktĂłrego nabywca towarĂłw lub usĹ‚ug jest zidentyfikowany na potrzeby podatku lub podatku od wartoĹ›ci dodanej, pod ktĂłrym otrzymaĹ‚ on towary lub usĹ‚ugi, z zastrzeĹĽeniem art. 106e ust. 1 pkt 24 lit. b ustawy. Pole opcjonalne dla przypadku okreĹ›lonego w art. 106e ust. 5 pkt 2 ustawy. W przypadku faktur wystawianych w procedurze uproszczonej przez drugiego w kolejnoĹ›ci podatnika, o ktĂłrym mowa w art. 135 ust. 1 pkt 4 lit. b i c oraz ust. 2 ustawy - numer, o ktĂłrym mowa w art. 136 ust. 1 pkt 4 ustawy</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="NIP" type="etd:TNrNIP">
+					<xsd:annotation>
+						<xsd:documentation>Identyfikator podatkowy NIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="IDWew" type="tns:TNIPIdWew">
+					<xsd:annotation>
+						<xsd:documentation>Identyfikator wewnÄ™trzny z NIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:sequence>
+					<xsd:element name="KodUE" type="tns:TKodyKrajowUE">
+						<xsd:annotation>
+							<xsd:documentation>Kod (prefiks) nabywcy VAT UE, o ktĂłrym mowa w art. 106e ust. 1 pkt 24 ustawy oraz w przypadku, o ktĂłrym mowa w art. 136 ust. 1 pkt 4 ustawy</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NrVatUE" type="tns:TNrVatUE">
+						<xsd:annotation>
+							<xsd:documentation>Numer Identyfikacyjny VAT kontrahenta UE</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="KodKraju" type="etd:TKodKraju" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Kod kraju nadania identyfikatora podatkowego</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NrID">
+						<xsd:annotation>
+							<xsd:documentation>Identyfikator podatkowy inny</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="etd:TNrIdentyfikacjiPodatkowej"/>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:element name="BrakID" type="etd:TWybor1">
+					<xsd:annotation>
+						<xsd:documentation>Podmiot nie posiada identyfikatora podatkowego lub identyfikator nie wystÄ™puje na fakturze: 1- tak</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:sequence minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Dane opcjonalne dla przypadkĂłw, o ktĂłrych mowa w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="Nazwa" type="tns:TZnakowy512">
+					<xsd:annotation>
+						<xsd:documentation>ImiÄ™ i nazwisko lub nazwa</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="TStatusInfoPodatnika">
+		<xsd:annotation>
+			<xsd:documentation>Status podatnika</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Podatnik znajdujÄ…cy siÄ™ w stanie likwidacji</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Podatnik, ktĂłry jest w trakcie postÄ™powania restrukturyzacyjnego</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Podatnik znajdujÄ…cy siÄ™ w stanie upadĹ‚oĹ›ci</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>PrzedsiÄ™biorstwo w spadku</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TRolaPodmiotuUpowaznionego">
+		<xsd:annotation>
+			<xsd:documentation>Rola podmiotu upowaĹĽnionego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Organ egzekucyjny - w przypadku, o ktĂłrym mowa w art. 106c pkt 1 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Komornik sÄ…dowy - w przypadku, o ktĂłrym mowa w art. 106c pkt 2 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Przedstawiciel podatkowy - w przypadku gdy na fakturze wystÄ™pujÄ… dane przedstawiciela podatkowego, o ktĂłrym mowa w art. 18a - 18d ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TRolaPodmiotu3">
+		<xsd:annotation>
+			<xsd:documentation>Rola podmiotu trzeciego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Faktor - w przypadku gdy na fakturze wystÄ™pujÄ… dane faktora</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Odbiorca - w przypadku gdy na fakturze wystÄ™pujÄ… dane jednostek wewnÄ™trznych, oddziaĹ‚Ăłw, wyodrÄ™bnionych w ramach nabywcy, ktĂłre same nie stanowiÄ… nabywcy w rozumieniu ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Podmiot pierwotny - w przypadku gdy na fakturze wystÄ™pujÄ… dane podmiotu bÄ™dÄ…cego w stosunku do podatnika podmiotem przejÄ™tym lub przeksztaĹ‚conym, ktĂłry dokonywaĹ‚ dostawy lub Ĺ›wiadczyĹ‚ usĹ‚ugÄ™. Z wyĹ‚Ä…czeniem przypadkĂłw, o ktĂłrych mowa w art. 106j ust.2 pkt 3 ustawy, gdy dane te wykazywane sÄ… w czÄ™Ĺ›ci Podmiot1K</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Dodatkowy nabywca - w przypadku gdy na fakturze wystÄ™pujÄ… dane kolejnych (innych niĹĽ wymieniony w czÄ™Ĺ›ci Podmiot2) nabywcĂłw</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation>Wystawca faktury - w przypadku gdy na fakturze wystÄ™pujÄ… dane podmiotu wystawiajÄ…cego fakturÄ™ w imieniu podatnika. Nie dotyczy przypadku, gdy wystawcÄ… faktury jest nabywca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation>DokonujÄ…cy pĹ‚atnoĹ›ci - w przypadku gdy na fakturze wystÄ™pujÄ… dane podmiotu regulujÄ…cego zobowiÄ…zanie w miejsce nabywcy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation>Jednostka samorzÄ…du terytorialnego - wystawca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation>Jednostka samorzÄ…du terytorialnego - odbiorca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation>CzĹ‚onek grupy VAT - wystawca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation>CzĹ‚onek grupy VAT - odbiorca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation>Pracownik</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TNumerTelefonu">
+		<xsd:annotation>
+			<xsd:documentation>Numer telefonu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:maxLength value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TRodzajFaktury">
+		<xsd:annotation>
+			<xsd:documentation>Rodzaj faktury</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:enumeration value="VAT">
+				<xsd:annotation>
+					<xsd:documentation>Faktura podstawowa</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KOR">
+				<xsd:annotation>
+					<xsd:documentation>Faktura korygujÄ…ca</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ZAL">
+				<xsd:annotation>
+					<xsd:documentation>Faktura dokumentujÄ…ca otrzymanie zapĹ‚aty lub jej czÄ™Ĺ›ci przed dokonaniem czynnoĹ›ci oraz faktura wystawiona w zwiÄ…zku z art. 106f ust. 4 ustawy (faktura zaliczkowa)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ROZ">
+				<xsd:annotation>
+					<xsd:documentation>Faktura wystawiona w zwiÄ…zku z art. 106f ust. 3 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UPR">
+				<xsd:annotation>
+					<xsd:documentation>Faktura, o ktĂłrej mowa w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KOR_ZAL">
+				<xsd:annotation>
+					<xsd:documentation>Faktura korygujÄ…ca fakturÄ™ dokumentujÄ…cÄ… otrzymanie zapĹ‚aty lub jej czÄ™Ĺ›ci przed dokonaniem czynnoĹ›ci oraz fakturÄ™ wystawionÄ… w zwiÄ…zku z art. 106f ust. 4 ustawy (faktura korygujÄ…ca fakturÄ™ zaliczkowÄ…)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KOR_ROZ">
+				<xsd:annotation>
+					<xsd:documentation>Faktura korygujÄ…ca fakturÄ™ wystawionÄ… w zwiÄ…zku z art. 106f ust. 3 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TTypKorekty">
+		<xsd:annotation>
+			<xsd:documentation>Typ skutku korekty w ewidencji dla podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Korekta skutkujÄ…ca w dacie ujÄ™cia faktury pierwotnej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Korekta skutkujÄ…ca w dacie wystawienia faktury korygujÄ…cej</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Korekta skutkujÄ…ca w dacie innej, w tym gdy dla rĂłĹĽnych pozycji faktury korygujÄ…cej daty te sÄ… rĂłĹĽne</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TStawkaPodatku">
+		<xsd:annotation>
+			<xsd:documentation>Stawka podatku</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:enumeration value="23"/>
+			<xsd:enumeration value="22"/>
+			<xsd:enumeration value="8"/>
+			<xsd:enumeration value="7"/>
+			<xsd:enumeration value="5"/>
+			<xsd:enumeration value="4"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="0 KR">
+				<xsd:annotation>
+					<xsd:documentation>Stawka 0% w przypadku sprzedaĹĽy towarĂłw i Ĺ›wiadczenia usĹ‚ug na terytorium kraju (z wyĹ‚Ä…czeniem WDT i eksportu)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0 WDT">
+				<xsd:annotation>
+					<xsd:documentation>Stawka 0% w przypadku wewnÄ…trzwspĂłlnotowej dostawy towarĂłw (WDT) </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="0 EX">
+				<xsd:annotation>
+					<xsd:documentation>Stawka 0% w przypadku eksportu towarĂłw </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="zw">
+				<xsd:annotation>
+					<xsd:documentation>zwolnione od podatku</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="oo">
+				<xsd:annotation>
+					<xsd:documentation>odwrotne obciÄ…ĹĽenie</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="np I">
+				<xsd:annotation>
+					<xsd:documentation>niepodlegajÄ…ce opodatkowaniu- dostawy towarĂłw oraz Ĺ›wiadczenia usĹ‚ug poza terytorium kraju, z wyĹ‚Ä…czeniem transakcji, o ktĂłrych mowa w art. 100 ust. 1 pkt 4 ustawy oraz OSS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="np II">
+				<xsd:annotation>
+					<xsd:documentation>niepodlegajace opodatkowaniu na terytorium kraju, Ĺ›wiadczenie usĹ‚ug o ktĂłrych mowa w art. 100 ust. 1 pkt 4 ustawy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TOznaczenieProcedury">
+		<xsd:annotation>
+			<xsd:documentation>Oznaczenia dotyczÄ…ce procedur dla faktur</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:enumeration value="WSTO_EE">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 2a rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IED">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 2b rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TT_D">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 5 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="I_42">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 8 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="I_63">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 9 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_SPV">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 10 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_SPV_DOSTAWA">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 11 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_MPV_PROWIZJA">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 12 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TOznaczenieProceduryZ">
+		<xsd:annotation>
+			<xsd:documentation>Oznaczenia dotyczÄ…ce procedur dla zamĂłwieĹ„</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:enumeration value="WSTO_EE">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 2a rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IED">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 2b rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TT_D">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 5 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_SPV">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 10 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_SPV_DOSTAWA">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 11 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="B_MPV_PROWIZJA">
+				<xsd:annotation>
+					<xsd:documentation>Oznaczenie dotyczÄ…ce procedury, o ktĂłrej mowa w Â§ 10 ust. 4 pkt 12 rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TGTU">
+		<xsd:annotation>
+			<xsd:documentation>Oznaczenie dotyczÄ…ce dostawy towarĂłw i Ĺ›wiadczenia usĹ‚ug</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:TZnakowy">
+			<xsd:enumeration value="GTU_01">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. a rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_02">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. b rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_03">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. c rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_04">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. d rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_05">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. e rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_06">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. f rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_07">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. g rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_08">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. h rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_09">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. i rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_10">
+				<xsd:annotation>
+					<xsd:documentation>Dostawa towarĂłw, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 1 lit. j rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_11">
+				<xsd:annotation>
+					<xsd:documentation>Ĺšwiadczenie usĹ‚ug, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 2 lit. a rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_12">
+				<xsd:annotation>
+					<xsd:documentation>Ĺšwiadczenie usĹ‚ug, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 2 lit. b rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTU_13">
+				<xsd:annotation>
+					<xsd:documentation>Ĺšwiadczenie usĹ‚ug, o ktĂłrych mowa w Â§ 10 ust. 3 pkt 2 lit. c rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TGLN">
+		<xsd:annotation>
+			<xsd:documentation>Typ Globalnego Numeru Lokalizacyjnego</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="13"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TRodzajTransportu">
+		<xsd:annotation>
+			<xsd:documentation>Rodzaj transportu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Transport morski</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Transport kolejowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Transport drogowy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Transport lotniczy</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation>PrzesyĹ‚ka pocztowa</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation>StaĹ‚e instalacje przesyĹ‚owe</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation>Ĺ»egluga Ĺ›rĂłdlÄ…dowa</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="Faktura">
+		<xsd:annotation>
+			<xsd:documentation>Faktura VAT</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Naglowek" type="tns:TNaglowek">
+					<xsd:annotation>
+						<xsd:documentation>NagĹ‚Ăłwek</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Podmiot1">
+					<xsd:annotation>
+						<xsd:documentation>Dane podatnika. ImiÄ™ i nazwisko lub nazwa sprzedawcy towarĂłw lub usĹ‚ug</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="PrefiksPodatnika" type="tns:TKodyKrajowUE" fixed="PL" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Kod (prefiks) podatnika VAT UE dla przypadkĂłw okreĹ›lonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o ktĂłrym mowa w art. 136 ust. 1 pkt 3 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="NrEORI" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer EORI podatnika (sprzedawcy)</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot1">
+								<xsd:annotation>
+									<xsd:documentation>Dane identyfikujÄ…ce podatnika</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Adres" type="tns:TAdres">
+								<xsd:annotation>
+									<xsd:documentation>Adres podatnika</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="AdresKoresp" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres korespondencyjny podatnika</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:complexContent>
+										<xsd:extension base="tns:TAdres"/>
+									</xsd:complexContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DaneKontaktowe" minOccurs="0" maxOccurs="3">
+								<xsd:annotation>
+									<xsd:documentation>Dane kontaktowe podatnika</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element name="Email" type="etd:TAdresEmail" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Adres e-mail podatnika</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Telefon" type="tns:TNumerTelefonu" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Numer telefonu podatnika</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="StatusInfoPodatnika" type="tns:TStatusInfoPodatnika" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Status podatnika</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Podmiot2">
+					<xsd:annotation>
+						<xsd:documentation>Dane nabywcy</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="NrEORI" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer EORI nabywcy towarĂłw</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot2">
+								<xsd:annotation>
+									<xsd:documentation>Dane identyfikujÄ…ce nabywcÄ™</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Adres" type="tns:TAdres" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres nabywcy. Pola opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="AdresKoresp" type="tns:TAdres" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres korespondencyjny nabywcy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneKontaktowe" minOccurs="0" maxOccurs="3">
+								<xsd:annotation>
+									<xsd:documentation>Dane kontaktowe nabywcy</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element name="Email" type="etd:TAdresEmail" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Adres e-mail nabywcy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Telefon" type="tns:TNumerTelefonu" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Numer telefonu nabywcy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="NrKlienta" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer klienta dla przypadkĂłw, w ktĂłrych nabywca posĹ‚uguje siÄ™ nim w umowie lub zamĂłwieniu</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="IDNabywcy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Unikalny klucz powiÄ…zania danych nabywcy na fakturach korygujÄ…cych, w przypadku gdy dane nabywcy na fakturze korygujÄ…cej zmieniĹ‚y siÄ™ w stosunku do danych na fakturze korygowanej</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="tns:TZnakowy50">
+										<xsd:maxLength value="32"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element name="JST">
+								<xsd:annotation>
+									<xsd:documentation>Znacznik jednostki podrzÄ™dnej JST.
+
+WartoĹ›Ä‡ "1" oznacza, ĹĽe faktura dotyczy jednostki podrzÄ™dnej JST. W takim przypadku, aby udostÄ™pniÄ‡ fakturÄ™ jednostce podrzÄ™dnej JST, naleĹĽy wypeĹ‚niÄ‡ sekcjÄ™ Podmiot3, w szczegĂłlnoĹ›ci podaÄ‡ NIP lub ID-Wew i okreĹ›liÄ‡ rolÄ™ jako 8.                  
+WartoĹ›Ä‡ "2" oznacza, ĹĽe faktura nie dotyczy jednostki podrzÄ™dnej JST</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:integer">
+										<xsd:enumeration value="1">
+											<xsd:annotation>
+												<xsd:documentation>Tak</xsd:documentation>
+											</xsd:annotation>
+										</xsd:enumeration>
+										<xsd:enumeration value="2">
+											<xsd:annotation>
+												<xsd:documentation>Nie</xsd:documentation>
+											</xsd:annotation>
+										</xsd:enumeration>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element name="GV">
+								<xsd:annotation>
+									<xsd:documentation>Znacznik czĹ‚onka grupy VAT.                                                                WartoĹ›Ä‡ "1" oznacza, ĹĽe faktura dotyczy czĹ‚onka grupy VAT. W takim przypadku, aby udostÄ™pniÄ‡ fakturÄ™ czĹ‚onkowi grupy VAT, naleĹĽy wypeĹ‚niÄ‡ sekcjÄ™ Podmiot3, w szczegĂłlnoĹ›ci podaÄ‡ NIP lub ID-Wew i okreĹ›liÄ‡ rolÄ™ jako 10.
+                                   WartoĹ›Ä‡ "2" oznacza, ĹĽe faktura nie dotyczy czĹ‚onka grupy VAT</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:integer">
+										<xsd:enumeration value="1">
+											<xsd:annotation>
+												<xsd:documentation>Tak</xsd:documentation>
+											</xsd:annotation>
+										</xsd:enumeration>
+										<xsd:enumeration value="2">
+											<xsd:annotation>
+												<xsd:documentation>Nie</xsd:documentation>
+											</xsd:annotation>
+										</xsd:enumeration>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Podmiot3" minOccurs="0" maxOccurs="100">
+					<xsd:annotation>
+						<xsd:documentation>Dane podmiotu/-Ăłw trzeciego/-ich (innego/-ych niĹĽ sprzedawca i nabywca wymieniony w czÄ™Ĺ›ci Podmiot2), zwiÄ…zanego/-ych z fakturÄ…</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="IDNabywcy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Unikalny klucz powiÄ…zania danych nabywcy na fakturach korygujÄ…cych, w przypadku gdy dane nabywcy na fakturze korygujÄ…cej zmieniĹ‚y siÄ™ w stosunku do danych na fakturze korygowanej</xsd:documentation>
+								</xsd:annotation>
+								<xsd:simpleType>
+									<xsd:restriction base="tns:TZnakowy50">
+										<xsd:maxLength value="32"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element name="NrEORI" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer EORI podmiotu trzeciego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot3">
+								<xsd:annotation>
+									<xsd:documentation>Dane identyfikujÄ…ce podmiot trzeci</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Adres" type="tns:TAdres" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres podmiotu trzeciego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="AdresKoresp" type="tns:TAdres" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres korespondencyjny podmiotu trzeciego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneKontaktowe" minOccurs="0" maxOccurs="3">
+								<xsd:annotation>
+									<xsd:documentation>Dane kontaktowe podmiotu trzeciego</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Email" type="etd:TAdresEmail" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Adres e-mail podmiotu trzeciego</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Telefon" type="tns:TNumerTelefonu" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Numer telefonu podmiotu trzeciego</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:choice>
+								<xsd:element name="Rola" type="tns:TRolaPodmiotu3">
+									<xsd:annotation>
+										<xsd:documentation>Rola podmiotu</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:sequence>
+									<xsd:element name="RolaInna" type="etd:TWybor1">
+										<xsd:annotation>
+											<xsd:documentation>Znacznik innego podmiotu: 1 - Inny podmiot</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="OpisRoli" type="tns:TZnakowy">
+										<xsd:annotation>
+											<xsd:documentation>Opis roli podmiotu - w przypadku wyboru roli jako Inny podmiot</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:choice>
+							<xsd:element name="Udzial" type="tns:TProcentowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>UdziaĹ‚ - procentowy udziaĹ‚ dodatkowego nabywcy. RĂłĹĽnica pomiÄ™dzy wartoĹ›ciÄ… 100% a sumÄ… udziaĹ‚Ăłw dodatkowych nabywcĂłw jest udziaĹ‚em nabywcy wymienionego w czÄ™Ĺ›ci Podmiot2. W przypadku niewypeĹ‚nienia pola przyjmuje siÄ™, ĹĽe udziaĹ‚y wystÄ™pujÄ…cych na fakturze nabywcĂłw sÄ… rĂłwne</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="NrKlienta" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer klienta dla przypadkĂłw, w ktĂłrych podmiot wymieniony jako podmiot trzeci posĹ‚uguje siÄ™ nim w umowie lub zamĂłwieniu</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="PodmiotUpowazniony" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Dane podmiotu upowaĹĽnionego, zwiÄ…zanego z fakturÄ…</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="NrEORI" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Numer EORI podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot1">
+								<xsd:annotation>
+									<xsd:documentation>Dane identyfikujÄ…ce podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Adres" type="tns:TAdres">
+								<xsd:annotation>
+									<xsd:documentation>Adres podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="AdresKoresp" type="tns:TAdres" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Adres korespondencyjny podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DaneKontaktowe" minOccurs="0" maxOccurs="3">
+								<xsd:annotation>
+									<xsd:documentation>Dane kontaktowe podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="EmailPU" type="etd:TAdresEmail" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Adres e-mail podmiotu upowaĹĽnionego</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="TelefonPU" type="tns:TNumerTelefonu" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Numer telefonu podmiotu upowaĹĽnionego</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="RolaPU" type="tns:TRolaPodmiotuUpowaznionego">
+								<xsd:annotation>
+									<xsd:documentation>Rola podmiotu upowaĹĽnionego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Fa">
+					<xsd:annotation>
+						<xsd:documentation>Na podstawie art. 106a - 106q ustawy. Pola dotyczÄ…ce wartoĹ›ci sprzedaĹĽy i podatku wypeĹ‚nia siÄ™ w walucie, w ktĂłrej wystawiono fakturÄ™, z wyjÄ…tkiem pĂłl dotyczÄ…cych podatku przeliczonego zgodnie z przepisami dziaĹ‚u VI w zwiÄ…zku z art. 106e ust. 11 ustawy. W przypadku wystawienia faktury korygujÄ…cej wypeĹ‚nia siÄ™ wszystkie pola wg stanu po korekcie, a pola dotyczÄ…ce podstaw opodatkowania, podatku oraz naleĹĽnoĹ›ci ogĂłĹ‚em wypeĹ‚nia siÄ™ poprzez rĂłĹĽnicÄ™</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="KodWaluty" type="tns:TKodWaluty">
+								<xsd:annotation>
+									<xsd:documentation>Kod waluty (ISO 4217)</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_1" type="tns:TDataT">
+								<xsd:annotation>
+									<xsd:documentation>Data wystawienia, z zastrzeĹĽeniem art. 106na ust. 1 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_1M" type="tns:TZnakowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Miejsce wystawienia faktury</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_2" type="tns:TZnakowy">
+								<xsd:annotation>
+									<xsd:documentation>Kolejny numer faktury, nadany w ramach jednej lub wiÄ™cej serii, ktĂłry w sposĂłb jednoznaczny identyfikuje fakturÄ™</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="WZ" type="tns:TZnakowy" minOccurs="0" maxOccurs="1000">
+								<xsd:annotation>
+									<xsd:documentation>Numery dokumentĂłw magazynowych WZ (wydanie na zewnÄ…trz) zwiÄ…zane z fakturÄ…</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:choice minOccurs="0">
+								<xsd:element name="P_6" type="tns:TDataT">
+									<xsd:annotation>
+										<xsd:documentation>Data dokonania lub zakoĹ„czenia dostawy towarĂłw lub wykonania usĹ‚ugi lub data otrzymania zapĹ‚aty, o ktĂłrej mowa w art. 106b ust. 1 pkt 4 ustawy, o ile taka data jest okreĹ›lona i rĂłĹĽni siÄ™ od daty wystawienia faktury. Pole wypeĹ‚nia siÄ™ w przypadku, gdy dla wszystkich pozycji faktury data jest wspĂłlna</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="OkresFa">
+									<xsd:annotation>
+										<xsd:documentation>Okres, ktĂłrego dotyczy faktura - w przypadkach, o ktĂłrych mowa w art. 19a ust. 3 zdanie pierwsze i ust. 4 oraz ust. 5 pkt 4 ustawy</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="P_6_Od" type="tns:TDataT">
+												<xsd:annotation>
+													<xsd:documentation>Data poczÄ…tkowa okresu, ktĂłrego dotyczy faktura</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="P_6_Do" type="tns:TDataT">
+												<xsd:annotation>
+													<xsd:documentation>Data koĹ„cowa okresu, ktĂłrego dotyczy faktura - data dokonania lub zakoĹ„czenia dostawy towarĂłw lub wykonania usĹ‚ugi</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:choice>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Pola wypeĹ‚niane w przypadku wystÄ…pienia na fakturze sprzedaĹĽy objÄ™tej stawkÄ… podstawowÄ… - aktualnie 23% albo 22%, z wyĹ‚Ä…czeniem procedury marĹĽy</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="P_13_1" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… podstawowÄ… - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki netto. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_1" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… podstawowÄ… - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_1W" type="tns:TKwotowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku gdy faktura jest wystawiona w walucie obcej - kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… podstawowÄ…, przeliczona zgodnie z przepisami dziaĹ‚u VI w zwiÄ…zku z art. 106e ust. 11 ustawy - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Pola wypeĹ‚niane w przypadku wystÄ…pienia na fakturze sprzedaĹĽy objÄ™tej stawkÄ… obniĹĽonÄ… pierwszÄ… - aktualnie 8 % albo 7%, z wyĹ‚Ä…czeniem procedury marĹĽy</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="P_13_2" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… pierwszÄ… - aktualnie 8 % albo 7%. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki netto. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_2" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… pierwszÄ… - aktualnie 8% albo 7%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_2W" type="tns:TKwotowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku gdy faktura jest wystawiona w walucie obcej - kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… pierwszÄ…, przeliczona zgodnie z przepisami dziaĹ‚u VI w zwiÄ…zku z art. 106e ust. 11 ustawy - aktualnie 8% albo 7%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Pola wypeĹ‚niane w przypadku wystÄ…pienia na fakturze sprzedaĹĽy objÄ™tej stawkÄ… obniĹĽonÄ… drugÄ… - aktualnie 5%, z wyĹ‚Ä…czeniem procedury marĹĽy</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="P_13_3" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… drugÄ… - aktualnie 5%. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki netto. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_3" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… drugÄ… - aktualnie 5%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_3W" type="tns:TKwotowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku gdy faktura jest wystawiona w walucie obcej - kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto objÄ™tej stawkÄ… obniĹĽonÄ… drugÄ…, przeliczona zgodnie z przepisami dziaĹ‚u VI w zwiÄ…zku z art. 106e ust. 11 ustawy - aktualnie 5%. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Pola wypeĹ‚niane w przypadku wystÄ…pienia na fakturze sprzedaĹĽy objÄ™tej stawkÄ… obniĹĽonÄ… trzeciÄ… â€“ ryczaĹ‚tem dla taksĂłwek osobowych</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="P_13_4" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy netto objÄ™tej ryczaĹ‚tem dla taksĂłwek osobowych. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki netto. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_4" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Kwota podatku od sumy wartoĹ›ci sprzedaĹĽy netto w przypadku ryczaĹ‚tu dla taksĂłwek osobowych. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_4W" type="tns:TKwotowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku gdy faktura jest wystawiona w walucie obcej - wysokoĹ›Ä‡ ryczaĹ‚tu dla taksĂłwek osobowych, przeliczona zgodnie z przepisami dziaĹ‚u VI w zwiÄ…zku z art. 106e ust. 11 ustawy. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Pola wypeĹ‚niane w przypadku wystÄ…pienia na fakturze sprzedaĹĽy w procedurze szczegĂłlnej, o ktĂłrej mowa w dziale XII w rozdziale 6a ustawy</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="P_13_5" type="tns:TKwotowy">
+									<xsd:annotation>
+										<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy netto w przypadku procedury szczegĂłlnej, o ktĂłrej mowa w dziale XII w rozdziale 6a ustawy. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki netto. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="P_14_5" type="tns:TKwotowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Kwota podatku od wartoĹ›ci dodanej w przypadku procedury szczegĂłlnej, o ktĂłrej mowa w dziale XII w rozdziale 6a ustawy. W przypadku faktur zaliczkowych - kwota podatku wyliczona wedĹ‚ug wzoru, o ktĂłrym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+							<xsd:element name="P_13_6_1" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy objÄ™tej stawkÄ… 0% z wyĹ‚Ä…czeniem wewnÄ…trzwspĂłlnotowej dostawy towarĂłw i eksportu. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_6_2" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy objÄ™tej stawkÄ… 0% w przypadku wewnÄ…trzwspĂłlnotowej dostawy towarĂłw. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_6_3" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy objÄ™tej stawkÄ… 0% w przypadku eksportu. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_7" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy zwolnionej od podatku. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy wartoĹ›ci sprzedaĹĽy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_8" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy w przypadku dostawy towarĂłw oraz Ĺ›wiadczenia usĹ‚ug poza terytorium kraju, z wyĹ‚Ä…czeniem kwot wykazanych w polach P_13_5 i P_13_9. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy wartoĹ›ci sprzedaĹĽy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_9" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci Ĺ›wiadczenia usĹ‚ug, o ktĂłrych mowa w art. 100 ust. 1 pkt 4 ustawy. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy wartoĹ›ci sprzedaĹĽy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_10" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy w procedurze odwrotnego obciÄ…ĹĽenia, dla ktĂłrej podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 i 8 ustawy oraz innych przypadkĂłw odwrotnego obciÄ…ĹĽenia wystÄ™pujÄ…cych w obrocie krajowym. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy, o ktĂłrej mowa w art. 106j ust. 2 pkt 5 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_13_11" type="tns:TKwotowy" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Suma wartoĹ›ci sprzedaĹĽy w procedurze marĹĽy, o ktĂłrej mowa w art. 119 i art. 120 ustawy. W przypadku faktur zaliczkowych - wartoĹ›Ä‡ zaliczki. W przypadku faktur korygujÄ…cych - kwota rĂłĹĽnicy wartoĹ›ci sprzedaĹĽy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="P_15" type="tns:TKwotowy">
+								<xsd:annotation>
+									<xsd:documentation>Kwota naleĹĽnoĹ›ci ogĂłĹ‚em. W przypadku faktur zaliczkowych - kwota zapĹ‚aty dokumentowana fakturÄ…. W przypadku faktur, o ktĂłrych mowa w art. 106f ust. 3 ustawy - kwota pozostaĹ‚a do zapĹ‚aty. W przypadku faktur korygujÄ…cych - korekta kwoty wynikajÄ…cej z faktury korygowanej. W przypadku, o ktĂłrym mowa w art. 106j ust. 3 ustawy - korekta kwot wynikajÄ…cych z faktur korygowanych</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="KursWalutyZ" type="tns:TIlosci" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Kurs waluty stosowany do wyliczenia kwoty podatku w przypadkach, o ktĂłrych mowa w dziale VI ustawy na fakturach, o ktĂłrych mowa w art. 106b ust. 1 pkt 4 ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="Adnotacje">
+								<xsd:annotation>
+									<xsd:documentation>Inne adnotacje na fakturze</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="P_16" type="etd:TWybor1_2">
+											<xsd:annotation>
+												<xsd:documentation>W przypadku dostawy towarĂłw lub Ĺ›wiadczenia usĹ‚ug, w odniesieniu do ktĂłrych obowiÄ…zek podatkowy powstaje zgodnie z art. 19a ust. 5 pkt 1 lub art. 21 ust. 1 ustawy - wyrazy "metoda kasowa"; naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_17" type="etd:TWybor1_2">
+											<xsd:annotation>
+												<xsd:documentation>W przypadku faktur, o ktĂłrych mowa w art. 106d ust. 1 ustawy - wyraz "samofakturowanie"; naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_18" type="etd:TWybor1_2">
+											<xsd:annotation>
+												<xsd:documentation>W przypadku dostawy towarĂłw lub wykonania usĹ‚ugi, dla ktĂłrych obowiÄ…zanym do rozliczenia podatku od wartoĹ›ci dodanej lub podatku o podobnym charakterze jest nabywca towaru lub usĹ‚ugi - wyrazy "odwrotne obciÄ…ĹĽenie"; naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_18A" type="etd:TWybor1_2">
+											<xsd:annotation>
+												<xsd:documentation>W przypadku faktur, w ktĂłrych kwota naleĹĽnoĹ›ci ogĂłĹ‚em przekracza kwotÄ™ 15 000 zĹ‚ lub jej rĂłwnowartoĹ›Ä‡ wyraĹĽonÄ… w walucie obcej, obejmujÄ…cych
+dokonanÄ… na rzecz podatnika dostawÄ™ towarĂłw lub Ĺ›wiadczenie usĹ‚ug, o ktĂłrych mowa w zaĹ‚Ä…czniku nr 15 do ustawy - wyrazy "mechanizm podzielonej pĹ‚atnoĹ›ci", przy czym do przeliczania na zĹ‚ote kwot wyraĹĽonych w walucie obcej stosuje siÄ™ zasady przeliczania kwot stosowane w celu okreĹ›lenia podstawy opodatkowania; naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Zwolnienie">
+											<xsd:complexType>
+												<xsd:choice>
+													<xsd:sequence>
+														<xsd:element name="P_19" type="etd:TWybor1">
+															<xsd:annotation>
+																<xsd:documentation>Znacznik dostawy towarĂłw lub Ĺ›wiadczenia usĹ‚ug zwolnionych od podatku na podstawie art. 43 ust. 1 ustawy, art. 113 ust. 1 i 9 ustawy albo przepisĂłw wydanych na podstawie art. 82 ust. 3 ustawy lub na podstawie innych przepisĂłw</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:choice>
+															<xsd:element name="P_19A" type="tns:TZnakowy">
+																<xsd:annotation>
+																	<xsd:documentation>JeĹ›li pole P_19 rĂłwna siÄ™ "1" - naleĹĽy wskazaÄ‡ przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie ktĂłrego podatnik stosuje zwolnienie od podatku</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="P_19B" type="tns:TZnakowy">
+																<xsd:annotation>
+																	<xsd:documentation>JeĹ›li pole P_19 rĂłwna siÄ™ "1" - naleĹĽy wskazaÄ‡ przepis dyrektywy 2006/112/WE, ktĂłry zwalnia od podatku takÄ… dostawÄ™ towarĂłw lub takie Ĺ›wiadczenie usĹ‚ug</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="P_19C" type="tns:TZnakowy">
+																<xsd:annotation>
+																	<xsd:documentation>JeĹ›li pole P_19 rĂłwna siÄ™ "1" - naleĹĽy wskazaÄ‡ innÄ… podstawÄ™ prawnÄ… wskazujÄ…cÄ… na to, ĹĽe dostawa towarĂłw lub Ĺ›wiadczenie usĹ‚ug korzysta ze zwolnienia od podatku</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+														</xsd:choice>
+													</xsd:sequence>
+													<xsd:element name="P_19N" type="etd:TWybor1">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik braku dostawy towarĂłw lub Ĺ›wiadczenia usĹ‚ug zwolnionych od podatku na podstawie art. 43 ust. 1 ustawy, art. 113 ust. 1 i 9 ustawy albo przepisĂłw wydanych na podstawie art. 82 ust. 3 ustawy lub na podstawie innych przepisĂłw</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:choice>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="NoweSrodkiTransportu">
+											<xsd:complexType>
+												<xsd:choice>
+													<xsd:sequence>
+														<xsd:element name="P_22" type="etd:TWybor1">
+															<xsd:annotation>
+																<xsd:documentation>Znacznik wewnÄ…trzwspĂłlnotowej dostawy nowych Ĺ›rodkĂłw transportu</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="P_42_5" type="etd:TWybor1_2">
+															<xsd:annotation>
+																<xsd:documentation>JeĹ›li wystÄ™puje obowiÄ…zek, o ktĂłrym mowa w art. 42 ust. 5 ustawy, naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="NowySrodekTransportu" maxOccurs="10000">
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="P_22A" type="tns:TDataT">
+																		<xsd:annotation>
+																			<xsd:documentation>Data dopuszczenia nowego Ĺ›rodka transportu do uĹĽytku</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_NrWierszaNST" type="tns:TNaturalny">
+																		<xsd:annotation>
+																			<xsd:documentation>Numer wiersza faktury, w ktĂłrym wykazano dostawÄ™ nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_22BMK" type="tns:TZnakowy" minOccurs="0">
+																		<xsd:annotation>
+																			<xsd:documentation>Marka nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_22BMD" type="tns:TZnakowy" minOccurs="0">
+																		<xsd:annotation>
+																			<xsd:documentation>Model nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_22BK" type="tns:TZnakowy" minOccurs="0">
+																		<xsd:annotation>
+																			<xsd:documentation>Kolor nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_22BNR" type="tns:TZnakowy" minOccurs="0">
+																		<xsd:annotation>
+																			<xsd:documentation>Numer rejestracyjny nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="P_22BRP" type="tns:TZnakowy" minOccurs="0">
+																		<xsd:annotation>
+																			<xsd:documentation>Rok produkcji nowego Ĺ›rodka transportu</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:choice>
+																		<xsd:sequence>
+																			<xsd:element name="P_22B" type="tns:TZnakowy">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, naleĹĽy podaÄ‡ przebieg pojazdu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																			<xsd:choice minOccurs="0">
+																				<xsd:element name="P_22B1" type="tns:TZnakowy" minOccurs="0">
+																					<xsd:annotation>
+																						<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, moĹĽna podaÄ‡ numer VIN</xsd:documentation>
+																					</xsd:annotation>
+																				</xsd:element>
+																				<xsd:element name="P_22B2" type="tns:TZnakowy" minOccurs="0">
+																					<xsd:annotation>
+																						<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, moĹĽna podaÄ‡ numer nadwozia</xsd:documentation>
+																					</xsd:annotation>
+																				</xsd:element>
+																				<xsd:element name="P_22B3" type="tns:TZnakowy" minOccurs="0">
+																					<xsd:annotation>
+																						<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, moĹĽna podaÄ‡ numer podwozia</xsd:documentation>
+																					</xsd:annotation>
+																				</xsd:element>
+																				<xsd:element name="P_22B4" type="tns:TZnakowy" minOccurs="0">
+																					<xsd:annotation>
+																						<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, moĹĽna podaÄ‡ numer ramy</xsd:documentation>
+																					</xsd:annotation>
+																				</xsd:element>
+																			</xsd:choice>
+																			<xsd:element name="P_22BT" type="tns:TZnakowy" minOccurs="0">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy pojazdĂłw lÄ…dowych, o ktĂłrych mowa w art. 2 pkt 10 lit. a ustawy, moĹĽna podaÄ‡ typ nowego Ĺ›rodka transportu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																		</xsd:sequence>
+																		<xsd:sequence>
+																			<xsd:element name="P_22C" type="tns:TZnakowy">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy jednostek pĹ‚ywajÄ…cych, o ktĂłrych mowa w art. 2 pkt 10 lit. b ustawy, naleĹĽy podaÄ‡ liczbÄ™ godzin roboczych uĹĽywania nowego Ĺ›rodka transportu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																			<xsd:element name="P_22C1" type="tns:TZnakowy" minOccurs="0">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy jednostek pĹ‚ywajÄ…cych, o ktĂłrych mowa w art. 2 pkt 10 lit. b ustawy, moĹĽna podaÄ‡ numer kadĹ‚uba nowego Ĺ›rodka transportu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																		</xsd:sequence>
+																		<xsd:sequence>
+																			<xsd:element name="P_22D" type="tns:TZnakowy">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy statkĂłw powietrznych, o ktĂłrych mowa w art. 2 pkt 10 lit. c ustawy, naleĹĽy podaÄ‡ liczbÄ™ godzin roboczych uĹĽywania nowego Ĺ›rodka transportu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																			<xsd:element name="P_22D1" type="tns:TZnakowy" minOccurs="0">
+																				<xsd:annotation>
+																					<xsd:documentation>JeĹ›li dostawa dotyczy statkĂłw powietrznych, o ktĂłrych mowa w art. 2 pkt 10 lit. c ustawy, moĹĽna podaÄ‡ numer fabryczny nowego Ĺ›rodka transportu</xsd:documentation>
+																				</xsd:annotation>
+																			</xsd:element>
+																		</xsd:sequence>
+																	</xsd:choice>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+													</xsd:sequence>
+													<xsd:element name="P_22N" type="etd:TWybor1">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik braku wewnÄ…trzwspĂłlnotowej dostawy nowych Ĺ›rodkĂłw transportu</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:choice>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="P_23" type="etd:TWybor1_2">
+											<xsd:annotation>
+												<xsd:documentation>W przypadku faktur wystawianych w procedurze uproszczonej przez drugiego w kolejnoĹ›ci podatnika, o ktĂłrym mowa w art. 135 ust. 1 pkt 4 lit. b i c oraz ust. 2 ustawy, zawierajÄ…cej adnotacjÄ™, o ktĂłrej mowa w art. 136 ust. 1 pkt 1 ustawy i stwierdzenie, o ktĂłrym mowa w art. 136 ust. 1 pkt 2 ustawy, naleĹĽy podaÄ‡ wartoĹ›Ä‡ "1", w przeciwnym przypadku - wartoĹ›Ä‡ "2"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="PMarzy">
+											<xsd:complexType>
+												<xsd:choice>
+													<xsd:sequence>
+														<xsd:element name="P_PMarzy" type="etd:TWybor1">
+															<xsd:annotation>
+																<xsd:documentation>Znacznik wystÄ…pienia procedur marĹĽy, o ktĂłrych mowa w art. 119 lub art. 120 ustawy</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:choice>
+															<xsd:element name="P_PMarzy_2" type="etd:TWybor1">
+																<xsd:annotation>
+																	<xsd:documentation>Znacznik Ĺ›wiadczenia usĹ‚ug turystyki, dla ktĂłrych podstawÄ™ opodatkowania stanowi marĹĽa, zgodnie z art. 119 ust. 1 ustawy, a faktura dokumentujÄ…ca Ĺ›wiadczenie zawiera wyrazy "procedura marĹĽy dla biur podrĂłĹĽy"</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="P_PMarzy_3_1" type="etd:TWybor1">
+																<xsd:annotation>
+																	<xsd:documentation>Znacznik dostawy towarĂłw uĹĽywanych, dla ktĂłrych podstawÄ™ opodatkowania stanowi marĹĽa, zgodnie z art. 120 ustawy, a faktura dokumentujÄ…ca dostawÄ™ zawiera wyrazy "procedura marĹĽy - towary uĹĽywane"</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="P_PMarzy_3_2" type="etd:TWybor1">
+																<xsd:annotation>
+																	<xsd:documentation>Znacznik dostawy dzieĹ‚ sztuki, dla ktĂłrych podstawÄ™ opodatkowania stanowi marĹĽa, zgodnie z art. 120 ustawy, a faktura dokumentujÄ…ca dostawÄ™ zawiera wyrazy "procedura marĹĽy - dzieĹ‚a sztuki"</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="P_PMarzy_3_3" type="etd:TWybor1">
+																<xsd:annotation>
+																	<xsd:documentation>Znacznik dostawy przedmiotĂłw kolekcjonerskich i antykĂłw, dla ktĂłrych podstawÄ™ opodatkowania stanowi marĹĽa, zgodnie z art. 120 ustawy, a faktura dokumentujÄ…ca dostawÄ™ zawiera wyrazy "procedura marĹĽy - przedmioty kolekcjonerskie i antyki"</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+														</xsd:choice>
+													</xsd:sequence>
+													<xsd:element name="P_PMarzyN" type="etd:TWybor1">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik braku wystÄ…pienia procedur marĹĽy, o ktĂłrych mowa w art. 119 lub art. 120 ustawy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:choice>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="RodzajFaktury" type="tns:TRodzajFaktury">
+								<xsd:annotation>
+									<xsd:documentation>Rodzaj faktury</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:sequence minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Dane dla przypadkĂłw, gdy pole RodzajFaktury przyjmuje wartoĹ›ci KOR, KOR_ZAL lub KOR_ROZ</xsd:documentation>
+								</xsd:annotation>
+								<xsd:element name="PrzyczynaKorekty" type="tns:TZnakowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Przyczyna korekty dla faktur korygujÄ…cych</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="TypKorekty" type="tns:TTypKorekty" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Typ skutku korekty w ewidencji dla podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="DaneFaKorygowanej" maxOccurs="50000">
+									<xsd:annotation>
+										<xsd:documentation>Dane faktury korygowanej</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="DataWystFaKorygowanej" type="tns:TDataT">
+												<xsd:annotation>
+													<xsd:documentation>Data wystawienia faktury korygowanej</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="NrFaKorygowanej" type="tns:TZnakowy">
+												<xsd:annotation>
+													<xsd:documentation>Numer faktury korygowanej</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:choice>
+												<xsd:sequence>
+													<xsd:element name="NrKSeF" type="etd:TWybor1">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik numeru KSeF faktury korygowanej</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="NrKSeFFaKorygowanej" type="tns:TNumerKSeF">
+														<xsd:annotation>
+															<xsd:documentation>Numer identyfikujÄ…cy fakturÄ™ korygowanÄ… w KSeF</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:element name="NrKSeFN" type="etd:TWybor1">
+													<xsd:annotation>
+														<xsd:documentation>Znacznik faktury korygowanej wystawionej poza KSeF</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+											</xsd:choice>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="OkresFaKorygowanej" type="tns:TZnakowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Dla faktury korygujÄ…cej, o ktĂłrej mowa w art. 106j ust. 3 ustawy - okres, do ktĂłrego odnosi siÄ™ udzielany opust lub udzielana obniĹĽka, w przypadku gdy podatnik udziela opustu lub obniĹĽki ceny w odniesieniu do dostaw towarĂłw lub usĹ‚ug dokonanych lub Ĺ›wiadczonych na rzecz jednego odbiorcy w danym okresie</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="NrFaKorygowany" type="tns:TZnakowy" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>Poprawny numer faktury korygowanej w przypadku, gdy przyczynÄ… korekty jest bĹ‚Ä™dny numer faktury korygowanej. W takim przypadku bĹ‚Ä™dny numer faktury naleĹĽy wskazaÄ‡ w polu NrFaKorygowanej</xsd:documentation>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Podmiot1K" minOccurs="0">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku korekty danych sprzedawcy naleĹĽy podaÄ‡ peĹ‚ne dane sprzedawcy wystÄ™pujÄ…ce na fakturze korygowanej. Pole nie dotyczy przypadku korekty bĹ‚Ä™dnego NIP wystÄ™pujÄ…cego na fakturze pierwotnej - wĂłwczas wymagana jest korekta faktury do wartoĹ›ci zerowych</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="PrefiksPodatnika" type="tns:TKodyKrajowUE" minOccurs="0">
+												<xsd:annotation>
+													<xsd:documentation>Kod (prefiks) podatnika VAT UE dla przypadkĂłw okreĹ›lonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o ktĂłrym mowa w art. 136 ust. 1 pkt 3 ustawy</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot1">
+												<xsd:annotation>
+													<xsd:documentation>Dane identyfikujÄ…ce podatnika</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Adres" type="tns:TAdres">
+												<xsd:annotation>
+													<xsd:documentation>Adres podatnika</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:element name="Podmiot2K" minOccurs="0" maxOccurs="101">
+									<xsd:annotation>
+										<xsd:documentation>W przypadku korekty danych nabywcy wystÄ™pujÄ…cego jako Podmiot2 lub dodatkowego nabywcy wystÄ™pujÄ…cego jako Podmiot3 naleĹĽy podaÄ‡ peĹ‚ne dane tego podmiotu wystÄ™pujÄ…ce na fakturze korygowanej. Korekcie nie podlegajÄ… bĹ‚Ä™dne numery NIP identyfikujÄ…ce nabywcÄ™ oraz dodatkowego nabywcÄ™ - wĂłwczas wymagana jest korekta faktury do wartoĹ›ci zerowych. W przypadku korygowania pozostaĹ‚ych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma byÄ‡ toĹĽsamy z numerem w czÄ™Ĺ›ci Podmiot2 wzglÄ™dnie Podmiot3 faktury korygujÄ…cej</xsd:documentation>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot2">
+												<xsd:annotation>
+													<xsd:documentation>Dane identyfikujÄ…ce nabywcÄ™</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Adres" type="tns:TAdres" minOccurs="0">
+												<xsd:annotation>
+													<xsd:documentation>Adres nabywcy. Pola opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="IDNabywcy" minOccurs="0">
+												<xsd:annotation>
+													<xsd:documentation>Unikalny klucz powiÄ…zania danych nabywcy na fakturach korygujÄ…cych, w przypadku gdy dane nabywcy na fakturze korygujÄ…cej zmieniĹ‚y siÄ™ w stosunku do danych na fakturze korygowanej</xsd:documentation>
+												</xsd:annotation>
+												<xsd:simpleType>
+													<xsd:restriction base="tns:TZnakowy50">
+														<xsd:maxLength value="32"/>
+													</xsd:restriction>
+												</xsd:simpleType>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+								<xsd:sequence minOccurs="0">
+									<xsd:element name="P_15ZK" type="tns:TKwotowy">
+										<xsd:annotation>
+											<xsd:documentation>W przypadku korekt faktur zaliczkowych - kwota zapĹ‚aty przed korektÄ…. W przypadku korekt faktur, o ktĂłrych mowa w art. 106f ust. 3 ustawy - kwota pozostaĹ‚a do zapĹ‚aty przed korektÄ…</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+									<xsd:element name="KursWalutyZK" type="tns:TIlosci" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>Kurs waluty stosowany do wyliczenia kwoty podatku w przypadkach, o ktĂłrych mowa w dziale VI ustawy przed korektÄ…</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:sequence>
+							<xsd:element name="ZaliczkaCzesciowa" minOccurs="0" maxOccurs="31">
+								<xsd:annotation>
+									<xsd:documentation>Dane dla przypadkĂłw faktur dokumentujÄ…cych otrzymanie wiÄ™cej niĹĽ jednej pĹ‚atnoĹ›ci, o ktĂłrej mowa w art. 106b ust. 1 pkt 4 ustawy. W przypadku, gdy faktura, o ktĂłrej mowa w art. 106f ust. 3 ustawy dokumentuje jednoczeĹ›nie otrzymanie czÄ™Ĺ›ci zapĹ‚aty przed dokonaniem czynnoĹ›ci, rĂłĹĽnica kwoty w polu P_15 i sumy poszczegĂłlnych pĂłl P_15Z stanowi kwotÄ™ pozostaĹ‚Ä… ponad pĹ‚atnoĹ›ci otrzymane przed wykonaniem czynnoĹ›ci udokumentowanej fakturÄ…</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="P_6Z" type="tns:TDataT">
+											<xsd:annotation>
+												<xsd:documentation>Data otrzymania pĹ‚atnoĹ›ci, o ktĂłrej mowa w art. 106b ust. 1 pkt 4 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_15Z" type="tns:TKwotowy">
+											<xsd:annotation>
+												<xsd:documentation>Kwota pĹ‚atnoĹ›ci, o ktĂłrej mowa w art. 106b ust. 1 pkt 4 ustawy, skĹ‚adajÄ…ca siÄ™ na kwotÄ™ w polu P_15. W przypadku faktur korygujÄ…cych  - korekta kwoty wynikajÄ…cej z faktury korygowanej</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="KursWalutyZW" type="tns:TIlosci" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Kurs waluty stosowany do wyliczenia kwoty podatku w przypadkach, o ktĂłrych mowa w dziale VI ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="FP" type="etd:TWybor1" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Faktura, o ktĂłrej mowa w art. 109 ust. 3d ustawy</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="TP" type="etd:TWybor1" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>IstniejÄ…ce powiÄ…zania miÄ™dzy nabywcÄ… a dokonujÄ…cym dostawy towarĂłw lub usĹ‚ugodawcÄ…, zgodnie z Â§ 10 ust. 4 pkt 3, z zastrzeĹĽeniem ust. 4b rozporzÄ…dzenia w sprawie szczegĂłĹ‚owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarĂłw i usĹ‚ug</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="DodatkowyOpis" type="tns:TKluczWartosc" minOccurs="0" maxOccurs="10000">
+								<xsd:annotation>
+									<xsd:documentation>Pola przeznaczone dla wykazywania dodatkowych danych na fakturze, w tym wymaganych przepisami prawa, dla ktĂłrych nie przewidziano innych pĂłl/elementĂłw</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="FakturaZaliczkowa" minOccurs="0" maxOccurs="100">
+								<xsd:annotation>
+									<xsd:documentation>Numery faktur zaliczkowych lub ich numery KSeF, jeĹ›li zostaĹ‚y wystawione z uĹĽyciem KSeF</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:choice>
+										<xsd:sequence>
+											<xsd:element name="NrKSeFZN" type="etd:TWybor1">
+												<xsd:annotation>
+													<xsd:documentation>Znacznik faktury zaliczkowej wystawionej poza KSeF</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="NrFaZaliczkowej" type="tns:TZnakowy">
+												<xsd:annotation>
+													<xsd:documentation>Numer faktury zaliczkowej wystawionej poza KSeF. Pole obowiÄ…zkowe dla faktury wystawianej po wydaniu towaru lub wykonaniu usĹ‚ugi, o ktĂłrej mowa w art. 106f ust. 3 ustawy i ostatniej z faktur, o ktĂłrej mowa w art. 106f ust. 4 ustawy</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+										<xsd:element name="NrKSeFFaZaliczkowej" type="tns:TNumerKSeF">
+											<xsd:annotation>
+												<xsd:documentation>Numer identyfikujÄ…cy fakturÄ™ zaliczkowÄ… w KSeF. Pole obowiÄ…zkowe w przypadku, gdy faktura zaliczkowa byĹ‚a wystawiona za pomocÄ… KSeF</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:choice>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="ZwrotAkcyzy" type="etd:TWybor1" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Informacja dodatkowa niezbÄ™dna dla rolnikĂłw ubiegajÄ…cych siÄ™ o zwrot podatku akcyzowego zawartego w cenie oleju napÄ™dowego</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="FaWiersz" minOccurs="0" maxOccurs="10000">
+								<xsd:annotation>
+									<xsd:documentation>SzczegĂłĹ‚owe pozycje faktury w walucie, w ktĂłrej wystawiono fakturÄ™ - wÄ™zeĹ‚ opcjonalny dla faktury zaliczkowej, faktury korygujÄ…cej fakturÄ™ zaliczkowÄ… oraz faktur korygujÄ…cych dotyczÄ…cych wszystkich dostaw towarĂłw lub usĹ‚ug dokonanych lub Ĺ›wiadczonych w danym okresie, o ktĂłrych mowa w art. 106j ust. 3 ustawy, dla ktĂłrych naleĹĽy podaÄ‡ dane dotyczÄ…ce opustu lub obniĹĽki w podziale na stawki podatku i procedury w czÄ™Ĺ›ci Fa. W przypadku faktur korygujÄ…cych, o ktĂłrych mowa w art. 106j ust. 3 ustawy, gdy opust lub obniĹĽka ceny odnosi siÄ™ do czÄ™Ĺ›ci dostaw towarĂłw lub usĹ‚ug dokonanych lub Ĺ›wiadczonych w danym okresie w czÄ™Ĺ›ci FaWiersz naleĹĽy podaÄ‡ nazwy (rodzaje) towarĂłw lub usĹ‚ug objÄ™tych korektÄ…. W przypadku faktur, o ktĂłrych mowa w art. 106f ust. 3 ustawy, naleĹĽy wykazaÄ‡ peĹ‚ne wartoĹ›ci zamĂłwienia lub umowy. W przypadku faktur korygujÄ…cych pozycje faktury (w tym faktur korygujÄ…cych faktury, o ktĂłrych mowa w art. 106f ust. 3 ustawy, jeĹ›li korekta dotyczy wartoĹ›ci zamĂłwienia) naleĹĽy wykazaÄ‡ rĂłĹĽnice wynikajÄ…ce z korekty poszczegĂłlnych pozycji lub dane pozycji korygowanych wg stanu przed korektÄ… i po korekcie jako osobne wiersze. W przypadku faktur korygujÄ…cych faktury, o ktĂłrych mowa w art. 106f ust. 3 ustawy, jeĹ›li korekta nie dotyczy wartoĹ›ci zamĂłwienia i jednoczeĹ›nie zmienia wysokoĹ›Ä‡ podstawy opodatkowania lub podatku, naleĹĽy wprowadziÄ‡ zapis wg stanu przed korektÄ… i zapis wg stanu po korekcie w celu potwierdzenia braku zmiany wartoĹ›ci danej pozycji faktury</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="NrWierszaFa" type="tns:TNaturalny">
+											<xsd:annotation>
+												<xsd:documentation>Kolejny numer wiersza faktury</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="UU_ID" type="tns:TZnakowy50" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Uniwersalny unikalny numer wiersza faktury</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_6A" type="tns:TDataT" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Data dokonania lub zakoĹ„czenia dostawy towarĂłw lub wykonania usĹ‚ugi lub data otrzymania zapĹ‚aty, o ktĂłrej mowa w art. 106b ust. 1 pkt 4 ustawy, o ile taka data jest okreĹ›lona i rĂłĹĽni siÄ™ od daty wystawienia faktury. Pole wypeĹ‚nia siÄ™ w przypadku gdy dla poszczegĂłlnych pozycji faktury wystÄ™pujÄ… rĂłĹĽne daty</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_7" type="tns:TZnakowy512" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Nazwa (rodzaj) towaru lub usĹ‚ugi. Pole opcjonalne wyĹ‚Ä…cznie dla przypadku okreĹ›lonego w art 106j ust. 3 pkt 2 ustawy (faktura korygujÄ…ca)</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Indeks" type="tns:TZnakowy50" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Pole przeznaczone do wpisania wewnÄ™trznego kodu towaru lub usĹ‚ugi nadanego przez podatnika albo dodatkowego opisu</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="GTIN" type="tns:TZnakowy20" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Globalny numer jednostki handlowej</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="PKWiU" type="tns:TZnakowy50" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Symbol Polskiej Klasyfikacji WyrobĂłw i UsĹ‚ug</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="CN" type="tns:TZnakowy50" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Symbol Nomenklatury Scalonej</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="PKOB" type="tns:TZnakowy50" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Symbol Polskiej Klasyfikacji ObiektĂłw Budowlanych</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_8A" type="tns:TZnakowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Miara dostarczonych towarĂłw lub zakres wykonanych usĹ‚ug. Pole opcjonalne dla przypadku okreĹ›lonego w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_8B" type="tns:TIlosci" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>IloĹ›Ä‡ (liczba) dostarczonych towarĂłw lub zakres wykonanych usĹ‚ug. Pole opcjonalne dla przypadku okreĹ›lonego w art. 106e ust. 5 pkt 3 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_9A" type="tns:TKwotowy2" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Cena jednostkowa towaru lub usĹ‚ugi bez kwoty podatku (cena jednostkowa netto). Pole opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 2 i 3 oraz ust. 5 pkt 3 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_9B" type="tns:TKwotowy2" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Cena wraz z kwotÄ… podatku (cena jednostkowa brutto), w przypadku zastosowania art. 106e ust. 7 i 8 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_10" type="tns:TKwotowy2" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Kwoty wszelkich opustĂłw lub obniĹĽek cen, w tym w formie rabatu z tytuĹ‚u wczeĹ›niejszej zapĹ‚aty, o ile nie zostaĹ‚y one uwzglÄ™dnione w cenie jednostkowej netto, a w przypadku stosowania art. 106e ust. 7 ustawy w cenie jednostkowej brutto. Pole opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 2 i 3 oraz ust. 5 pkt 1 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_11" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>WartoĹ›Ä‡ dostarczonych towarĂłw lub wykonanych usĹ‚ug, objÄ™tych transakcjÄ…, bez kwoty podatku (wartoĹ›Ä‡ sprzedaĹĽy netto). Pole opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 2 i 3 oraz ust. 5 pkt 3 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_11A" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>WartoĹ›Ä‡ sprzedaĹĽy brutto, w przypadku zastosowania art. 106e ust. 7 i 8 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_11Vat" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Kwota podatku w przypadku, o ktĂłrym mowa w art. 106e ust. 10 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_12" type="tns:TStawkaPodatku" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Stawka podatku. Pole opcjonalne dla przypadkĂłw okreĹ›lonych w art. 106e ust. 2, 3, ust. 4 pkt 3 i ust. 5 pkt 3 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_12_XII" type="tns:TProcentowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Stawka podatku od wartoĹ›ci dodanej w przypadku, o ktĂłrym mowa w dziale XII w rozdziale 6a ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="P_12_Zal_15" type="etd:TWybor1" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Znacznik dla towaru lub usĹ‚ugi wymienionych w zaĹ‚Ä…czniku nr 15 do ustawy - wartoĹ›Ä‡ "1"</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="KwotaAkcyzy" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Kwota podatku akcyzowego zawarta w cenie towaru</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="GTU" type="tns:TGTU" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Oznaczenie dotyczÄ…ce dostawy towarĂłw i Ĺ›wiadczenia usĹ‚ug</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Procedura" type="tns:TOznaczenieProcedury" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Oznaczenie dotyczÄ…ce procedury</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="KursWaluty" type="tns:TIlosci" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Kurs waluty stosowany do wyliczenia kwoty podatku w przypadkach, o ktĂłrych mowa w dziale VI ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="StanPrzed" type="etd:TWybor1" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Znacznik stanu przed korektÄ… w przypadku faktury korygujÄ…cej lub faktury korygujÄ…cej fakturÄ™ wystawionÄ… w zwiÄ…zku z art. 106f ust. 3 ustawy, w przypadku gdy korekta dotyczy danych wykazanych w pozycjach faktury i jest dokonywana w sposĂłb polegajÄ…cy na wykazaniu danych przed korektÄ… i po korekcie jako osobnych wierszy z odrÄ™bnÄ… numeracjÄ… oraz w przypadku potwierdzania braku zmiany wartoĹ›ci danej pozycji</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Rozliczenie" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Dodatkowe rozliczenia na fakturze</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Obciazenia" minOccurs="0" maxOccurs="100">
+											<xsd:annotation>
+												<xsd:documentation>ObciÄ…ĹĽenia</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Kwota" type="tns:TKwotowy">
+														<xsd:annotation>
+															<xsd:documentation>Kwota doliczona do kwoty wykazanej w polu P_15</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Powod" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>PowĂłd obciÄ…ĹĽenia</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="SumaObciazen" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Suma obciÄ…ĹĽeĹ„</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Odliczenia" minOccurs="0" maxOccurs="100">
+											<xsd:annotation>
+												<xsd:documentation>Odliczenia</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Kwota" type="tns:TKwotowy">
+														<xsd:annotation>
+															<xsd:documentation>Kwota odliczona od kwoty wykazanej w polu P_15</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="Powod" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>PowĂłd odliczenia</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="SumaOdliczen" type="tns:TKwotowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Suma odliczeĹ„</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:choice minOccurs="0">
+											<xsd:element name="DoZaplaty" type="tns:TKwotowy">
+												<xsd:annotation>
+													<xsd:documentation>Kwota naleĹĽnoĹ›ci do zapĹ‚aty rĂłwna polu P_15 powiÄ™kszonemu o Obciazenia i pomniejszonemu o Odliczenia</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="DoRozliczenia" type="tns:TKwotowy">
+												<xsd:annotation>
+													<xsd:documentation>Kwota nadpĹ‚acona do rozliczenia/zwrotu</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:choice>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Platnosc" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Warunki pĹ‚atnoĹ›ci</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:choice minOccurs="0">
+											<xsd:sequence>
+												<xsd:element name="Zaplacono" type="etd:TWybor1">
+													<xsd:annotation>
+														<xsd:documentation>Znacznik informujÄ…cy, ĹĽe naleĹĽnoĹ›Ä‡ wynikajÄ…ca z faktury zostaĹ‚a zapĹ‚acona: 1 - zapĹ‚acono</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+												<xsd:element name="DataZaplaty" type="tns:TData">
+													<xsd:annotation>
+														<xsd:documentation>Data zapĹ‚aty, jeĹ›li do wystawienia faktury pĹ‚atnoĹ›Ä‡ zostaĹ‚a dokonana</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+											</xsd:sequence>
+											<xsd:sequence>
+												<xsd:element name="ZnacznikZaplatyCzesciowej" type="etd:TWybor1_2">
+													<xsd:annotation>
+														<xsd:documentation>Znacznik informujÄ…cy, ĹĽe naleĹĽnoĹ›Ä‡ wynikajÄ…ca z faktury zostaĹ‚a zapĹ‚acona w czÄ™Ĺ›ci lub w caĹ‚oĹ›ci:                                 1 - zapĹ‚acono w czÄ™Ĺ›ci;                           2 - zapĹ‚acono w caĹ‚oĹ›ci, jeĹ›li naleĹĽnoĹ›Ä‡ wynikajÄ…ca z faktury zostaĹ‚a zapĹ‚acona w dwĂłch lub wiÄ™cej czÄ™Ĺ›ciach, a ostatnia pĹ‚atnoĹ›Ä‡ jest pĹ‚atnoĹ›ciÄ… koĹ„cowÄ…</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+												<xsd:element name="ZaplataCzesciowa" maxOccurs="100">
+													<xsd:annotation>
+														<xsd:documentation>Dane zapĹ‚at czÄ™Ĺ›ciowych</xsd:documentation>
+													</xsd:annotation>
+													<xsd:complexType>
+														<xsd:sequence>
+															<xsd:element name="KwotaZaplatyCzesciowej" type="tns:TKwotowy">
+																<xsd:annotation>
+																	<xsd:documentation>Kwota zapĹ‚aty czÄ™Ĺ›ciowej</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="DataZaplatyCzesciowej" type="tns:TData">
+																<xsd:annotation>
+																	<xsd:documentation>Data zapĹ‚aty czÄ™Ĺ›ciowej, jeĹ›li do wystawienia faktury pĹ‚atnoĹ›Ä‡ czÄ™Ĺ›ciowa zostaĹ‚a dokonana</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:choice minOccurs="0">
+																<xsd:element name="FormaPlatnosci" type="tns:TFormaPlatnosci">
+																	<xsd:annotation>
+																		<xsd:documentation>Forma pĹ‚atnoĹ›ci</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+																<xsd:sequence>
+																	<xsd:element name="PlatnoscInna" type="etd:TWybor1">
+																		<xsd:annotation>
+																			<xsd:documentation>Znacznik innej formy pĹ‚atnoĹ›ci: 1 - inna forma pĹ‚atnoĹ›ci</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="OpisPlatnosci" type="tns:TZnakowy">
+																		<xsd:annotation>
+																			<xsd:documentation>UszczegĂłĹ‚owienie innej formy pĹ‚atnoĹ›ci</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:choice>
+														</xsd:sequence>
+													</xsd:complexType>
+												</xsd:element>
+											</xsd:sequence>
+										</xsd:choice>
+										<xsd:element name="TerminPlatnosci" minOccurs="0" maxOccurs="100">
+											<xsd:complexType>
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="Termin" type="tns:TData" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Termin pĹ‚atnoĹ›ci</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="TerminOpis" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Opis terminu pĹ‚atnoĹ›ci</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="Ilosc" type="xsd:integer"/>
+																<xsd:element name="Jednostka" type="tns:TZnakowy50"/>
+																<xsd:element name="ZdarzeniePoczatkowe" type="tns:TZnakowy"/>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:choice minOccurs="0">
+											<xsd:element name="FormaPlatnosci" type="tns:TFormaPlatnosci">
+												<xsd:annotation>
+													<xsd:documentation>Forma pĹ‚atnoĹ›ci</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:sequence>
+												<xsd:element name="PlatnoscInna" type="etd:TWybor1">
+													<xsd:annotation>
+														<xsd:documentation>Znacznik innej formy pĹ‚atnoĹ›ci: 1 - inna forma pĹ‚atnoĹ›ci</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+												<xsd:element name="OpisPlatnosci" type="tns:TZnakowy">
+													<xsd:annotation>
+														<xsd:documentation>UszczegĂłĹ‚owienie innej formy pĹ‚atnoĹ›ci</xsd:documentation>
+													</xsd:annotation>
+												</xsd:element>
+											</xsd:sequence>
+										</xsd:choice>
+										<xsd:element name="RachunekBankowy" type="tns:TRachunekBankowy" minOccurs="0" maxOccurs="100">
+											<xsd:annotation>
+												<xsd:documentation>Numer rachunku</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="RachunekBankowyFaktora" type="tns:TRachunekBankowy" minOccurs="0" maxOccurs="20">
+											<xsd:annotation>
+												<xsd:documentation>Rachunek faktora</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="Skonto" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Skonto</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="WarunkiSkonta" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>Warunki, ktĂłre nabywca powinien speĹ‚niÄ‡, aby skorzystaÄ‡ ze skonta</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="WysokoscSkonta" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>WysokoĹ›Ä‡ skonta</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="LinkDoPlatnosci" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Link do pĹ‚atnoĹ›ci bezgotĂłwkowej</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="tns:TZnakowy512">
+													<xsd:pattern value="(https?)://([a-zA-Z0-9][a-zA-Z0-9-]*\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(/[^\s?#]*)?\?([^#\s]*&amp;)?IPKSeF=[0-9]{3}[a-zA-Z0-9]{10}(&amp;[^#\s]*)?(#.*)?"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+										<xsd:element name="IPKSeF" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Identyfikator pĹ‚atnoĹ›ci Krajowego Systemu e-Faktur</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="tns:TZnakowy20">
+													<xsd:maxLength value="13"/>
+													<xsd:pattern value="[0-9]{3}[a-zA-Z0-9]{10}"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="WarunkiTransakcji" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>Warunki transakcji, o ile wystÄ™pujÄ…</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="Umowy" minOccurs="0" maxOccurs="100">
+											<xsd:complexType>
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="DataUmowy" type="tns:TDataU" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Data umowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="NrUmowy" type="tns:TZnakowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Numer umowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="Zamowienia" minOccurs="0" maxOccurs="100">
+											<xsd:complexType>
+												<xsd:sequence minOccurs="0">
+													<xsd:element name="DataZamowienia" type="tns:TDataU" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Data zamĂłwienia</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="NrZamowienia" type="tns:TZnakowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Numer zamĂłwienia</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="NrPartiiTowaru" type="tns:TZnakowy" minOccurs="0" maxOccurs="1000">
+											<xsd:annotation>
+												<xsd:documentation>Numery partii towaru</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="WarunkiDostawy" type="tns:TZnakowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Warunki dostawy towarĂłw - w przypadku istnienia pomiÄ™dzy stronami transakcji, umowy okreĹ›lajÄ…cej warunki dostawy tzw. Incoterms</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:sequence minOccurs="0">
+											<xsd:element name="KursUmowny" type="tns:TIlosci">
+												<xsd:annotation>
+													<xsd:documentation>Kurs umowny - w przypadkach, gdy na fakturze znajduje siÄ™ informacja o kursie, po ktĂłrym zostaĹ‚y przeliczone kwoty wykazane na fakturze w zĹ‚otych. Nie dotyczy przypadkĂłw, o ktĂłrych mowa w dziale VI ustawy</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="WalutaUmowna" type="tns:TKodWaluty">
+												<xsd:annotation>
+													<xsd:documentation>Waluta umowna - kod waluty (ISO-4217) w przypadkach gdy na fakturze znajduje siÄ™ informacja o kursie, po ktĂłrym zostaĹ‚y przeliczone kwoty wykazane na fakturze w zĹ‚otych. Nie dotyczy przypadkĂłw, o ktĂłrych mowa w dziale VI ustawy</xsd:documentation>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+										<xsd:element name="Transport" minOccurs="0" maxOccurs="20">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:choice>
+														<xsd:element name="RodzajTransportu" type="tns:TRodzajTransportu">
+															<xsd:annotation>
+																<xsd:documentation>Rodzaj zastosowanego transportu w przypadku dokonanej dostawy towarĂłw</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:sequence>
+															<xsd:element name="TransportInny" type="etd:TWybor1">
+																<xsd:annotation>
+																	<xsd:documentation>Znacznik innego rodzaju transportu: 1 - inny rodzaj transportu</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:element name="OpisInnegoTransportu" type="tns:TZnakowy50">
+																<xsd:annotation>
+																	<xsd:documentation>Opis innego rodzaju transportu</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+														</xsd:sequence>
+													</xsd:choice>
+													<xsd:element name="Przewoznik" minOccurs="0">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot2">
+																	<xsd:annotation>
+																		<xsd:documentation>Dane identyfikacyjne przewoĹşnika</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+																<xsd:element name="AdresPrzewoznika" type="tns:TAdres">
+																	<xsd:annotation>
+																		<xsd:documentation>Adres przewoĹşnika</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="NrZleceniaTransportu" type="tns:TZnakowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Numer zlecenia transportu</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:sequence>
+														<xsd:choice>
+															<xsd:element name="OpisLadunku" type="tns:TLadunek">
+																<xsd:annotation>
+																	<xsd:documentation>Rodzaj Ĺ‚adunku</xsd:documentation>
+																</xsd:annotation>
+															</xsd:element>
+															<xsd:sequence>
+																<xsd:element name="LadunekInny" type="etd:TWybor1">
+																	<xsd:annotation>
+																		<xsd:documentation>Znacznik innego Ĺ‚adunku: 1 - inny Ĺ‚adunek</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+																<xsd:element name="OpisInnegoLadunku" type="tns:TZnakowy50">
+																	<xsd:annotation>
+																		<xsd:documentation>Opis innego Ĺ‚adunku, w tym Ĺ‚adunek mieszany</xsd:documentation>
+																	</xsd:annotation>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:choice>
+														<xsd:element name="JednostkaOpakowania" type="tns:TZnakowy" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Jednostka opakowania</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+													</xsd:sequence>
+													<xsd:sequence minOccurs="0">
+														<xsd:element name="DataGodzRozpTransportu" type="tns:TDataCzas" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Data i godzina rozpoczÄ™cia transportu</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="DataGodzZakTransportu" type="tns:TDataCzas" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Data i godzina zakoĹ„czenia transportu</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="WysylkaZ" type="tns:TAdres" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Adres miejsca wysyĹ‚ki</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="WysylkaPrzez" type="tns:TAdres" minOccurs="0" maxOccurs="20">
+															<xsd:annotation>
+																<xsd:documentation>Adres poĹ›redni wysyĹ‚ki</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="WysylkaDo" type="tns:TAdres" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Adres miejsca docelowego, do ktĂłrego zostaĹ‚ zlecony transport</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+													</xsd:sequence>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="PodmiotPosredniczacy" type="etd:TWybor1" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>WartoĹ›Ä‡ "1" oznacza dostawÄ™ dokonanÄ… przez podmiot, o ktĂłrym mowa w art. 22 ust. 2d ustawy. Pole dotyczy przypadku, w ktĂłrym podmiot uczestniczy w transakcji Ĺ‚aĹ„cuchowej innej niĹĽ procedura trĂłjstronna uproszczona, o ktĂłrej mowa w art. 135 ust. 1 pkt 4 ustawy</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Zamowienie" minOccurs="0">
+								<xsd:annotation>
+									<xsd:documentation>ZamĂłwienie lub umowa, o ktĂłrych mowa w art. 106f ust. 1 pkt 4 ustawy (dla faktur zaliczkowych), w walucie, w ktĂłrej wystawiono fakturÄ™ zaliczkowÄ…. W przypadku faktury korygujÄ…cej fakturÄ™ zaliczkowÄ… naleĹĽy wykazaÄ‡ rĂłĹĽnice wynikajÄ…ce z korekty poszczegĂłlnych pozycji zamĂłwienia lub umowy lub dane pozycji korygowanych wg stanu przed korektÄ… i po korekcie jako osobne wiersze, jeĹ›li korekta dotyczy wartoĹ›ci zamĂłwienia lub umowy. W przypadku faktur korygujÄ…cych faktury zaliczkowe, jeĹ›li korekta nie dotyczy wartoĹ›ci zamĂłwienia lub umowy i jednoczeĹ›nie zmienia wysokoĹ›Ä‡ podstawy opodatkowania lub podatku, naleĹĽy wprowadziÄ‡ zapis wg stanu przed korektÄ… i zapis wg stanu po korekcie w celu potwierdzenia braku zmiany wartoĹ›ci danej pozycji</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="WartoscZamowienia" type="tns:TKwotowy">
+											<xsd:annotation>
+												<xsd:documentation>WartoĹ›Ä‡ zamĂłwienia lub umowy z uwzglÄ™dnieniem kwoty podatku</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="ZamowienieWiersz" maxOccurs="10000">
+											<xsd:annotation>
+												<xsd:documentation>SzczegĂłĹ‚owe pozycje zamĂłwienia lub umowy w walucie, w ktĂłrej wystawiono fakturÄ™ zaliczkowÄ…</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="NrWierszaZam" type="tns:TNaturalny">
+														<xsd:annotation>
+															<xsd:documentation>Kolejny numer wiersza zamĂłwienia lub umowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="UU_IDZ" type="tns:TZnakowy50" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Uniwersalny unikalny numer wiersza zamĂłwienia lub umowy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_7Z" type="tns:TZnakowy512" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Nazwa (rodzaj) towaru lub usĹ‚ugi</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="IndeksZ" type="tns:TZnakowy50" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Pole przeznaczone do wpisania wewnÄ™trznego kodu towaru lub usĹ‚ugi nadanego przez podatnika albo dodatkowego opisu</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="GTINZ" type="tns:TZnakowy20" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Globalny numer jednostki handlowej</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PKWiUZ" type="tns:TZnakowy50" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Symbol Polskiej Klasyfikacji WyrobĂłw i UsĹ‚ug</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="CNZ" type="tns:TZnakowy50" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Symbol Nomenklatury Scalonej</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="PKOBZ" type="tns:TZnakowy50" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Symbol Polskiej Klasyfikacji ObiektĂłw Budowlanych</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_8AZ" type="tns:TZnakowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Miara zamĂłwionego towaru lub zakres usĹ‚ugi</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_8BZ" type="tns:TIlosci" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>IloĹ›Ä‡ zamĂłwionego towaru lub zakres usĹ‚ugi</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_9AZ" type="tns:TKwotowy2" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Cena jednostkowa netto</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_11NettoZ" type="tns:TKwotowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>WartoĹ›Ä‡ zamĂłwionego towaru lub usĹ‚ugi bez kwoty podatku</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_11VatZ" type="tns:TKwotowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Kwota podatku od zamĂłwionego towaru lub usĹ‚ugi</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_12Z" type="tns:TStawkaPodatku" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Stawka podatku</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_12Z_XII" type="tns:TProcentowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Stawka podatku od wartoĹ›ci dodanej w przypadku, o ktĂłrym mowa w dziale XII w rozdziale 6a ustawy</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="P_12Z_Zal_15" type="etd:TWybor1" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik dla towaru lub usĹ‚ugi wymienionych w zaĹ‚Ä…czniku nr 15 do ustawy - wartoĹ›Ä‡ "1"</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="GTUZ" type="tns:TGTU" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Oznaczenie dotyczÄ…ce dostawy towarĂłw i Ĺ›wiadczenia usĹ‚ug</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="ProceduraZ" type="tns:TOznaczenieProceduryZ" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Oznaczenia dotyczÄ…ce procedur</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="KwotaAkcyzyZ" type="tns:TKwotowy" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Kwota podatku akcyzowego zawarta w cenie towaru</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="StanPrzedZ" type="etd:TWybor1" minOccurs="0">
+														<xsd:annotation>
+															<xsd:documentation>Znacznik stanu przed korektÄ… w przypadku faktury korygujÄ…cej fakturÄ™ dokumentujÄ…cÄ… otrzymanie zapĹ‚aty lub jej czÄ™Ĺ›ci przed dokonaniem czynnoĹ›ci oraz fakturÄ™ wystawionÄ… w zwiÄ…zku z art. 106f ust. 4 ustawy (faktura korygujÄ…ca fakturÄ™ zaliczkowÄ…), w przypadku gdy korekta dotyczy danych wykazanych w pozycjach zamĂłwienia i jest dokonywana w sposĂłb polegajÄ…cy na wykazaniu danych przed korektÄ… i po korekcie jako osobnych wierszy z odrÄ™bnÄ… numeracjÄ… oraz w przypadku potwierdzania braku zmiany wartoĹ›ci danej pozycji</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Stopka" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>PozostaĹ‚e dane na fakturze</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence minOccurs="0">
+							<xsd:element name="Informacje" minOccurs="0" maxOccurs="3">
+								<xsd:annotation>
+									<xsd:documentation>PozostaĹ‚e dane</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element name="StopkaFaktury" type="etd:TTekstowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>Stopka faktury</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Rejestry" minOccurs="0" maxOccurs="100">
+								<xsd:annotation>
+									<xsd:documentation>Numery podmiotu lub grupy podmiotĂłw w innych rejestrach i bazach danych</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element name="PelnaNazwa" type="tns:TZnakowy" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>PeĹ‚na nazwa</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="KRS" type="etd:TNrKRS" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>KRS</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="REGON" type="etd:TNrREGON" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>REGON</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="BDO" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>BDO</xsd:documentation>
+											</xsd:annotation>
+											<xsd:simpleType>
+												<xsd:restriction base="tns:TZnakowy">
+													<xsd:maxLength value="9"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Zalacznik" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>ZaĹ‚Ä…cznik do faktury VAT</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="BlokDanych" maxOccurs="1000">
+								<xsd:annotation>
+									<xsd:documentation>SzczegĂłĹ‚owe dane zaĹ‚Ä…cznika</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="ZNaglowek" type="tns:TZnakowy512" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>NagĹ‚Ăłwek bloku danych</xsd:documentation>
+											</xsd:annotation>
+										</xsd:element>
+										<xsd:element name="MetaDane" maxOccurs="1000">
+											<xsd:annotation>
+												<xsd:documentation>Dane opisowe</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="ZKlucz" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>Klucz</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+													<xsd:element name="ZWartosc" type="tns:TZnakowy">
+														<xsd:annotation>
+															<xsd:documentation>WartoĹ›Ä‡</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="Tekst" minOccurs="0">
+											<xsd:annotation>
+												<xsd:documentation>CzÄ™Ĺ›Ä‡ tekstowa bloku danych</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Akapit" type="tns:TZnakowy512" maxOccurs="10">
+														<xsd:annotation>
+															<xsd:documentation>Opis</xsd:documentation>
+														</xsd:annotation>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:sequence minOccurs="0">
+											<xsd:element name="Tabela" minOccurs="0" maxOccurs="1000">
+												<xsd:annotation>
+													<xsd:documentation>Tabele</xsd:documentation>
+												</xsd:annotation>
+												<xsd:complexType>
+													<xsd:sequence>
+														<xsd:element name="TMetaDane" minOccurs="0" maxOccurs="1000">
+															<xsd:annotation>
+																<xsd:documentation>Dane opisowe dotyczÄ…ce tabeli</xsd:documentation>
+															</xsd:annotation>
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="TKlucz" type="tns:TZnakowy">
+																		<xsd:annotation>
+																			<xsd:documentation>Klucz</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																	<xsd:element name="TWartosc" type="tns:TZnakowy">
+																		<xsd:annotation>
+																			<xsd:documentation>WartoĹ›Ä‡</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+														<xsd:element name="Opis" type="tns:TZnakowy512" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Opis</xsd:documentation>
+															</xsd:annotation>
+														</xsd:element>
+														<xsd:element name="TNaglowek">
+															<xsd:annotation>
+																<xsd:documentation>NagĹ‚Ăłwek tabeli</xsd:documentation>
+															</xsd:annotation>
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="Kol" maxOccurs="20">
+																		<xsd:complexType>
+																			<xsd:sequence>
+																				<xsd:element name="NKom">
+																					<xsd:annotation>
+																						<xsd:documentation>ZawartoĹ›Ä‡ pola</xsd:documentation>
+																					</xsd:annotation>
+																					<xsd:complexType>
+																						<xsd:simpleContent>
+																							<xsd:extension base="tns:TZnakowy2"/>
+																						</xsd:simpleContent>
+																					</xsd:complexType>
+																				</xsd:element>
+																			</xsd:sequence>
+																			<xsd:attribute name="Typ" use="required">
+																				<xsd:simpleType>
+																					<xsd:restriction base="xsd:string">
+																						<xsd:enumeration value="date"/>
+																						<xsd:enumeration value="datetime"/>
+																						<xsd:enumeration value="dec"/>
+																						<xsd:enumeration value="int"/>
+																						<xsd:enumeration value="time"/>
+																						<xsd:enumeration value="txt"/>
+																					</xsd:restriction>
+																				</xsd:simpleType>
+																			</xsd:attribute>
+																		</xsd:complexType>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+														<xsd:element name="Wiersz" maxOccurs="1000">
+															<xsd:annotation>
+																<xsd:documentation>Wiersze tabeli</xsd:documentation>
+															</xsd:annotation>
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="WKom" type="tns:TZnakowy2" maxOccurs="20">
+																		<xsd:annotation>
+																			<xsd:documentation>ZawartoĹ›Ä‡ pola</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+														<xsd:element name="Suma" minOccurs="0">
+															<xsd:annotation>
+																<xsd:documentation>Podsumowania tabeli</xsd:documentation>
+															</xsd:annotation>
+															<xsd:complexType>
+																<xsd:sequence>
+																	<xsd:element name="SKom" type="tns:TZnakowy2" maxOccurs="20">
+																		<xsd:annotation>
+																			<xsd:documentation>ZawartoĹ›Ä‡ pola</xsd:documentation>
+																		</xsd:annotation>
+																	</xsd:element>
+																</xsd:sequence>
+															</xsd:complexType>
+														</xsd:element>
+													</xsd:sequence>
+												</xsd:complexType>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

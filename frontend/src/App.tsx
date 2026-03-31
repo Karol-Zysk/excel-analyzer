@@ -7,6 +7,7 @@ import { AccountingPage } from "./pages/AccountingPage";
 import { AuthPage } from "./pages/AuthPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { FeatureInProgressPage } from "./pages/FeatureInProgressPage";
+import { KsefGeneratorPage } from "./pages/KsefGeneratorPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TeamAdminPage } from "./pages/TeamAdminPage";
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/accounting">
             <Route index element={<Navigate to="analyze" replace />} />
             <Route path="analyze" element={<AccountingPage />} />
+            <Route path="ksef-generator" element={<KsefGeneratorPage />} />
           </Route>
 
           <Route path="/results">
