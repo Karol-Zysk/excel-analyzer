@@ -201,6 +201,25 @@ const OPTIONAL_MAPPING_FIELDS: Array<{
   { key: "paymentBankAccount", label: "Rachunek bankowy" },
 ];
 
+const MAPPING_FIELD_OPTIONS: Array<{
+  key: KsefExcelFlexibleFieldKey;
+  label: string;
+  helper?: string;
+  required: boolean;
+}> = [
+  ...REQUIRED_MAPPING_FIELDS.map((field) => ({
+    key: field.key,
+    label: field.label,
+    helper: field.helper,
+    required: field.required,
+  })),
+  ...OPTIONAL_MAPPING_FIELDS.map((field) => ({
+    key: field.key,
+    label: field.label,
+    required: false,
+  })),
+];
+
 const BUYER_IDENTIFIER_OPTIONS: Array<{
   value: KsefBuyerIdentifierType;
   label: string;
@@ -485,6 +504,52 @@ function getInvoiceDraftValidation(
     items: itemMissing,
     hasRequiredMissing,
   };
+}
+
+function getLiveMissingFieldLabels(
+  validation: ReturnType<typeof getInvoiceDraftValidation>,
+  myCompanyRole: KsefMyCompanyRole,
+  buyerIdentifierType: KsefBuyerIdentifierType
+) {
+  const labels = new Set<string>();
+
+  if (validation.invoiceNumber) {
+    labels.add("Numer faktury");
+  }
+  if (validation.issueDate) {
+    labels.add("Data wystawienia");
+  }
+  if (validation.buyerName) {
+    labels.add(
+      myCompanyRole === "SELLER" ? "Nazwa nabywcy" : "Nazwa sprzedawcy"
+    );
+  }
+  if (buyerIdentifierType === "NIP" && validation.buyerNip) {
+    labels.add(myCompanyRole === "SELLER" ? "NIP nabywcy" : "NIP sprzedawcy");
+  }
+  if (validation.buyerAddressLine1) {
+    labels.add(myCompanyRole === "SELLER" ? "Adres nabywcy" : "Adres sprzedawcy");
+  }
+
+  validation.items.forEach((item) => {
+    if (item.name) {
+      labels.add("Nazwa pozycji");
+    }
+    if (item.unit) {
+      labels.add("Jednostka");
+    }
+    if (item.quantity) {
+      labels.add("Ilosc");
+    }
+    if (item.unitNetPrice) {
+      labels.add("Cena netto pozycji");
+    }
+    if (item.taxRate) {
+      labels.add("Stawka VAT");
+    }
+  });
+
+  return Array.from(labels);
 }
 
 function downloadXml(xml: string, fileName: string) {
@@ -1056,7 +1121,6 @@ export function KsefExcelFlexibleImportCard() {
         return next;
       });
 
-      let nextWizardStep: WizardStep = 5;
       setMappedImportResult((current) => {
         if (!current) {
           return current;
@@ -1080,11 +1144,6 @@ export function KsefExcelFlexibleImportCard() {
         });
 
         const recalculated = recalculateMappedImportSummary(nextInvoices);
-        nextWizardStep =
-          recalculated.summary.needsCompletion > 0 ||
-          recalculated.summary.invalidInvoices > 0
-            ? 4
-            : 5;
 
         return {
           ...current,
@@ -1099,7 +1158,6 @@ export function KsefExcelFlexibleImportCard() {
         };
       });
 
-      setWizardStep(nextWizardStep);
       setIsWizardOpen(true);
     },
     onError: (error, variables) => {
@@ -1228,15 +1286,32 @@ export function KsefExcelFlexibleImportCard() {
     setWizardStep(1);
   }
 
-  function updateMapping(fieldKey: KsefExcelFlexibleFieldKey, value: string) {
+  function getMappedFieldForColumn(columnId: string) {
+    const matchedEntry = Object.entries(mapping).find(
+      ([, mappedColumnId]) => mappedColumnId === columnId
+    );
+
+    return (matchedEntry?.[0] as KsefExcelFlexibleFieldKey | undefined) ?? "";
+  }
+
+  function updateColumnMapping(
+    columnId: string,
+    fieldKey: "" | KsefExcelFlexibleFieldKey
+  ) {
     setMapping((current) => {
       const next = { ...current };
-      if (!value) {
-        delete next[fieldKey];
+
+      for (const [mappedFieldKey, mappedColumnId] of Object.entries(next)) {
+        if (mappedColumnId === columnId) {
+          delete next[mappedFieldKey as KsefExcelFlexibleFieldKey];
+        }
+      }
+
+      if (!fieldKey) {
         return next;
       }
 
-      next[fieldKey] = value;
+      next[fieldKey] = columnId;
       return next;
     });
   }
@@ -1407,7 +1482,7 @@ export function KsefExcelFlexibleImportCard() {
       })
     : false;
   const showInvoiceCompletionPanel = Boolean(
-    mappedImport && (wizardStep === 5 || (wizardStep === 4 && importNeedsCompletion))
+    mappedImport && wizardStep >= 4
   );
   const flexibleConfigReady = isFlexibleConfigReady(defaults, myCompanyRole);
   const canSubmitMappedImport =
@@ -1418,6 +1493,9 @@ export function KsefExcelFlexibleImportCard() {
   const mappedOptionalCount = OPTIONAL_MAPPING_FIELDS.filter((field) =>
     Boolean(mapping[field.key])
   ).length;
+  const unmappedRequiredFields = REQUIRED_MAPPING_FIELDS.filter(
+    (field) => field.required && !mapping[field.key]
+  );
   const setupChecklist: string[] = [];
 
   if (analysis) {
@@ -2015,137 +2093,135 @@ export function KsefExcelFlexibleImportCard() {
                     </div>
 
                     <div className={wizardStep === 2 ? "space-y-4" : "hidden"}>
-                      <div>
-                        <h3 className="text-base font-semibold text-slate-900">
-                          Wykryte kolumny
-                        </h3>
-                        <p className="mt-1 text-sm text-slate-500">
-                          To jest surowy podglad naglowkow i pierwszych wartosci
-                          z pliku.
-                        </p>
-                      </div>
-                      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                        {analysis.columns.map((column) => (
-                          <div
-                            key={column.id}
-                            className="rounded-2xl border border-slate-200 bg-white p-4"
-                          >
-                            <p className="text-sm font-semibold text-slate-900">
-                              {column.label}
+                      <div className="rounded-3xl border border-slate-200 bg-white p-5">
+                        <div className="flex flex-wrap items-start justify-between gap-4">
+                          <div>
+                            <h3 className="text-base font-semibold text-slate-900">
+                              Mapowanie po kolumnach z Excela
+                            </h3>
+                            <p className="mt-1 text-sm text-slate-500">
+                              Nad kazda kolumna wybierasz, do czego ma byc
+                              przypisana. Sugestie sa juz podstawione i mozna je
+                              zmienic.
                             </p>
-                            <p className="mt-1 text-xs text-slate-400">
-                              {column.id}
-                            </p>
-                            <div className="mt-3 space-y-2">
-                              {column.sampleValues.length > 0 ? (
-                                column.sampleValues.map(
-                                  (sampleValue, index) => (
-                                    <div
-                                      key={`${column.id}-${index}`}
-                                      className="rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-600"
-                                    >
-                                      {sampleValue}
-                                    </div>
-                                  )
-                                )
-                              ) : (
-                                <div className="rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-400">
-                                  Brak probek
-                                </div>
-                              )}
-                            </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div
-                      className={
-                        wizardStep === 2
-                          ? "grid gap-6 xl:grid-cols-[1.05fr_0.95fr]"
-                          : "space-y-6"
-                      }
-                    >
-                      <section
-                        className={
-                          wizardStep === 2
-                            ? "rounded-3xl border border-slate-200 bg-white p-5"
-                            : "hidden"
-                        }
-                      >
-                        <div className="mb-5">
-                          <h3 className="text-base font-semibold text-slate-900">
-                            Mapowanie kolumn
-                          </h3>
-                          <p className="mt-1 text-sm text-slate-500">
-                            System podstawi propozycje, ale kazde pole mozesz
-                            zmienic recznie.
-                          </p>
+                          <div className="flex flex-wrap gap-2 text-xs font-medium">
+                            <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
+                              Wymagane: {mappedRequiredCount}/
+                              {REQUIRED_MAPPING_FIELDS.filter(
+                                (field) => field.required
+                              ).length}
+                            </span>
+                            <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
+                              Opcjonalne: {mappedOptionalCount}
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="space-y-5">
-                          <div className="grid gap-4 lg:grid-cols-2">
-                            {REQUIRED_MAPPING_FIELDS.map((field) => (
-                              <label key={field.key} className="space-y-1.5">
-                                {fieldLabel(field.label, field.required)}
-                                <select
-                                  className={fieldClassName()}
-                                  value={mapping[field.key] ?? ""}
-                                  onChange={(event) =>
-                                    updateMapping(field.key, event.target.value)
-                                  }
-                                >
-                                  <option value="">Nie mapuj</option>
-                                  {analysis.columns.map((column) => (
-                                    <option
-                                      key={`${field.key}-${column.id}`}
-                                      value={column.id}
-                                    >
-                                      {column.label}
-                                    </option>
-                                  ))}
-                                </select>
-                                <p className="text-xs leading-5 text-slate-400">
-                                  {field.helper}
-                                </p>
-                              </label>
-                            ))}
-                          </div>
-
-                          <div className="border-t border-slate-100 pt-5">
-                            <p className="text-sm font-semibold text-slate-900">
-                              Dodatkowe pola opcjonalne
+                        {unmappedRequiredFields.length > 0 && (
+                          <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                            <p className="text-sm font-semibold text-amber-900">
+                              Jeszcze nie przypisano
                             </p>
-                            <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                              {OPTIONAL_MAPPING_FIELDS.map((field) => (
-                                <label key={field.key} className="space-y-1.5">
-                                  {fieldLabel(field.label)}
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {unmappedRequiredFields.map((field) => (
+                                <span
+                                  key={field.key}
+                                  className="rounded-full bg-white px-3 py-1 text-xs font-medium text-amber-800"
+                                >
+                                  {field.label}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                          {analysis.columns.map((column) => {
+                            const selectedFieldKey =
+                              getMappedFieldForColumn(column.id);
+                            const selectedField = MAPPING_FIELD_OPTIONS.find(
+                              (field) => field.key === selectedFieldKey
+                            );
+
+                            return (
+                              <div
+                                key={column.id}
+                                className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                              >
+                                <label className="space-y-1.5">
+                                  {fieldLabel("Mapowanie")}
                                   <select
                                     className={fieldClassName()}
-                                    value={mapping[field.key] ?? ""}
+                                    value={selectedFieldKey}
                                     onChange={(event) =>
-                                      updateMapping(
-                                        field.key,
-                                        event.target.value
+                                      updateColumnMapping(
+                                        column.id,
+                                        event.target.value as
+                                          | ""
+                                          | KsefExcelFlexibleFieldKey
                                       )
                                     }
                                   >
                                     <option value="">Nie mapuj</option>
-                                    {analysis.columns.map((column) => (
-                                      <option
-                                        key={`${field.key}-${column.id}`}
-                                        value={column.id}
-                                      >
-                                        {column.label}
-                                      </option>
-                                    ))}
+                                    <optgroup label="Wymagane / najczestsze">
+                                      {REQUIRED_MAPPING_FIELDS.map((field) => (
+                                        <option key={field.key} value={field.key}>
+                                          {field.label}
+                                          {field.required ? " *" : ""}
+                                        </option>
+                                      ))}
+                                    </optgroup>
+                                    <optgroup label="Dodatkowe opcjonalne">
+                                      {OPTIONAL_MAPPING_FIELDS.map((field) => (
+                                        <option key={field.key} value={field.key}>
+                                          {field.label}
+                                        </option>
+                                      ))}
+                                    </optgroup>
                                   </select>
                                 </label>
-                              ))}
-                            </div>
-                          </div>
+
+                                <div className="mt-4">
+                                  <p className="text-sm font-semibold text-slate-900">
+                                    {column.label}
+                                  </p>
+                                  <p className="mt-1 text-xs text-slate-400">
+                                    {column.id}
+                                  </p>
+                                  {selectedField?.helper && (
+                                    <p className="mt-3 text-xs leading-5 text-slate-500">
+                                      {selectedField.helper}
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="mt-4 space-y-2">
+                                  {column.sampleValues.length > 0 ? (
+                                    column.sampleValues.map(
+                                      (sampleValue, index) => (
+                                        <div
+                                          key={`${column.id}-${index}`}
+                                          className="rounded-xl bg-white px-3 py-2 text-xs text-slate-600"
+                                        >
+                                          {sampleValue}
+                                        </div>
+                                      )
+                                    )
+                                  ) : (
+                                    <div className="rounded-xl bg-white px-3 py-2 text-xs text-slate-400">
+                                      Brak probek
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
-                      </section>
+                      </div>
+                    </div>
+
+                    <div className={wizardStep >= 3 ? "space-y-6" : "hidden"}>
 
                       <section
                         className={
@@ -2557,22 +2633,22 @@ export function KsefExcelFlexibleImportCard() {
                           </div>
                         )}
 
-                        {mappedImport.summary.generatedValid > 0 && (
-                          <div className="mt-4 flex flex-wrap gap-3">
-                            <button
-                              type="button"
-                              onClick={() => downloadAllXml(mappedImport.invoices)}
-                              className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"
-                            >
-                              <Download className="h-4 w-4" />
-                              Pobierz wszystkie XML
-                            </button>
-                            <p className="self-center text-sm text-slate-500">
-                              XML sa juz gotowe. Pobieranie nie startuje
-                              automatycznie po generacji.
-                            </p>
-                          </div>
-                        )}
+                        <div className="mt-4 flex flex-wrap gap-3">
+                          <button
+                            type="button"
+                            onClick={() => downloadAllXml(mappedImport.invoices)}
+                            disabled={mappedImport.summary.generatedValid === 0}
+                            className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            <Download className="h-4 w-4" />
+                            Pobierz wszystkie XML
+                          </button>
+                          <p className="self-center text-sm text-slate-500">
+                            {mappedImport.summary.generatedValid > 0
+                              ? "XML sa juz gotowe. Pobieranie nie startuje automatycznie po generacji."
+                              : "Przycisk pobierania odblokuje sie, gdy wygenerujesz co najmniej jeden XML."}
+                          </p>
+                        </div>
 
                         {mappedImport.completionSummary.length > 0 && (
                           <div className="mt-4">
@@ -2605,6 +2681,26 @@ export function KsefExcelFlexibleImportCard() {
                             myCompanyRole,
                             defaults.buyerIdentifierType
                           );
+                          const liveMissingLabels = getLiveMissingFieldLabels(
+                            validation,
+                            myCompanyRole,
+                            defaults.buyerIdentifierType
+                          );
+                          const validationMessages = [
+                            ...(liveMissingLabels.length > 0
+                              ? [
+                                  `Brakuje danych potrzebnych do wygenerowania XML: ${liveMissingLabels.join(
+                                    ", "
+                                  )}.`,
+                                ]
+                              : []),
+                            ...invoice.businessErrors.filter(
+                              (error) =>
+                                !error.startsWith(
+                                  "Brakuje danych potrzebnych do wygenerowania XML:"
+                                )
+                            ),
+                          ];
                           const counterpartyNameLabel =
                             myCompanyRole === "SELLER"
                               ? "Nazwa nabywcy"
@@ -2681,18 +2777,19 @@ export function KsefExcelFlexibleImportCard() {
                                     )}
                                   </button>
                                 )}
-                                {invoice.xml && invoice.fileName && (
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      downloadXml(invoice.xml!, invoice.fileName!)
-                                    }
-                                    className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"
-                                  >
-                                    <Download className="h-4 w-4" />
-                                    Pobierz XML
-                                  </button>
-                                )}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    invoice.xml &&
+                                    invoice.fileName &&
+                                    downloadXml(invoice.xml, invoice.fileName)
+                                  }
+                                  disabled={!invoice.xml || !invoice.fileName}
+                                  className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                                >
+                                  <Download className="h-4 w-4" />
+                                  Pobierz XML
+                                </button>
                               </div>
                             </div>
 
@@ -3178,14 +3275,14 @@ export function KsefExcelFlexibleImportCard() {
                               </div>
                             )}
 
-                            {invoice.businessErrors.length > 0 && (
+                            {validationMessages.length > 0 && (
                               <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4">
                                 <div className="flex items-center gap-2 text-sm font-semibold text-rose-700">
                                   <TriangleAlert className="h-4 w-4" />
                                   Komunikaty walidacji
                                 </div>
                                 <div className="mt-3 space-y-2 text-sm leading-6 text-rose-700">
-                                  {invoice.businessErrors.map((error) => (
+                                  {validationMessages.map((error) => (
                                     <p
                                       key={`${invoice.invoiceNumber}-${error}`}
                                     >
