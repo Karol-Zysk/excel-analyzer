@@ -175,6 +175,15 @@ function fieldLabel(label: string, required = false) {
   );
 }
 
+function sanitizePossibleNip(value: string) {
+  const compact = value.replace(/[\s-]+/g, "").trim();
+  if (/^PL\d{10}$/i.test(compact)) {
+    return compact.slice(2);
+  }
+
+  return compact;
+}
+
 function sectionCardClassName() {
   return "rounded-3xl border border-slate-200 bg-white p-4 shadow-sm";
 }
@@ -480,7 +489,12 @@ export function KsefGeneratorPage() {
       ...prev,
       seller: {
         ...prev.seller,
-        [key]: value,
+        [key]:
+          key === "nip" && typeof value === "string"
+            ? (sanitizePossibleNip(
+                value
+              ) as GenerateKsefXmlPayload["seller"][K])
+            : value,
       },
     }));
   }
@@ -509,7 +523,10 @@ export function KsefGeneratorPage() {
       ...prev,
       buyer: {
         ...prev.buyer,
-        [key]: value,
+        [key]:
+          key === "nip" && typeof value === "string"
+            ? (sanitizePossibleNip(value) as GenerateKsefXmlPayload["buyer"][K])
+            : value,
       },
     }));
   }
@@ -660,78 +677,6 @@ export function KsefGeneratorPage() {
             void queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
           }}
         />
-
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">
-                Ranking KSeF
-              </p>
-              <h2 className="mt-1.5 text-base font-semibold text-slate-900">
-                Zloty, srebrny i brazowy medal
-              </h2>
-              <p className="mt-1 text-[13px] text-slate-500">
-                Ranking pokazuje, kto wygenerowal najwiecej XML w zespole.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-slate-100 px-3.5 py-2.5 text-right">
-              <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
-                Twoj wynik
-              </p>
-              <p className="mt-1 text-xl font-bold text-slate-900">{myScore}</p>
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-2.5">
-            {ranking.length > 0 ? (
-              ranking.map((account, index) => (
-                <div
-                  key={account.id}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3"
-                >
-                  <div
-                    className={`grid h-10 w-10 place-items-center rounded-full text-[13px] font-bold ${medalClassName(
-                      index
-                    )}`}
-                  >
-                    {index === 0 ? "1" : index === 1 ? "2" : "3"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] font-semibold text-slate-900">
-                      {account.name}
-                      {account.id === session?.user.id ? " (Ty)" : ""}
-                    </p>
-                    <p className="truncate text-xs text-slate-500">
-                      {index === 0
-                        ? "Zloty medal"
-                        : index === 1
-                        ? "Srebrny medal"
-                        : "Brazowy medal"}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
-                      XML
-                    </p>
-                    <p className="mt-1 text-lg font-bold text-slate-900">
-                      {account.ksefGeneratedCount}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-[13px] text-slate-500">
-                Jeszcze nikt nie wygenerowal XML do rankingu.
-              </div>
-            )}
-          </div>
-
-          <p className="mt-3 text-[11px] leading-5 text-slate-500">
-            Po kazdym poprawnie wygenerowanym XML licznik osoby zwieksza sie
-            automatycznie. Import wsadowy dolicza tyle punktow, ile poprawnych
-            XML udalo sie wygenerowac.
-          </p>
-        </section>
       </div>
     </div>
   );

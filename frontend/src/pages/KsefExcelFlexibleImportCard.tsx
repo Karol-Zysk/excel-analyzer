@@ -312,6 +312,15 @@ function fieldLabel(label: string, required = false) {
   );
 }
 
+function sanitizePossibleNip(value: string) {
+  const compact = value.replace(/[\s-]+/g, "").trim();
+  if (/^PL\d{10}$/i.test(compact)) {
+    return compact.slice(2);
+  }
+
+  return compact;
+}
+
 function optionalText(value: string) {
   const trimmed = value.trim();
   return trimmed ? trimmed : undefined;
@@ -1358,7 +1367,10 @@ export function KsefExcelFlexibleImportCard({
   ) {
     setDefaults((current) => ({
       ...current,
-      [key]: value,
+      [key]:
+        key === "sellerNip" && typeof value === "string"
+          ? (sanitizePossibleNip(value) as FlexibleDefaultsState[K])
+          : value,
     }));
   }
 
@@ -1377,7 +1389,10 @@ export function KsefExcelFlexibleImportCard({
         ...current,
         [invoiceKey]: {
           ...invoice,
-          [field]: value,
+          [field]:
+            field === "buyerNip" && typeof value === "string"
+              ? (sanitizePossibleNip(value) as InvoiceOverrideState[K])
+              : value,
         },
       };
     });
@@ -1720,57 +1735,57 @@ export function KsefExcelFlexibleImportCard({
       {isWizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-0 sm:p-4">
           <div className="flex h-[100dvh] w-full max-w-6xl flex-col overflow-hidden rounded-none bg-white shadow-2xl sm:h-[96vh] sm:rounded-[2rem]">
-            <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
-              <div>
+            <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-3">
+              <div className="shrink-0">
                 <p className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
                   <Sparkles className="h-3.5 w-3.5" />
                   Kreator KSeF
                 </p>
               </div>
 
+              <div className="min-w-0 flex-1 overflow-x-auto">
+                <div className="flex min-w-max items-center gap-1.5">
+                  {WIZARD_STEPS.map((step) => {
+                    const available = isStepAvailable(step.id);
+                    const active = wizardStep === step.id;
+
+                    return (
+                      <button
+                        key={step.id}
+                        type="button"
+                        disabled={!available}
+                        onClick={() => setWizardStep(step.id)}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold transition ${
+                          active
+                            ? "bg-sky-500 text-white"
+                            : available
+                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                            : "cursor-not-allowed bg-slate-100 text-slate-400"
+                        }`}
+                      >
+                        <span
+                          className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                            active
+                              ? "bg-white/20 text-white"
+                              : "bg-white text-slate-600"
+                          }`}
+                        >
+                          {step.id}
+                        </span>
+                        {step.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <button
                 type="button"
                 onClick={() => setIsWizardOpen(false)}
-                className="rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+                className="shrink-0 rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
               >
                 <X className="h-4.5 w-4.5" />
               </button>
-            </div>
-
-            <div className="border-b border-slate-200 px-5 py-3">
-              <div className="flex flex-wrap gap-2">
-                {WIZARD_STEPS.map((step) => {
-                  const available = isStepAvailable(step.id);
-                  const active = wizardStep === step.id;
-
-                  return (
-                    <button
-                      key={step.id}
-                      type="button"
-                      disabled={!available}
-                      onClick={() => setWizardStep(step.id)}
-                      className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition ${
-                        active
-                          ? "bg-sky-500 text-white"
-                          : available
-                          ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                          : "cursor-not-allowed bg-slate-100 text-slate-400"
-                      }`}
-                    >
-                      <span
-                        className={`inline-flex h-5.5 w-5.5 items-center justify-center rounded-full text-[11px] ${
-                          active
-                            ? "bg-white/20 text-white"
-                            : "bg-white text-slate-600"
-                        }`}
-                      >
-                        {step.id}
-                      </span>
-                      {step.label}
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto px-5 py-5">
@@ -2286,11 +2301,11 @@ export function KsefExcelFlexibleImportCard({
                       </div>
                     </div>
 
-                    <div className={wizardStep >= 3 ? "space-y-6" : "hidden"}>
+                    <div className={wizardStep === 3 ? "space-y-6" : "hidden"}>
 
                       <section
                         className={
-                          wizardStep >= 3
+                          wizardStep === 3
                             ? "rounded-3xl border border-slate-200 bg-white p-5"
                             : "hidden"
                         }
@@ -2394,7 +2409,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4
+                                wizardStep === 3
                                   ? "space-y-1.5 lg:col-span-2"
                                   : "hidden"
                               }
@@ -2413,7 +2428,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4 ? "space-y-1.5" : "hidden"
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
                               }
                             >
                               {fieldLabel("Email mojej firmy")}
@@ -2430,7 +2445,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4 ? "space-y-1.5" : "hidden"
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
                               }
                             >
                               {fieldLabel("Telefon mojej firmy")}
@@ -2481,7 +2496,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4 ? "space-y-1.5" : "hidden"
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
                               }
                             >
                               {fieldLabel("Waluta")}
@@ -2499,7 +2514,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4 ? "space-y-1.5" : "hidden"
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
                               }
                             >
                               {fieldLabel("Miejsce wystawienia")}
@@ -2562,7 +2577,7 @@ export function KsefExcelFlexibleImportCard({
                             </label>
                             <label
                               className={
-                                wizardStep === 4
+                                wizardStep === 3
                                   ? "space-y-1.5 lg:col-span-2"
                                   : "hidden"
                               }

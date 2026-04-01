@@ -631,7 +631,8 @@ export class KsefService {
   private readonly schemaFilesPromise = this.loadSchemaFiles();
 
   async generateXml(payload: GenerateKsefXmlDto): Promise<GenerateKsefXmlResponse> {
-    const businessErrors = this.validateBusinessRules(payload);
+    const sanitizedPayload = this.sanitizePayloadNips(payload);
+    const businessErrors = this.validateBusinessRules(sanitizedPayload);
     if (businessErrors.length > 0) {
       return {
         valid: false,
@@ -648,10 +649,10 @@ export class KsefService {
       };
     }
 
-    const normalized = this.normalizePayload(payload);
+    const normalized = this.normalizePayload(sanitizedPayload);
     const xml = this.buildXml(normalized);
     const schemaErrors = await this.validateXmlAgainstSchema(xml);
-    const warnings = this.buildWarnings(payload);
+    const warnings = this.buildWarnings(sanitizedPayload);
 
     return {
       valid: schemaErrors.length === 0,
@@ -1186,7 +1187,7 @@ export class KsefService {
         issueDate: this.normalizeOptionalTextInput(invoiceOverride.issueDate),
         saleDate: this.normalizeOptionalTextInput(invoiceOverride.saleDate),
         buyerName: this.normalizeOptionalTextInput(invoiceOverride.buyerName),
-        buyerNip: this.normalizeOptionalTextInput(invoiceOverride.buyerNip),
+        buyerNip: this.normalizeOptionalNipInput(invoiceOverride.buyerNip),
         buyerAddressLine1: this.normalizeOptionalTextInput(invoiceOverride.buyerAddressLine1),
         buyerAddressLine2: this.normalizeOptionalTextInput(invoiceOverride.buyerAddressLine2),
         buyerCountryCode: this.normalizeOptionalTextInput(
@@ -1207,7 +1208,7 @@ export class KsefService {
       },
       mapping,
       defaults: {
-        sellerNip: this.normalizeOptionalTextInput(safeConfig.defaults?.sellerNip),
+        sellerNip: this.normalizeOptionalNipInput(safeConfig.defaults?.sellerNip),
         sellerName: this.normalizeOptionalTextInput(safeConfig.defaults?.sellerName),
         sellerCountryCode: this.normalizeOptionalTextInput(safeConfig.defaults?.sellerCountryCode)?.toUpperCase(),
         sellerAddressLine1: this.normalizeOptionalTextInput(safeConfig.defaults?.sellerAddressLine1),
@@ -1222,7 +1223,7 @@ export class KsefService {
             ? (buyerIdentifierType as GenerateKsefXmlDto["buyer"]["identifierType"])
             : undefined,
         defaultBuyerName: this.normalizeOptionalTextInput(safeConfig.defaults?.defaultBuyerName),
-        defaultBuyerNip: this.normalizeOptionalTextInput(safeConfig.defaults?.defaultBuyerNip),
+        defaultBuyerNip: this.normalizeOptionalNipInput(safeConfig.defaults?.defaultBuyerNip),
         defaultBuyerAddressLine1: this.normalizeOptionalTextInput(
           safeConfig.defaults?.defaultBuyerAddressLine1
         ),
@@ -1274,6 +1275,40 @@ export class KsefService {
 
     const trimmed = value.trim();
     return trimmed ? trimmed : undefined;
+  }
+
+  private normalizeOptionalNipInput(value: unknown) {
+    const normalized = this.normalizeOptionalTextInput(value);
+    if (!normalized) {
+      return undefined;
+    }
+
+    const compact = normalized.replace(/[\s-]+/g, "");
+    if (/^PL\d{10}$/i.test(compact)) {
+      return compact.slice(2);
+    }
+
+    return compact;
+  }
+
+  private sanitizePayloadNips(payload: GenerateKsefXmlDto): GenerateKsefXmlDto {
+    const sellerNip = this.normalizeOptionalNipInput(payload.seller.nip) ?? payload.seller.nip;
+    const buyerNip =
+      payload.buyer.identifierType === "NIP"
+        ? this.normalizeOptionalNipInput(payload.buyer.nip) ?? payload.buyer.nip
+        : payload.buyer.nip;
+
+    return {
+      ...payload,
+      seller: {
+        ...payload.seller,
+        nip: sellerNip
+      },
+      buyer: {
+        ...payload.buyer,
+        nip: buyerNip
+      }
+    };
   }
 
   private normalizeOptionalBooleanInput(value: unknown) {
@@ -1720,12 +1755,14 @@ export class KsefService {
       config.defaults.defaultBuyerName,
       true
     );
-    const counterpartyNip = resolveTextWithFallback(
-      "buyerNip",
-      "defaultBuyerNip",
-      invoiceOverride?.buyerNip,
-      config.defaults.defaultBuyerNip,
-      false
+    const counterpartyNip = this.normalizeOptionalNipInput(
+      resolveTextWithFallback(
+        "buyerNip",
+        "defaultBuyerNip",
+        invoiceOverride?.buyerNip,
+        config.defaults.defaultBuyerNip,
+        false
+      )
     );
     let counterpartyAddressLine1 = resolveTextWithFallback(
       "buyerAddressLine1",
