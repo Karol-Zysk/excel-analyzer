@@ -280,7 +280,7 @@ const MY_COMPANY_ROLE_OPTIONS: Array<{
 type WizardStep = (typeof WIZARD_STEPS)[number]["id"];
 
 function fieldClassName() {
-  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] leading-5 text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
+  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[12px] leading-5 text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
 }
 
 function editorFieldClassName(requiredMissing: boolean, optionalMissing = false) {
@@ -305,7 +305,7 @@ function editorFieldClassName(requiredMissing: boolean, optionalMissing = false)
 
 function fieldLabel(label: string, required = false) {
   return (
-    <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-500">
+    <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
       {label}
       {required ? " *" : ""}
     </span>
@@ -1624,45 +1624,45 @@ export function KsefExcelFlexibleImportCard({
   }
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <section className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
             <Sparkles className="h-3.5 w-3.5" />
             Kreator importu Excel
           </div>
-          <h2 className="mt-3 text-xl font-semibold text-slate-900">
+          <h2 className="mt-2.5 text-lg font-semibold text-slate-900">
             Import pliku do KSeF krok po kroku
           </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-500">
+          <p className="mt-1.5 text-[13px] leading-5 text-slate-500">
             Ten tryb prowadzi przez plik, mapowanie, pola wymagane i pola
             opcjonalne w duzym dialogu. Celem jest prostszy import bez
             przytlaczania iloscia danych.
           </p>
         </div>
-        <div className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 px-3.5 py-2.5 text-[13px] text-sky-800">
           Najlepiej dziala dla eksportow z Optimy i podobnych arkuszy z sumami
           netto / VAT / brutto.
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-          <p className="text-sm font-semibold text-slate-900">Stan kreatora</p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl bg-white px-4 py-3 text-sm">
+      <div className="mt-4 grid gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+          <p className="text-[13px] font-semibold text-slate-900">Stan kreatora</p>
+          <div className="mt-3 grid gap-2.5 sm:grid-cols-3">
+            <div className="rounded-2xl bg-white px-3 py-2.5 text-[13px]">
               <p className="text-slate-500">Plik</p>
               <p className="mt-1 font-semibold text-slate-900">
                 {file ? file.name : "Brak"}
               </p>
             </div>
-            <div className="rounded-2xl bg-white px-4 py-3 text-sm">
+            <div className="rounded-2xl bg-white px-3 py-2.5 text-[13px]">
               <p className="text-slate-500">Analiza</p>
               <p className="mt-1 font-semibold text-slate-900">
                 {analysis ? `${analysis.columns.length} kolumn` : "Jeszcze nie"}
               </p>
             </div>
-            <div className="rounded-2xl bg-white px-4 py-3 text-sm">
+            <div className="rounded-2xl bg-white px-3 py-2.5 text-[13px]">
               <p className="text-slate-500">Wynik</p>
               <p className="mt-1 font-semibold text-slate-900">
                 {mappedImport
@@ -1673,11 +1673,11 @@ export function KsefExcelFlexibleImportCard({
           </div>
 
           {setupChecklist.length > 0 && (
-            <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-              <p className="text-sm font-semibold text-amber-900">
+            <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 p-3">
+              <p className="text-[13px] font-semibold text-amber-900">
                 Do domkniecia
               </p>
-              <div className="mt-2 space-y-2 text-sm text-amber-800">
+              <div className="mt-2 space-y-1.5 text-[13px] text-amber-800">
                 {setupChecklist.slice(0, 4).map((item) => (
                   <p key={item}>{item}</p>
                 ))}
@@ -1689,18 +1689,18 @@ export function KsefExcelFlexibleImportCard({
           )}
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-5">
-          <p className="text-sm font-semibold text-slate-900">Start</p>
-          <p className="mt-2 text-sm leading-6 text-slate-500">
+        <div className="rounded-3xl border border-slate-200 bg-white p-4">
+          <p className="text-[13px] font-semibold text-slate-900">Start</p>
+          <p className="mt-1.5 text-[13px] leading-5 text-slate-500">
             Otworz duzy dialog i przejdz przez proces krok po kroku: plik,
             mapowanie, wymagane dane, opcjonalne dane i wynik.
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mt-3 flex flex-wrap gap-2.5">
             <button
               type="button"
               onClick={() => openWizard()}
-              className="inline-flex items-center gap-2 rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600"
+              className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600"
             >
               <Sparkles className="h-4 w-4" />
               {analysis || mappedImport ? "Wroc do kreatora" : "Otworz kreator"}
@@ -1709,7 +1709,7 @@ export function KsefExcelFlexibleImportCard({
               type="button"
               onClick={resetWizard}
               disabled={!file && !analysis && !mappedImport}
-              className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Reset
             </button>
@@ -1718,9 +1718,9 @@ export function KsefExcelFlexibleImportCard({
       </div>
 
       {isWizardOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
-          <div className="flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-[2rem] bg-white shadow-2xl">
-            <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-3.5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-0 sm:p-4">
+          <div className="flex h-[100dvh] w-full max-w-6xl flex-col overflow-hidden rounded-none bg-white shadow-2xl sm:h-[96vh] sm:rounded-[2rem]">
+            <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
               <div>
                 <p className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
                   <Sparkles className="h-3.5 w-3.5" />
@@ -1737,7 +1737,7 @@ export function KsefExcelFlexibleImportCard({
               </button>
             </div>
 
-            <div className="border-b border-slate-200 px-6 py-4">
+            <div className="border-b border-slate-200 px-5 py-3">
               <div className="flex flex-wrap gap-2">
                 {WIZARD_STEPS.map((step) => {
                   const available = isStepAvailable(step.id);
@@ -1749,7 +1749,7 @@ export function KsefExcelFlexibleImportCard({
                       type="button"
                       disabled={!available}
                       onClick={() => setWizardStep(step.id)}
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                      className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition ${
                         active
                           ? "bg-sky-500 text-white"
                           : available
@@ -1758,7 +1758,7 @@ export function KsefExcelFlexibleImportCard({
                       }`}
                     >
                       <span
-                        className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs ${
+                        className={`inline-flex h-5.5 w-5.5 items-center justify-center rounded-full text-[11px] ${
                           active
                             ? "bg-white/20 text-white"
                             : "bg-white text-slate-600"
@@ -1773,47 +1773,47 @@ export function KsefExcelFlexibleImportCard({
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-6">
+            <div className="flex-1 overflow-y-auto px-5 py-5">
               <div className={wizardStep === 1 ? "" : "hidden"}>
                 <div className="grid gap-6 ">
-                  <form className="space-y-4" onSubmit={handleAnalyzeSubmit}>
-                    <div className="rounded-3xl border border-slate-200 bg-white p-5">
+                  <form className="space-y-3" onSubmit={handleAnalyzeSubmit}>
+                    <div className="rounded-3xl border border-slate-200 bg-white p-4">
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">
                         Krok 0
                       </p>
-                      <h4 className="mt-2 text-lg font-semibold text-slate-900">
+                      <h4 className="mt-1.5 text-base font-semibold text-slate-900">
                         Ustal role i dane mojej firmy
                       </h4>
-                      <p className="mt-2 text-sm leading-6 text-slate-500">
+                      <p className="mt-1.5 text-[13px] leading-5 text-slate-500">
                         Najpierw wybierasz, czy Twoja firma jest na tej fakturze
                         sprzedawca czy nabywca. Dane firmy mozesz potem pobierac
                         z bazy podmiotow jednym kliknieciem.
                       </p>
 
-                      <div className="mt-5 grid gap-3 lg:grid-cols-2">
+                      <div className="mt-4 grid gap-2.5 lg:grid-cols-2">
                         {MY_COMPANY_ROLE_OPTIONS.map((option) => (
                           <button
                             key={option.value}
                             type="button"
                             onClick={() => setMyCompanyRole(option.value)}
-                            className={`rounded-3xl border p-4 text-left transition ${
+                            className={`rounded-3xl border p-3.5 text-left transition ${
                               myCompanyRole === option.value
                                 ? "border-sky-300 bg-sky-50"
                                 : "border-slate-200 bg-slate-50 hover:bg-slate-100"
                             }`}
                           >
-                            <p className="text-sm font-semibold text-slate-900">
+                            <p className="text-[13px] font-semibold text-slate-900">
                               {option.label}
                             </p>
-                            <p className="mt-1 text-sm leading-6 text-slate-500">
+                            <p className="mt-1 text-[13px] leading-5 text-slate-500">
                               {option.helper}
                             </p>
                           </button>
                         ))}
                       </div>
 
-                      <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
+                      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+                        <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
                           <label className="flex-1 space-y-1.5">
                             {fieldLabel("Uzyj danych z bazy")}
                             <select
@@ -1836,7 +1836,7 @@ export function KsefExcelFlexibleImportCard({
                             <button
                               type="button"
                               onClick={clearMyCompanyDraft}
-                              className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white"
+                              className="rounded-xl border border-slate-200 px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-white"
                             >
                               Nowy podmiot
                             </button>
@@ -1844,7 +1844,7 @@ export function KsefExcelFlexibleImportCard({
                               type="button"
                               onClick={handleSaveMyCompanyProfile}
                               disabled={saveCompanyProfileMutation.isPending}
-                              className="inline-flex items-center gap-2 rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+                              className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                               <Save className="h-4 w-4" />
                               {saveCompanyProfileMutation.isPending
@@ -1860,14 +1860,14 @@ export function KsefExcelFlexibleImportCard({
                                 !selectedCompanyProfileId ||
                                 deleteCompanyProfileMutation.isPending
                               }
-                              className="rounded-2xl border border-rose-200 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
+                              className="rounded-xl border border-rose-200 px-3.5 py-2 text-[13px] font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                               Usun
                             </button>
                           </div>
                         </div>
 
-                        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                        <div className="mt-3 grid gap-3 lg:grid-cols-2">
                           <label className="space-y-1.5">
                             {fieldLabel("Nazwa mojej firmy", true)}
                             <input

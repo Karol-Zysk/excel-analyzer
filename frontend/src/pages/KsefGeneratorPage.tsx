@@ -163,12 +163,12 @@ function createDefaultForm(): GenerateKsefXmlPayload {
 }
 
 function fieldClassName() {
-  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
+  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] leading-5 text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
 }
 
 function fieldLabel(label: string, required = false) {
   return (
-    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+    <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-500">
       {label}
       {required ? " *" : ""}
     </span>
@@ -176,7 +176,7 @@ function fieldLabel(label: string, required = false) {
 }
 
 function sectionCardClassName() {
-  return "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm";
+  return "rounded-3xl border border-slate-200 bg-white p-4 shadow-sm";
 }
 
 function downloadXml(xml: string, fileName: string) {
@@ -633,71 +633,71 @@ export function KsefGeneratorPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+    <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-4">
+      <div className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
             <ShieldCheck className="h-3.5 w-3.5" />
             FA(3) / KSeF
           </div>
-          <h1 className="mt-3 text-2xl font-bold text-slate-900">
+          <h1 className="mt-2.5 text-[26px] font-bold text-slate-900">
             KSeF XML Generator
           </h1>
-          <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-500">
+          <p className="mt-1 max-w-3xl text-[13px] leading-5 text-slate-500">
             Generator tworzy XML zgodny ze struktura FA(3), waliduje dane
             wejsciowe oraz sprawdza gotowy dokument lokalnie przeciw oficjalnej
             schemie XSD. Ten ekran obsluguje fakture podstawowa VAT.
           </p>
         </div>
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-[13px] text-amber-800">
           Umiesz liczyć ? Licz na siebiezenie n
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="grid flex-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <KsefExcelFlexibleImportCard
           onGenerationSuccess={() => {
             void queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
           }}
         />
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">
                 Ranking KSeF
               </p>
-              <h2 className="mt-2 text-lg font-semibold text-slate-900">
+              <h2 className="mt-1.5 text-base font-semibold text-slate-900">
                 Zloty, srebrny i brazowy medal
               </h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-[13px] text-slate-500">
                 Ranking pokazuje, kto wygenerowal najwiecej XML w zespole.
               </p>
             </div>
-            <div className="rounded-2xl bg-slate-100 px-4 py-3 text-right">
+            <div className="rounded-2xl bg-slate-100 px-3.5 py-2.5 text-right">
               <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
                 Twoj wynik
               </p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">{myScore}</p>
+              <p className="mt-1 text-xl font-bold text-slate-900">{myScore}</p>
             </div>
           </div>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-4 space-y-2.5">
             {ranking.length > 0 ? (
               ranking.map((account, index) => (
                 <div
                   key={account.id}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4"
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3"
                 >
                   <div
-                    className={`grid h-11 w-11 place-items-center rounded-full text-sm font-bold ${medalClassName(
+                    className={`grid h-10 w-10 place-items-center rounded-full text-[13px] font-bold ${medalClassName(
                       index
                     )}`}
                   >
                     {index === 0 ? "1" : index === 1 ? "2" : "3"}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-slate-900">
+                    <p className="truncate text-[13px] font-semibold text-slate-900">
                       {account.name}
                       {account.id === session?.user.id ? " (Ty)" : ""}
                     </p>
@@ -713,20 +713,20 @@ export function KsefGeneratorPage() {
                     <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
                       XML
                     </p>
-                    <p className="mt-1 text-xl font-bold text-slate-900">
+                    <p className="mt-1 text-lg font-bold text-slate-900">
                       {account.ksefGeneratedCount}
                     </p>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+              <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-[13px] text-slate-500">
                 Jeszcze nikt nie wygenerowal XML do rankingu.
               </div>
             )}
           </div>
 
-          <p className="mt-4 text-xs leading-5 text-slate-500">
+          <p className="mt-3 text-[11px] leading-5 text-slate-500">
             Po kazdym poprawnie wygenerowanym XML licznik osoby zwieksza sie
             automatycznie. Import wsadowy dolicza tyle punktow, ile poprawnych
             XML udalo sie wygenerowac.
