@@ -95,6 +95,7 @@ type InvoiceOverrideState = {
   buyerAddressLine2: string;
   buyerCountryCode: string;
   currency: string;
+  exemptionReason: string;
   paymentDueDate: string;
   paymentMethod: "" | KsefPaymentMethodValue;
   paymentBankAccount: string;
@@ -195,6 +196,7 @@ const OPTIONAL_MAPPING_FIELDS: Array<{
   { key: "buyerAddressLine2", label: "Adres kontrahenta linia 2" },
   { key: "buyerCountryCode", label: "Kod kraju kontrahenta" },
   { key: "currency", label: "Waluta" },
+  { key: "exemptionReason", label: "Podstawa zwolnienia z VAT" },
   { key: "itemDescription", label: "Opis pozycji" },
   { key: "itemProductCode", label: "Kod pozycji" },
   { key: "itemUnit", label: "Jednostka" },
@@ -278,7 +280,7 @@ const MY_COMPANY_ROLE_OPTIONS: Array<{
 type WizardStep = (typeof WIZARD_STEPS)[number]["id"];
 
 function fieldClassName() {
-  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
+  return "w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] leading-5 text-slate-700 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100";
 }
 
 function editorFieldClassName(requiredMissing: boolean, optionalMissing = false) {
@@ -303,7 +305,7 @@ function editorFieldClassName(requiredMissing: boolean, optionalMissing = false)
 
 function fieldLabel(label: string, required = false) {
   return (
-    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+    <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-500">
       {label}
       {required ? " *" : ""}
     </span>
@@ -344,6 +346,7 @@ function buildInvoiceOverridesState(
         buyerAddressLine2: invoice.preview.buyerAddressLine2 ?? "",
         buyerCountryCode: invoice.preview.buyerCountryCode ?? "PL",
         currency: invoice.preview.currency ?? "PLN",
+        exemptionReason: invoice.preview.exemptionReason ?? "",
         paymentDueDate: invoice.preview.paymentDueDate ?? "",
         paymentMethod:
           (invoice.preview.paymentMethod as KsefPaymentMethodValue | undefined) ??
@@ -420,6 +423,7 @@ function buildInvoiceOverridePayload(invoiceOverrides: InvoiceOverridesState) {
         buyerAddressLine2: optionalText(invoice.buyerAddressLine2),
         buyerCountryCode: optionalText(invoice.buyerCountryCode),
         currency: optionalText(invoice.currency),
+        exemptionReason: optionalText(invoice.exemptionReason),
         paymentDueDate: optionalText(invoice.paymentDueDate),
         paymentMethod: invoice.paymentMethod || undefined,
         paymentBankAccount: optionalText(invoice.paymentBankAccount),
@@ -453,6 +457,7 @@ function getInvoiceDraftValidation(
       buyerName: true,
       buyerNip: buyerIdentifierType === "NIP",
       buyerAddressLine1: myCompanyRole === "BUYER",
+      exemptionReason: false,
       items: [] as Array<{
         rowNumber: number;
         name: boolean;
@@ -467,6 +472,12 @@ function getInvoiceDraftValidation(
 
   const canDeriveTaxRate =
     invoice.preview.netTotal !== undefined && invoice.preview.vatTotal !== undefined;
+  const hasExemptItems = invoiceDraft.items.some(
+    (item) =>
+      item.taxRate === "zw" ||
+      invoice.preview.items.find((preview) => preview.rowNumber === item.rowNumber)
+        ?.taxRate === "zw"
+  );
   const itemMissing = invoiceDraft.items.map((item) => {
     const quantityMissing = !hasPositiveNumberValue(item.quantity);
     const unitNetPriceMissing =
@@ -490,6 +501,7 @@ function getInvoiceDraftValidation(
     !hasTextValue(invoiceDraft.buyerName) ||
     (buyerIdentifierType === "NIP" && !hasTextValue(invoiceDraft.buyerNip)) ||
     (myCompanyRole === "BUYER" && !hasTextValue(invoiceDraft.buyerAddressLine1)) ||
+    (hasExemptItems && !hasTextValue(invoiceDraft.exemptionReason)) ||
     itemMissing.some(
       (item) =>
         item.name ||
@@ -506,6 +518,7 @@ function getInvoiceDraftValidation(
     buyerNip: buyerIdentifierType === "NIP" && !hasTextValue(invoiceDraft.buyerNip),
     buyerAddressLine1:
       myCompanyRole === "BUYER" && !hasTextValue(invoiceDraft.buyerAddressLine1),
+    exemptionReason: hasExemptItems && !hasTextValue(invoiceDraft.exemptionReason),
     items: itemMissing,
     hasRequiredMissing,
   };
@@ -534,6 +547,9 @@ function getLiveMissingFieldLabels(
   }
   if (validation.buyerAddressLine1) {
     labels.add(myCompanyRole === "SELLER" ? "Adres nabywcy" : "Adres sprzedawcy");
+  }
+  if (validation.exemptionReason) {
+    labels.add("Podstawa zwolnienia z VAT");
   }
 
   validation.items.forEach((item) => {
@@ -699,6 +715,10 @@ function buildSingleInvoicePayload(
     } satisfies GenerateKsefXmlPayload["items"][number];
   });
 
+  const exemptionReason = items.some((item) => item.taxRate === "zw")
+    ? optionalText(invoiceDraft.exemptionReason)
+    : undefined;
+
   const payment =
     optionalText(invoiceDraft.paymentDueDate) ||
     invoiceDraft.paymentMethod ||
@@ -738,6 +758,7 @@ function buildSingleInvoicePayload(
       splitPayment: defaults.splitPayment,
       simplifiedProcedure: defaults.simplifiedProcedure,
       relatedEntities: defaults.relatedEntities,
+      exemptionReason,
       systemName: optionalText(defaults.systemName),
       payment,
       items,
@@ -768,6 +789,7 @@ function buildSingleInvoicePayload(
     splitPayment: defaults.splitPayment,
     simplifiedProcedure: defaults.simplifiedProcedure,
     relatedEntities: defaults.relatedEntities,
+    exemptionReason,
     systemName: optionalText(defaults.systemName),
     payment,
     items,
@@ -805,6 +827,7 @@ function buildInvoicePreviewFromDraft(
     issueDate: optionalText(invoiceDraft.issueDate),
     saleDate: optionalText(invoiceDraft.saleDate),
     currency: optionalText(invoiceDraft.currency),
+    exemptionReason: optionalText(invoiceDraft.exemptionReason),
     paymentDueDate: optionalText(invoiceDraft.paymentDueDate),
     paymentMethod: invoiceDraft.paymentMethod || undefined,
     paymentBankAccount: optionalText(invoiceDraft.paymentBankAccount),
@@ -1697,26 +1720,20 @@ export function KsefExcelFlexibleImportCard({
       {isWizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
           <div className="flex h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-[2rem] bg-white shadow-2xl">
-            <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-6 py-5">
-              <div className="max-w-3xl">
+            <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-6 py-3.5">
+              <div>
                 <p className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
                   <Sparkles className="h-3.5 w-3.5" />
                   Kreator KSeF
-                </p>
-                <h3 className="mt-3 text-2xl font-semibold text-slate-900">
-                  Import Excel step by step
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Prowadzi przez kolejne etapy i nie pokazuje wszystkiego naraz.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => setIsWizardOpen(false)}
-                className="rounded-2xl border border-slate-200 p-3 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+                className="rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4.5 w-4.5" />
               </button>
             </div>
 
@@ -2768,13 +2785,22 @@ export function KsefExcelFlexibleImportCard({
                           const canDeriveTaxRate =
                             invoice.preview.netTotal !== undefined &&
                             invoice.preview.vatTotal !== undefined;
+                          const requiresExemptionReason = invoiceDraft
+                            ? invoiceDraft.items.some(
+                                (item) =>
+                                  item.taxRate === "zw" ||
+                                  invoice.preview.items.find(
+                                    (preview) => preview.rowNumber === item.rowNumber
+                                  )?.taxRate === "zw"
+                              )
+                            : false;
 
                           return (
                           <div
                             key={`${
                               invoice.invoiceNumber
                             }-${invoice.rowNumbers.join("-")}`}
-                            className={`rounded-3xl border bg-white p-5 shadow-sm ${
+                            className={`rounded-3xl border bg-white p-4 shadow-sm ${
                               validation.hasRequiredMissing
                                 ? "border-rose-200"
                                 : "border-slate-200"
@@ -2783,12 +2809,12 @@ export function KsefExcelFlexibleImportCard({
                             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                               <div>
                                 <div className="flex flex-wrap items-center gap-3">
-                                  <p className="text-base font-semibold text-slate-900">
+                                  <p className="text-sm font-semibold text-slate-900">
                                     {invoice.invoiceNumber}
                                   </p>
                                   <StatusBadge status={invoice.status} />
                                 </div>
-                                <p className="mt-1 text-sm text-slate-500">
+                                <p className="mt-1 text-xs text-slate-500">
                                   Wiersze arkusza:{" "}
                                   {invoice.rowNumbers.join(", ")}
                                 </p>
@@ -2806,7 +2832,7 @@ export function KsefExcelFlexibleImportCard({
                                         singleInvoiceMutation.variables
                                           ?.invoiceKey === invoiceKey)
                                     }
-                                    className="inline-flex items-center gap-2 rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+                                    className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
                                   >
                                     {singleInvoiceMutation.isPending &&
                                     singleInvoiceMutation.variables?.invoiceKey ===
@@ -2833,7 +2859,7 @@ export function KsefExcelFlexibleImportCard({
                                     downloadXml(invoice.xml, invoice.fileName)
                                   }
                                   disabled={!invoice.xml || !invoice.fileName}
-                                  className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                                  className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-emerald-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
                                 >
                                   <Download className="h-4 w-4" />
                                   Pobierz XML
@@ -2842,13 +2868,13 @@ export function KsefExcelFlexibleImportCard({
                             </div>
 
                             <div className="mt-4 grid gap-3 md:grid-cols-3">
-                              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm">
+                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
                                 <p className="text-slate-500">Wiersz arkusza</p>
                                 <p className="mt-1 font-semibold text-slate-900">
                                   {invoice.rowNumbers.join(", ")}
                                 </p>
                               </div>
-                              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm">
+                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
                                 <p className="text-slate-500">
                                   Netto / VAT / Brutto
                                 </p>
@@ -2867,7 +2893,7 @@ export function KsefExcelFlexibleImportCard({
                                   ).toFixed(2)}
                                 </p>
                               </div>
-                              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm">
+                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
                                 <p className="text-slate-500">Status formularza</p>
                                 <p className="mt-1 font-semibold text-slate-900">
                                   {validation.hasRequiredMissing
@@ -2878,32 +2904,32 @@ export function KsefExcelFlexibleImportCard({
                             </div>
 
                             {invoiceDraft && (
-                              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                   <div>
-                                    <p className="text-sm font-semibold text-slate-900">
+                                    <p className="text-[13px] font-semibold text-slate-900">
                                       Uzupelnij dane tej faktury
                                     </p>
-                                    <p className="mt-1 text-sm text-slate-500">
+                                    <p className="mt-1 text-xs text-slate-500">
                                       Wszystkie pola mozesz od razu poprawic.
                                       Czerwone sa wymagane i puste, zolte sa
                                       opcjonalne i jeszcze niewypelnione.
                                     </p>
                                   </div>
-                                  <div className="flex flex-wrap gap-2 text-xs font-medium">
-                                    <span className="rounded-full bg-white px-3 py-1 text-slate-600 shadow-sm">
+                                  <div className="flex flex-wrap gap-2 text-[11px] font-medium">
+                                    <span className="rounded-full bg-white px-2.5 py-1 text-slate-600 shadow-sm">
                                       Faktura: {invoice.rowNumbers.join(", ")}
                                     </span>
-                                    <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-700">
+                                    <span className="rounded-full bg-rose-100 px-2.5 py-1 text-rose-700">
                                       Wymagane
                                     </span>
-                                    <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+                                    <span className="rounded-full bg-amber-100 px-2.5 py-1 text-amber-700">
                                       Opcjonalne
                                     </span>
                                   </div>
                                 </div>
 
-                                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                                <div className="mt-4 grid gap-2.5 md:grid-cols-2">
                                   <label className="space-y-1.5">
                                     {fieldLabel("Numer faktury", true)}
                                     <input
@@ -3051,6 +3077,26 @@ export function KsefExcelFlexibleImportCard({
                                       }
                                     />
                                   </label>
+                                  <label className="space-y-1.5 md:col-span-2">
+                                    {fieldLabel(
+                                      "Podstawa zwolnienia z VAT",
+                                      requiresExemptionReason
+                                    )}
+                                    <textarea
+                                      className={editorFieldClassName(
+                                        validation.exemptionReason
+                                      )}
+                                      rows={2}
+                                      value={invoiceDraft.exemptionReason}
+                                      onChange={(event) =>
+                                        updateInvoiceOverrideField(
+                                          invoiceKey,
+                                          "exemptionReason",
+                                          event.target.value
+                                        )
+                                      }
+                                    />
+                                  </label>
                                   <label className="space-y-1.5">
                                     {fieldLabel("Termin platnosci")}
                                     <input
@@ -3123,9 +3169,9 @@ export function KsefExcelFlexibleImportCard({
                                   </label>
                                 </div>
 
-                                <div className="mt-5 space-y-4">
+                                <div className="mt-4 space-y-3">
                                     <div className="flex flex-wrap items-center justify-between gap-3">
-                                      <p className="text-sm font-semibold text-slate-900">
+                                      <p className="text-[13px] font-semibold text-slate-900">
                                         Pozycje tej faktury
                                       </p>
                                       <button
@@ -3133,9 +3179,9 @@ export function KsefExcelFlexibleImportCard({
                                         onClick={() =>
                                           addInvoiceOverrideItem(invoiceKey)
                                         }
-                                        className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50"
                                       >
-                                        <Plus className="h-4 w-4" />
+                                        <Plus className="h-3.5 w-3.5" />
                                         Dodaj pozycje
                                       </button>
                                     </div>
@@ -3153,7 +3199,7 @@ export function KsefExcelFlexibleImportCard({
                                         return (
                                           <div
                                             key={`${invoiceKey}-editor-${item.rowNumber}`}
-                                            className={`rounded-2xl border bg-white p-4 ${
+                                            className={`rounded-2xl border bg-white p-3.5 ${
                                               itemValidation &&
                                               (itemValidation.name ||
                                                 itemValidation.unit ||
@@ -3165,7 +3211,7 @@ export function KsefExcelFlexibleImportCard({
                                             }`}
                                           >
                                             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                                              <p className="text-sm font-semibold text-slate-900">
+                                              <p className="text-[13px] font-semibold text-slate-900">
                                                 Pozycja {index + 1}
                                               </p>
                                               <div className="flex flex-wrap gap-2">
@@ -3207,7 +3253,7 @@ export function KsefExcelFlexibleImportCard({
                                                       item.description
                                                     )
                                                   )}
-                                                  rows={3}
+                                                  rows={2}
                                                   value={item.description}
                                                   onChange={(event) =>
                                                     updateInvoiceOverrideItemField(
@@ -3419,9 +3465,9 @@ export function KsefExcelFlexibleImportCard({
               </div>
             </div>
 
-            <div className="border-t border-slate-200 px-6 py-4">
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                <p className="text-sm text-slate-500">
+            <div className="border-t border-slate-200 px-6 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="min-w-0 flex-1 text-xs leading-5 text-slate-500">
                   {wizardStep === 1 &&
                     "Najpierw wybierz plik i uruchom analize."}
                   {wizardStep === 2 &&
@@ -3436,14 +3482,14 @@ export function KsefExcelFlexibleImportCard({
                     "Tutaj masz juz gotowe XML i mozesz je pobrac."}
                 </p>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-nowrap items-center justify-end gap-2 overflow-x-auto">
                   {wizardStep > 1 && wizardStep < 5 && (
                     <button
                       type="button"
                       onClick={() =>
                         setWizardStep((wizardStep - 1) as WizardStep)
                       }
-                      className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      className="whitespace-nowrap rounded-xl border border-slate-200 px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
                       Wstecz
                     </button>
@@ -3453,7 +3499,7 @@ export function KsefExcelFlexibleImportCard({
                     <button
                       type="button"
                       onClick={() => setWizardStep(2)}
-                      className="rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600"
+                      className="whitespace-nowrap rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600"
                     >
                       Dalej
                     </button>
@@ -3463,7 +3509,7 @@ export function KsefExcelFlexibleImportCard({
                     <button
                       type="button"
                       onClick={() => setWizardStep(3)}
-                      className="rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600"
+                      className="whitespace-nowrap rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600"
                     >
                       Dalej
                     </button>
@@ -3473,7 +3519,7 @@ export function KsefExcelFlexibleImportCard({
                     <button
                       type="button"
                       onClick={() => setWizardStep(4)}
-                      className="rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-600"
+                      className="whitespace-nowrap rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600"
                     >
                       Dalej
                     </button>
@@ -3486,7 +3532,7 @@ export function KsefExcelFlexibleImportCard({
                         mappedImportMutation.isPending || !canSubmitMappedImport
                       }
                       form="ksef-flexible-wizard-form"
-                      className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-emerald-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {mappedImportMutation.isPending ? (
                         <>
@@ -3511,7 +3557,7 @@ export function KsefExcelFlexibleImportCard({
                       disabled={
                         mappedImportMutation.isPending || !canSubmitMappedImport
                       }
-                      className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-emerald-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {mappedImportMutation.isPending ? (
                         <>
@@ -3533,7 +3579,7 @@ export function KsefExcelFlexibleImportCard({
                     <button
                       type="button"
                       onClick={() => setWizardStep(4)}
-                      className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      className="whitespace-nowrap rounded-xl border border-slate-200 px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
                       Wroc do ustawien
                     </button>
@@ -3542,7 +3588,7 @@ export function KsefExcelFlexibleImportCard({
                   <button
                     type="button"
                     onClick={() => setIsWizardOpen(false)}
-                    className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                    className="whitespace-nowrap rounded-xl border border-slate-200 px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
                     Zamknij
                   </button>

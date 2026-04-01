@@ -115,6 +115,7 @@ type KsefExcelFlexibleFieldKey =
   | "buyerAddressLine2"
   | "buyerCountryCode"
   | "currency"
+  | "exemptionReason"
   | "itemName"
   | "itemDescription"
   | "itemProductCode"
@@ -256,6 +257,7 @@ type KsefExcelMappedInvoiceOverrideInput = {
   buyerAddressLine1?: unknown;
   buyerAddressLine2?: unknown;
   buyerCountryCode?: unknown;
+  exemptionReason?: unknown;
   paymentDueDate?: unknown;
   paymentMethod?: unknown;
   paymentBankAccount?: unknown;
@@ -315,6 +317,7 @@ type KsefNormalizedMappedImportConfig = {
       buyerAddressLine1?: string;
       buyerAddressLine2?: string;
       buyerCountryCode?: string;
+      exemptionReason?: string;
       paymentDueDate?: string;
       paymentMethod?: NonNullable<GenerateKsefXmlDto["payment"]>["method"];
       paymentBankAccount?: string;
@@ -360,6 +363,7 @@ type KsefExcelMappedImportInvoiceResult = GenerateKsefXmlResponse & {
     issueDate?: string;
     saleDate?: string;
     currency?: string;
+    exemptionReason?: string;
     paymentDueDate?: string;
     paymentMethod?: string;
     paymentBankAccount?: string;
@@ -505,6 +509,7 @@ const KSEF_EXCEL_FLEXIBLE_FIELDS: readonly KsefExcelFieldDescriptor[] = [
   { key: "buyerAddressLine2", label: "Adres kontrahenta linia 2" },
   { key: "buyerCountryCode", label: "Kod kraju kontrahenta" },
   { key: "currency", label: "Waluta" },
+  { key: "exemptionReason", label: "Podstawa zwolnienia z VAT" },
   { key: "itemName", label: "Nazwa pozycji" },
   { key: "itemDescription", label: "Opis pozycji" },
   { key: "itemProductCode", label: "Kod pozycji" },
@@ -562,6 +567,12 @@ const KSEF_EXCEL_SUGGESTION_ALIASES: Record<KsefExcelFlexibleFieldKey, string[]>
   buyerAddressLine2: ["buyer_address_line2", "adres2", "adres_l2"],
   buyerCountryCode: ["buyer_country_code", "kod_kraju_nabywcy", "kraj"],
   currency: ["currency", "waluta"],
+  exemptionReason: [
+    "exemption_reason",
+    "podstawa_zwolnienia",
+    "podstawa_zwolnienia_vat",
+    "podstawa_prawna_zwolnienia"
+  ],
   itemName: ["item_name", "nazwa_pozycji", "nazwa", "towar", "usluga"],
   itemDescription: ["item_description", "opis", "description", "szczegoly"],
   itemProductCode: ["item_product_code", "kod_pozycji", "kod_towaru", "pkwiu", "indeks"],
@@ -1181,6 +1192,7 @@ export class KsefService {
         buyerCountryCode: this.normalizeOptionalTextInput(
           invoiceOverride.buyerCountryCode
         )?.toUpperCase(),
+        exemptionReason: this.normalizeOptionalTextInput(invoiceOverride.exemptionReason),
         paymentDueDate: this.normalizeOptionalTextInput(invoiceOverride.paymentDueDate),
         paymentMethod: this.normalizeFlexiblePaymentMethodInput(invoiceOverride.paymentMethod),
         paymentBankAccount: this.normalizeOptionalTextInput(invoiceOverride.paymentBankAccount),
@@ -2197,6 +2209,16 @@ export class KsefService {
       }
     }
 
+    const exemptionReason =
+      invoiceOverride?.exemptionReason ?? resolveMappedText("exemptionReason");
+    if (exemptionReason) {
+      addResolvedField(
+        "exemptionReason",
+        exemptionReason,
+        invoiceOverride?.exemptionReason ? "manual" : "excel"
+      );
+    }
+
     const paymentMethodRaw = invoiceOverride?.paymentMethod ?? resolveMappedText("paymentMethod");
     const paymentMethod =
       this.normalizeFlexiblePaymentMethodInput(paymentMethodRaw) ?? config.defaults.paymentMethod;
@@ -2235,6 +2257,7 @@ export class KsefService {
       issueDate,
       saleDate,
       currency,
+      exemptionReason,
       paymentDueDate,
       paymentMethod,
       paymentBankAccount,
@@ -2307,6 +2330,32 @@ export class KsefService {
       };
     }
 
+    if (builtItems.some((item) => item.taxRate === "zw") && !exemptionReason) {
+      addMissingField("exemptionReason");
+
+      return {
+        valid: false,
+        xml: null,
+        fileName: null,
+        schema: {
+          code: "FA(3)",
+          version: "1-0E"
+        },
+        businessErrors: [
+          "Brakuje danych potrzebnych do wygenerowania XML: Podstawa zwolnienia z VAT."
+        ],
+        schemaErrors: [],
+        warnings: [],
+        summary: null,
+        invoiceNumber: displayInvoiceNumber,
+        rowNumbers: rows.map((row) => row.rowNumber),
+        status: "needs_completion",
+        resolvedFields: Array.from(resolvedFields.values()),
+        missingFields: Array.from(missingFields.values()),
+        preview
+      };
+    }
+
     const payload: GenerateKsefXmlDto = {
       seller:
         myCompanyRole === "SELLER"
@@ -2366,6 +2415,7 @@ export class KsefService {
       splitPayment: config.defaults.splitPayment,
       simplifiedProcedure: config.defaults.simplifiedProcedure,
       relatedEntities: config.defaults.relatedEntities,
+      exemptionReason,
       systemName: config.defaults.systemName ?? "Kasia KSeF XML Generator",
       payment:
         paymentDueDate || paymentMethod || paymentBankAccount

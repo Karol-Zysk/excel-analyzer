@@ -263,6 +263,7 @@ export type KsefExcelFlexibleFieldKey =
   | "buyerAddressLine2"
   | "buyerCountryCode"
   | "currency"
+  | "exemptionReason"
   | "itemName"
   | "itemDescription"
   | "itemProductCode"
@@ -379,6 +380,7 @@ export type KsefMappedImportConfig = {
       buyerAddressLine1?: string;
       buyerAddressLine2?: string;
       buyerCountryCode?: string;
+      exemptionReason?: string;
       paymentDueDate?: string;
       paymentMethod?: KsefPaymentMethodValue;
       paymentBankAccount?: string;
@@ -420,6 +422,7 @@ export type KsefMappedImportInvoiceResponse = GenerateKsefXmlResponse & {
     issueDate?: string;
     saleDate?: string;
     currency?: string;
+    exemptionReason?: string;
     paymentDueDate?: string;
     paymentMethod?: string;
     paymentBankAccount?: string;
