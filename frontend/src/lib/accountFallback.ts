@@ -49,6 +49,10 @@ export function buildFallbackAccountFromSession(
     position: getMetadataStringValue(metadata, "position"),
     avatarUrl: getMetadataStringValue(metadata, "avatar_url"),
     role,
+    ksefGeneratedCount:
+      typeof metadata["ksef_generated_xml_count"] === "number"
+        ? Math.max(0, Math.floor(metadata["ksef_generated_xml_count"]))
+        : 0,
     createdAt: session.user.created_at ?? new Date().toISOString(),
     lastSignInAt: session.user.last_sign_in_at ?? null,
     emailConfirmedAt: session.user.email_confirmed_at ?? null

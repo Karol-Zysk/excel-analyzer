@@ -30,6 +30,7 @@ type AccountSummary = {
   position: string | null;
   avatarUrl: string | null;
   role: "ADMIN" | "USER";
+  ksefGeneratedCount: number;
   createdAt: string;
   lastSignInAt: string | null;
   emailConfirmedAt: string | null;
@@ -202,6 +203,22 @@ export class SupabaseService {
     return value;
   }
 
+  private getMetadataNumberValue(user: User, key: string) {
+    const rawValue = user.user_metadata?.[key];
+    if (typeof rawValue === "number" && Number.isFinite(rawValue) && rawValue >= 0) {
+      return Math.floor(rawValue);
+    }
+
+    if (typeof rawValue === "string") {
+      const parsed = Number(rawValue.trim());
+      if (Number.isFinite(parsed) && parsed >= 0) {
+        return Math.floor(parsed);
+      }
+    }
+
+    return 0;
+  }
+
   private resolveUserDisplayName(user: User) {
     const metadataName = this.getMetadataStringValue(user, "name") ?? this.getMetadataStringValue(user, "full_name");
     if (metadataName) {
@@ -225,6 +242,7 @@ export class SupabaseService {
       position: this.getMetadataStringValue(user, "position"),
       avatarUrl: this.getMetadataStringValue(user, "avatar_url"),
       role,
+      ksefGeneratedCount: this.getMetadataNumberValue(user, "ksef_generated_xml_count"),
       createdAt: user.created_at,
       lastSignInAt: user.last_sign_in_at ?? null,
       emailConfirmedAt: user.email_confirmed_at ?? null
@@ -413,6 +431,37 @@ export class SupabaseService {
 
   async updateUserProfile(userId: string, payload: ProfileUpdatePayload) {
     return this.updateUserMetadata(userId, payload);
+  }
+
+  async incrementKsefGeneratedCount(userId: string, incrementBy = 1) {
+    const safeIncrement = Number.isFinite(incrementBy) ? Math.floor(incrementBy) : 0;
+    if (safeIncrement <= 0) {
+      const account = await this.getAccountById(userId);
+      return {
+        updated: true,
+        count: account?.ksefGeneratedCount ?? 0
+      };
+    }
+
+    const currentMetadata = await this.getCurrentUserMetadata(userId);
+    const currentCountRaw = currentMetadata["ksef_generated_xml_count"];
+    const currentCount =
+      typeof currentCountRaw === "number" && Number.isFinite(currentCountRaw) && currentCountRaw >= 0
+        ? Math.floor(currentCountRaw)
+        : typeof currentCountRaw === "string" && Number.isFinite(Number(currentCountRaw))
+          ? Math.max(0, Math.floor(Number(currentCountRaw)))
+          : 0;
+
+    const nextCount = currentCount + safeIncrement;
+    const result = await this.updateUserMetadata(userId, {
+      ksef_generated_xml_count: nextCount,
+      ksef_generated_xml_updated_at: new Date().toISOString()
+    });
+
+    return {
+      ...result,
+      count: nextCount
+    };
   }
 
   async updateUserMetadata(userId: string, patch: Record<string, unknown>) {

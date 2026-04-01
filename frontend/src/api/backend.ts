@@ -539,6 +539,7 @@ export type AccountListItem = {
   position: string | null;
   avatarUrl: string | null;
   role: "ADMIN" | "USER";
+  ksefGeneratedCount: number;
   createdAt: string;
   lastSignInAt: string | null;
   emailConfirmedAt: string | null;

@@ -95,8 +95,14 @@ export class KsefController {
 
   @Post("generate-xml")
   @UseGuards(SupabaseAuthGuard)
-  async generateXml(@Body() payload: GenerateKsefXmlDto) {
-    return this.ksefService.generateXml(payload);
+  async generateXml(@Body() payload: GenerateKsefXmlDto, @Req() req: RequestWithUser) {
+    const result = await this.ksefService.generateXml(payload);
+
+    if (result.valid) {
+      void this.supabaseService.incrementKsefGeneratedCount(req.user.id, 1);
+    }
+
+    return result;
   }
 
   @Post("import-excel")
@@ -108,12 +114,20 @@ export class KsefController {
       }
     })
   )
-  async importExcel(@UploadedFile() file: UploadedSpreadsheetFile | undefined) {
+  async importExcel(
+    @UploadedFile() file: UploadedSpreadsheetFile | undefined,
+    @Req() req: RequestWithUser
+  ) {
     if (!file) {
       throw new BadRequestException("Missing file field in multipart/form-data");
     }
 
-    return this.ksefService.importExcel(file);
+    const result = await this.ksefService.importExcel(file);
+    if (result.summary.validInvoices > 0) {
+      void this.supabaseService.incrementKsefGeneratedCount(req.user.id, result.summary.validInvoices);
+    }
+
+    return result;
   }
 
   @Post("analyze-excel")
@@ -144,7 +158,8 @@ export class KsefController {
   )
   async importExcelMapped(
     @UploadedFile() file: UploadedSpreadsheetFile | undefined,
-    @Body("config") configJson: string | undefined
+    @Body("config") configJson: string | undefined,
+    @Req() req: RequestWithUser
   ) {
     if (!file) {
       throw new BadRequestException("Missing file field in multipart/form-data");
@@ -161,6 +176,11 @@ export class KsefController {
       throw new BadRequestException("Config field must contain valid JSON.");
     }
 
-    return this.ksefService.importExcelMapped(file, config);
+    const result = await this.ksefService.importExcelMapped(file, config);
+    if (result.summary.generatedValid > 0) {
+      void this.supabaseService.incrementKsefGeneratedCount(req.user.id, result.summary.generatedValid);
+    }
+
+    return result;
   }
 }

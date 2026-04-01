@@ -2071,6 +2071,112 @@ export class KsefService {
       }
     });
 
+    const sourceRowNumbers = new Set(rows.map((row) => row.rowNumber));
+    const extraItemOverrides =
+      invoiceOverride?.items.filter((itemOverride) => !sourceRowNumbers.has(itemOverride.rowNumber)) ??
+      [];
+
+    extraItemOverrides.forEach((itemOverride) => {
+      const extraItemName = itemOverride.name ?? config.defaults.defaultItemName;
+      if (extraItemName) {
+        addResolvedField(
+          itemOverride.name ? "itemName" : "defaultItemName",
+          extraItemName,
+          itemOverride.name ? "manual" : "default"
+        );
+      } else {
+        addMissingField(config.mapping.itemName ? "itemName" : "defaultItemName");
+      }
+
+      const extraItemDescription =
+        itemOverride.description ?? config.defaults.defaultItemDescription;
+      if (extraItemDescription) {
+        addResolvedField(
+          itemOverride.description ? "itemDescription" : "defaultItemDescription",
+          extraItemDescription,
+          itemOverride.description ? "manual" : "default"
+        );
+      }
+
+      const extraProductCode = itemOverride.productCode;
+      if (extraProductCode) {
+        addResolvedField("itemProductCode", extraProductCode, "manual");
+      }
+
+      const extraItemUnit = itemOverride.unit ?? config.defaults.defaultItemUnit;
+      if (extraItemUnit) {
+        addResolvedField(
+          itemOverride.unit ? "itemUnit" : "defaultItemUnit",
+          extraItemUnit,
+          itemOverride.unit ? "manual" : "default"
+        );
+      } else {
+        addMissingField(config.mapping.itemUnit ? "itemUnit" : "defaultItemUnit");
+      }
+
+      const extraQuantity = itemOverride.quantity ?? config.defaults.defaultItemQuantity;
+      if (extraQuantity !== undefined) {
+        addResolvedField(
+          itemOverride.quantity !== undefined ? "itemQuantity" : "defaultItemQuantity",
+          extraQuantity,
+          itemOverride.quantity !== undefined ? "manual" : "default"
+        );
+      } else {
+        addMissingField(config.mapping.itemQuantity ? "itemQuantity" : "defaultItemQuantity");
+      }
+
+      const extraUnitNetPrice = itemOverride.unitNetPrice;
+      if (extraUnitNetPrice !== undefined) {
+        addResolvedField("itemUnitNetPrice", extraUnitNetPrice, "manual");
+      } else {
+        addMissingField("itemUnitNetPrice");
+      }
+
+      let extraTaxRate = itemOverride.taxRate;
+      if (extraTaxRate) {
+        addResolvedField("itemTaxRate", extraTaxRate, "manual");
+      } else if (config.defaults.defaultTaxRate) {
+        extraTaxRate = config.defaults.defaultTaxRate;
+        addResolvedField("defaultTaxRate", extraTaxRate, "default");
+      }
+
+      if (!extraTaxRate) {
+        addMissingField(config.mapping.itemTaxRate ? "itemTaxRate" : "defaultTaxRate");
+      }
+
+      previewItems.push({
+        rowNumber: itemOverride.rowNumber,
+        name: extraItemName,
+        description: extraItemDescription,
+        productCode: extraProductCode,
+        quantity: extraQuantity,
+        unit: extraItemUnit,
+        unitNetPrice: extraUnitNetPrice,
+        taxRate: extraTaxRate
+      });
+
+      if (
+        !extraItemName ||
+        !extraItemUnit ||
+        extraQuantity === undefined ||
+        extraUnitNetPrice === undefined ||
+        !extraTaxRate
+      ) {
+        return;
+      }
+
+      builtItems.push({
+        name: extraItemName,
+        description: extraItemDescription,
+        productCode: extraProductCode,
+        unit: extraItemUnit,
+        quantity: extraQuantity,
+        unitNetPrice: extraUnitNetPrice,
+        taxRate: extraTaxRate as KsefTaxRateValue,
+        annex15: config.defaults.annex15
+      });
+    });
+
     const paymentDueDateRaw = invoiceOverride?.paymentDueDate ?? resolveMappedText("paymentDueDate");
     let paymentDueDate: string | undefined;
     if (paymentDueDateRaw) {

@@ -4,6 +4,7 @@ import {
   Database,
   Download,
   FileSpreadsheet,
+  Plus,
   Save,
   Sparkles,
   TriangleAlert,
@@ -66,6 +67,10 @@ type FlexibleDefaultsState = {
   simplifiedProcedure: boolean;
   relatedEntities: boolean;
   annex15: boolean;
+};
+
+type KsefExcelFlexibleImportCardProps = {
+  onGenerationSuccess?: () => void;
 };
 
 type InvoiceOverrideItemState = {
@@ -980,7 +985,9 @@ function StatusBadge({
   );
 }
 
-export function KsefExcelFlexibleImportCard() {
+export function KsefExcelFlexibleImportCard({
+  onGenerationSuccess,
+}: KsefExcelFlexibleImportCardProps) {
   const { session } = useAuth();
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [wizardStep, setWizardStep] = useState<WizardStep>(1);
@@ -1086,6 +1093,9 @@ export function KsefExcelFlexibleImportCard() {
     onSuccess: (result) => {
       setMappedImportResult(result);
       setSingleInvoiceErrorByKey({});
+      if (result.summary.generatedValid > 0) {
+        onGenerationSuccess?.();
+      }
     },
   });
 
@@ -1159,6 +1169,9 @@ export function KsefExcelFlexibleImportCard() {
       });
 
       setIsWizardOpen(true);
+      if (result.valid) {
+        onGenerationSuccess?.();
+      }
     },
     onError: (error, variables) => {
       setSingleInvoiceErrorByKey((current) => ({
@@ -1368,6 +1381,41 @@ export function KsefExcelFlexibleImportCard() {
                 }
               : item
           ),
+        },
+      };
+    });
+  }
+
+  function addInvoiceOverrideItem(invoiceKey: string) {
+    setInvoiceOverrides((current) => {
+      const invoice = current[invoiceKey];
+      if (!invoice) {
+        return current;
+      }
+
+      const nextRowNumber =
+        invoice.items.reduce(
+          (maxRowNumber, item) => Math.max(maxRowNumber, item.rowNumber),
+          0
+        ) + 1;
+
+      return {
+        ...current,
+        [invoiceKey]: {
+          ...invoice,
+          items: [
+            ...invoice.items,
+            {
+              rowNumber: nextRowNumber,
+              name: "",
+              description: "",
+              productCode: "",
+              unit: "",
+              quantity: "",
+              unitNetPrice: "",
+              taxRate: "",
+            },
+          ],
         },
       };
     });
@@ -2805,9 +2853,18 @@ export function KsefExcelFlexibleImportCard() {
                                   Netto / VAT / Brutto
                                 </p>
                                 <p className="mt-1 font-semibold text-slate-900">
-                                  {(invoice.preview.netTotal ?? 0).toFixed(2)} /{" "}
-                                  {(invoice.preview.vatTotal ?? 0).toFixed(2)} /{" "}
-                                  {(invoice.preview.grossTotal ?? 0).toFixed(2)}
+                                  {(invoice.summary?.netTotal ??
+                                    invoice.preview.netTotal ??
+                                    0
+                                  ).toFixed(2)} /{" "}
+                                  {(invoice.summary?.taxTotal ??
+                                    invoice.preview.vatTotal ??
+                                    0
+                                  ).toFixed(2)} /{" "}
+                                  {(invoice.summary?.grossTotal ??
+                                    invoice.preview.grossTotal ??
+                                    0
+                                  ).toFixed(2)}
                                 </p>
                               </div>
                               <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm">
@@ -3066,11 +3123,22 @@ export function KsefExcelFlexibleImportCard() {
                                   </label>
                                 </div>
 
-                                {invoiceDraft.items.length > 0 && (
-                                  <div className="mt-5 space-y-4">
-                                    <p className="text-sm font-semibold text-slate-900">
-                                      Pozycje tej faktury
-                                    </p>
+                                <div className="mt-5 space-y-4">
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                      <p className="text-sm font-semibold text-slate-900">
+                                        Pozycje tej faktury
+                                      </p>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          addInvoiceOverrideItem(invoiceKey)
+                                        }
+                                        className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                                      >
+                                        <Plus className="h-4 w-4" />
+                                        Dodaj pozycje
+                                      </button>
+                                    </div>
                                     {invoiceDraft.items.map((item, index) => (
                                       (() => {
                                         const itemValidation =
@@ -3078,6 +3146,9 @@ export function KsefExcelFlexibleImportCard() {
                                             (entry) =>
                                               entry.rowNumber === item.rowNumber
                                           );
+                                        const isManualItem = !invoice.rowNumbers.includes(
+                                          item.rowNumber
+                                        );
 
                                         return (
                                           <div
@@ -3097,9 +3168,13 @@ export function KsefExcelFlexibleImportCard() {
                                               <p className="text-sm font-semibold text-slate-900">
                                                 Pozycja {index + 1}
                                               </p>
-                                              <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                                                Wiersz {item.rowNumber}
-                                              </span>
+                                              <div className="flex flex-wrap gap-2">
+                                                <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                                  {isManualItem
+                                                    ? `Recznie ${item.rowNumber}`
+                                                    : `Wiersz ${item.rowNumber}`}
+                                                </span>
+                                              </div>
                                             </div>
                                             <div className="grid gap-3 md:grid-cols-2">
                                               <label className="space-y-1.5 md:col-span-2">
@@ -3270,8 +3345,7 @@ export function KsefExcelFlexibleImportCard() {
                                         );
                                       })()
                                     ))}
-                                  </div>
-                                )}
+                                </div>
                               </div>
                             )}
 
