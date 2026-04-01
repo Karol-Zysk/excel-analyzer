@@ -3158,10 +3158,6 @@ export class KsefService {
       );
     }
 
-    if (payload.saleDate && payload.saleDate > payload.issueDate) {
-      errors.push("Sale date cannot be later than issue date in this generator.");
-    }
-
     if (!this.isValidNip(payload.seller.nip)) {
       errors.push(`Seller NIP is invalid: ${payload.seller.nip}.`);
     }
