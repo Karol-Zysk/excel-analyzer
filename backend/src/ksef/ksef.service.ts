@@ -249,6 +249,7 @@ type KsefExcelMappedInvoiceItemOverrideInput = {
 
 type KsefExcelMappedInvoiceOverrideInput = {
   rowNumbers?: unknown;
+  ignoredRowNumbers?: unknown;
   invoiceNumber?: unknown;
   issueDate?: unknown;
   saleDate?: unknown;
@@ -309,6 +310,7 @@ type KsefNormalizedMappedImportConfig = {
   overrides: {
     invoices: Array<{
       rowNumbers: number[];
+      ignoredRowNumbers: number[];
       invoiceNumber?: string;
       issueDate?: string;
       saleDate?: string;
@@ -1154,6 +1156,11 @@ export class KsefService {
             .map((value) => this.normalizeOptionalInteger(value))
             .filter((value): value is number => value !== undefined)
         : [];
+      const ignoredRowNumbers = Array.isArray(invoiceOverride.ignoredRowNumbers)
+        ? invoiceOverride.ignoredRowNumbers
+            .map((value) => this.normalizeOptionalInteger(value))
+            .filter((value): value is number => value !== undefined)
+        : [];
 
       if (rowNumbers.length === 0) {
         return;
@@ -1183,6 +1190,9 @@ export class KsefService {
 
       normalizedOverrides.push({
         rowNumbers: Array.from(new Set(rowNumbers)).sort((left, right) => left - right),
+        ignoredRowNumbers: Array.from(new Set(ignoredRowNumbers)).sort(
+          (left, right) => left - right
+        ),
         invoiceNumber: this.normalizeOptionalTextInput(invoiceOverride.invoiceNumber),
         issueDate: this.normalizeOptionalTextInput(invoiceOverride.issueDate),
         saleDate: this.normalizeOptionalTextInput(invoiceOverride.saleDate),
@@ -1938,7 +1948,13 @@ export class KsefService {
     const builtItems: GenerateKsefXmlDto["items"] = [];
     const previewItems: KsefExcelMappedImportInvoiceResult["preview"]["items"] = [];
 
+    const ignoredSourceRowNumbers = new Set(invoiceOverride?.ignoredRowNumbers ?? []);
+
     rows.forEach((row, index) => {
+      if (ignoredSourceRowNumbers.has(row.rowNumber)) {
+        return;
+      }
+
       const itemOverride = this.getItemOverride(invoiceOverride, row.rowNumber);
 
       const rowItemName =
@@ -2120,7 +2136,11 @@ export class KsefService {
       }
     });
 
-    const sourceRowNumbers = new Set(rows.map((row) => row.rowNumber));
+    const sourceRowNumbers = new Set(
+      rows
+        .map((row) => row.rowNumber)
+        .filter((rowNumber) => !ignoredSourceRowNumbers.has(rowNumber))
+    );
     const extraItemOverrides =
       invoiceOverride?.items.filter((itemOverride) => !sourceRowNumbers.has(itemOverride.rowNumber)) ??
       [];

@@ -7,11 +7,12 @@ import {
   Plus,
   Save,
   Sparkles,
+  Trash2,
   TriangleAlert,
   Upload,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import {
   analyzeKsefExcel,
@@ -86,6 +87,7 @@ type InvoiceOverrideItemState = {
 
 type InvoiceOverrideState = {
   rowNumbers: number[];
+  ignoredRowNumbers: number[];
   invoiceNumber: string;
   issueDate: string;
   saleDate: string;
@@ -103,6 +105,11 @@ type InvoiceOverrideState = {
 };
 
 type InvoiceOverridesState = Record<string, InvoiceOverrideState>;
+type CopiedInvoiceItemsState = {
+  sourceInvoiceKey: string;
+  sourceInvoiceNumber: string;
+  items: Array<Omit<InvoiceOverrideItemState, "rowNumber">>;
+};
 type CompletionFieldKey =
   | KsefExcelFlexibleFieldKey
   | KsefExcelSupplementFieldKey;
@@ -346,6 +353,7 @@ function buildInvoiceOverridesState(
       invoiceOverrideKey(invoice.rowNumbers),
       {
         rowNumbers: invoice.rowNumbers,
+        ignoredRowNumbers: [],
         invoiceNumber: invoice.invoiceNumber ?? "",
         issueDate: invoice.preview.issueDate ?? "",
         saleDate: invoice.preview.saleDate ?? "",
@@ -423,6 +431,10 @@ function buildInvoiceOverridePayload(invoiceOverrides: InvoiceOverridesState) {
 
       const payload = {
         rowNumbers: invoice.rowNumbers,
+        ignoredRowNumbers:
+          invoice.ignoredRowNumbers.length > 0
+            ? invoice.ignoredRowNumbers
+            : undefined,
         invoiceNumber: optionalText(invoice.invoiceNumber),
         issueDate: optionalText(invoice.issueDate),
         saleDate: optionalText(invoice.saleDate),
@@ -441,9 +453,11 @@ function buildInvoiceOverridePayload(invoiceOverrides: InvoiceOverridesState) {
 
       const hasInvoiceValues =
         items.length > 0 ||
+        invoice.ignoredRowNumbers.length > 0 ||
         Object.entries(payload).some(
           ([key, value]) =>
-            !["rowNumbers", "items"].includes(key) && value !== undefined
+            !["rowNumbers", "ignoredRowNumbers", "items"].includes(key) &&
+            value !== undefined
         );
 
       return hasInvoiceValues ? payload : null;
@@ -1017,6 +1031,737 @@ function StatusBadge({
   );
 }
 
+type InvoiceDraftCardProps = {
+  invoice: KsefMappedImportInvoiceResponse;
+  invoiceKey: string;
+  invoiceDraft?: InvoiceOverrideState;
+  myCompanyRole: KsefMyCompanyRole;
+  buyerIdentifierType: KsefBuyerIdentifierType;
+  copiedInvoiceItems: CopiedInvoiceItemsState | null;
+  singleInvoiceError?: string;
+  isSingleInvoicePending: boolean;
+  submitSingleInvoice: (
+    invoice: KsefMappedImportInvoiceResponse,
+    invoiceDraft: InvoiceOverrideState
+  ) => void;
+  updateInvoiceOverrideField: <K extends keyof InvoiceOverrideState>(
+    invoiceKey: string,
+    field: K,
+    value: InvoiceOverrideState[K]
+  ) => void;
+  updateInvoiceOverrideItemField: <K extends keyof InvoiceOverrideItemState>(
+    invoiceKey: string,
+    rowNumber: number,
+    field: K,
+    value: InvoiceOverrideItemState[K]
+  ) => void;
+  addInvoiceOverrideItem: (invoiceKey: string) => void;
+  removeInvoiceOverrideItem: (invoiceKey: string, rowNumber: number) => void;
+  copyInvoiceItems: (
+    invoiceKey: string,
+    invoiceNumber: string,
+    items: InvoiceOverrideItemState[]
+  ) => void;
+  applyCopiedItemsToInvoice: (
+    invoiceKey: string,
+    mode: "add" | "replace"
+  ) => void;
+};
+
+const InvoiceDraftCard = memo(
+  function InvoiceDraftCard({
+    invoice,
+    invoiceKey,
+    invoiceDraft,
+    myCompanyRole,
+    buyerIdentifierType,
+    copiedInvoiceItems,
+    singleInvoiceError,
+    isSingleInvoicePending,
+    submitSingleInvoice,
+    updateInvoiceOverrideField,
+    updateInvoiceOverrideItemField,
+    addInvoiceOverrideItem,
+    removeInvoiceOverrideItem,
+    copyInvoiceItems,
+    applyCopiedItemsToInvoice,
+  }: InvoiceDraftCardProps) {
+    const validation = getInvoiceDraftValidation(
+      invoice,
+      invoiceDraft,
+      myCompanyRole,
+      buyerIdentifierType
+    );
+    const liveMissingLabels = getLiveMissingFieldLabels(
+      validation,
+      myCompanyRole,
+      buyerIdentifierType
+    );
+    const validationMessages = [
+      ...(liveMissingLabels.length > 0
+        ? [
+            `Brakuje danych potrzebnych do wygenerowania XML: ${liveMissingLabels.join(
+              ", "
+            )}.`,
+          ]
+        : []),
+      ...invoice.businessErrors.filter(
+        (error) =>
+          !error.startsWith("Brakuje danych potrzebnych do wygenerowania XML:")
+      ),
+    ];
+    const counterpartyNameLabel =
+      myCompanyRole === "SELLER" ? "Nazwa nabywcy" : "Nazwa sprzedawcy";
+    const counterpartyNipLabel =
+      myCompanyRole === "SELLER" ? "NIP nabywcy" : "NIP sprzedawcy";
+    const counterpartyAddressLabel =
+      myCompanyRole === "SELLER" ? "Adres nabywcy" : "Adres sprzedawcy";
+    const counterpartyAddressLine2Label =
+      myCompanyRole === "SELLER"
+        ? "Adres nabywcy linia 2"
+        : "Adres sprzedawcy linia 2";
+    const canDeriveTaxRate =
+      invoice.preview.netTotal !== undefined &&
+      invoice.preview.vatTotal !== undefined;
+    const requiresExemptionReason = invoiceDraft
+      ? invoiceDraft.items.some(
+          (item) =>
+            item.taxRate === "zw" ||
+            invoice.preview.items.find(
+              (preview) => preview.rowNumber === item.rowNumber
+            )?.taxRate === "zw"
+        )
+      : false;
+
+    return (
+      <div
+        className={`rounded-3xl border-2 bg-slate-100/90 p-4 shadow-[0_8px_24px_rgba(15,23,42,0.08)] ${
+          validation.hasRequiredMissing ? "border-slate-700" : "border-slate-500"
+        }`}
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-sm font-semibold text-slate-900">
+                {invoice.invoiceNumber}
+              </p>
+              <StatusBadge status={invoice.status} />
+            </div>
+            <p className="mt-1 text-xs text-slate-500">
+              Wiersze arkusza: {invoice.rowNumbers.join(", ")}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {invoiceDraft && (
+              <button
+                type="button"
+                onClick={() => submitSingleInvoice(invoice, invoiceDraft)}
+                disabled={validation.hasRequiredMissing || isSingleInvoicePending}
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSingleInvoicePending ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    Generowanie...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" />
+                    {invoice.xml
+                      ? "Wygeneruj te fakture ponownie"
+                      : "Generuj te fakture"}
+                  </>
+                )}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() =>
+                invoice.xml &&
+                invoice.fileName &&
+                downloadXml(invoice.xml, invoice.fileName)
+              }
+              disabled={!invoice.xml || !invoice.fileName}
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-emerald-500 px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Download className="h-4 w-4" />
+              Pobierz XML
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
+            <p className="text-slate-500">Wiersz arkusza</p>
+            <p className="mt-1 font-semibold text-slate-900">
+              {invoice.rowNumbers.join(", ")}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
+            <p className="text-slate-500">Netto / VAT / Brutto</p>
+            <p className="mt-1 font-semibold text-slate-900">
+              {(invoice.summary?.netTotal ?? invoice.preview.netTotal ?? 0).toFixed(
+                2
+              )}{" "}
+              /{" "}
+              {(invoice.summary?.taxTotal ?? invoice.preview.vatTotal ?? 0).toFixed(
+                2
+              )}{" "}
+              /{" "}
+              {(invoice.summary?.grossTotal ??
+                invoice.preview.grossTotal ??
+                0
+              ).toFixed(2)}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
+            <p className="text-slate-500">Status formularza</p>
+            <p className="mt-1 font-semibold text-slate-900">
+              {validation.hasRequiredMissing
+                ? "Brakuja pola wymagane"
+                : "Gotowe do XML"}
+            </p>
+          </div>
+        </div>
+
+        {invoiceDraft && (
+          <div className="mt-4 rounded-2xl border-2 border-slate-400 bg-slate-200/80 p-3.5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[13px] font-semibold text-slate-900">
+                  Uzupelnij dane tej faktury
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  Wszystkie pola mozesz od razu poprawic. Czerwone sa wymagane i
+                  puste, zolte sa opcjonalne i jeszcze niewypelnione.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 text-[11px] font-medium">
+                <span className="rounded-full bg-white px-2.5 py-1 text-slate-600 shadow-sm">
+                  Faktura: {invoice.rowNumbers.join(", ")}
+                </span>
+                <span className="rounded-full bg-rose-100 px-2.5 py-1 text-rose-700">
+                  Wymagane
+                </span>
+                <span className="rounded-full bg-amber-100 px-2.5 py-1 text-amber-700">
+                  Opcjonalne
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-2.5 md:grid-cols-2">
+              <label className="space-y-1.5">
+                {fieldLabel("Numer faktury", true)}
+                <input
+                  className={editorFieldClassName(validation.invoiceNumber)}
+                  value={invoiceDraft.invoiceNumber}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "invoiceNumber",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel("Data wystawienia", true)}
+                <input
+                  type="date"
+                  className={editorFieldClassName(validation.issueDate)}
+                  value={invoiceDraft.issueDate}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "issueDate",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel(counterpartyNameLabel, true)}
+                <input
+                  className={editorFieldClassName(validation.buyerName)}
+                  value={invoiceDraft.buyerName}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "buyerName",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel(counterpartyNipLabel, buyerIdentifierType === "NIP")}
+                <input
+                  className={editorFieldClassName(validation.buyerNip)}
+                  value={invoiceDraft.buyerNip}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "buyerNip",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5 md:col-span-2">
+                {fieldLabel(counterpartyAddressLabel, myCompanyRole === "BUYER")}
+                <input
+                  className={editorFieldClassName(
+                    validation.buyerAddressLine1,
+                    !hasTextValue(invoiceDraft.buyerAddressLine1) &&
+                      !validation.buyerAddressLine1
+                  )}
+                  value={invoiceDraft.buyerAddressLine1}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "buyerAddressLine1",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5 md:col-span-2">
+                {fieldLabel(counterpartyAddressLine2Label)}
+                <input
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.buyerAddressLine2)
+                  )}
+                  value={invoiceDraft.buyerAddressLine2}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "buyerAddressLine2",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel("Kod kraju")}
+                <input
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.buyerCountryCode)
+                  )}
+                  value={invoiceDraft.buyerCountryCode}
+                  maxLength={2}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "buyerCountryCode",
+                      event.target.value.toUpperCase()
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel("Waluta")}
+                <input
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.currency)
+                  )}
+                  value={invoiceDraft.currency}
+                  maxLength={3}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "currency",
+                      event.target.value.toUpperCase()
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5 md:col-span-2">
+                {fieldLabel(
+                  "Podstawa zwolnienia z VAT",
+                  requiresExemptionReason
+                )}
+                <textarea
+                  className={editorFieldClassName(validation.exemptionReason)}
+                  rows={2}
+                  value={invoiceDraft.exemptionReason}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "exemptionReason",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel("Termin platnosci")}
+                <input
+                  type="date"
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.paymentDueDate)
+                  )}
+                  value={invoiceDraft.paymentDueDate}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "paymentDueDate",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
+                {fieldLabel("Forma platnosci")}
+                <select
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.paymentMethod)
+                  )}
+                  value={invoiceDraft.paymentMethod}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "paymentMethod",
+                      event.target.value as "" | KsefPaymentMethodValue
+                    )
+                  }
+                >
+                  <option value="">Brak</option>
+                  {PAYMENT_METHOD_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="space-y-1.5 md:col-span-2">
+                {fieldLabel("Rachunek bankowy")}
+                <input
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.paymentBankAccount)
+                  )}
+                  value={invoiceDraft.paymentBankAccount}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "paymentBankAccount",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+            </div>
+
+            <div className="mt-4 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-[13px] font-semibold text-slate-900">
+                  Pozycje tej faktury
+                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      copyInvoiceItems(
+                        invoiceKey,
+                        invoice.invoiceNumber,
+                        invoiceDraft.items
+                      )
+                    }
+                    disabled={invoiceDraft.items.length === 0}
+                    className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Kopiuj pozycje
+                  </button>
+                  {copiedInvoiceItems &&
+                    copiedInvoiceItems.sourceInvoiceKey !== invoiceKey && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            applyCopiedItemsToInvoice(invoiceKey, "add")
+                          }
+                          className="rounded-xl border border-sky-200 bg-sky-50 px-2.5 py-1.5 text-[12px] font-semibold text-sky-700 transition hover:bg-sky-100"
+                        >
+                          Dodaj
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            applyCopiedItemsToInvoice(invoiceKey, "replace")
+                          }
+                          className="rounded-xl border border-sky-200 bg-sky-50 px-2.5 py-1.5 text-[12px] font-semibold text-sky-700 transition hover:bg-sky-100"
+                        >
+                          Zastap
+                        </button>
+                      </>
+                    )}
+                  <button
+                    type="button"
+                    onClick={() => addInvoiceOverrideItem(invoiceKey)}
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Dodaj pozycje
+                  </button>
+                </div>
+              </div>
+              {invoiceDraft.items.map((item, index) => {
+                const itemValidation = validation.items.find(
+                  (entry) => entry.rowNumber === item.rowNumber
+                );
+                const isManualItem = !invoice.rowNumbers.includes(item.rowNumber);
+
+                return (
+                  <div
+                    key={`${invoiceKey}-editor-${item.rowNumber}`}
+                    className={`rounded-2xl border-2 bg-slate-100/95 p-3.5 shadow-[0_4px_14px_rgba(15,23,42,0.05)] ${
+                      itemValidation &&
+                      (itemValidation.name ||
+                        itemValidation.unit ||
+                        itemValidation.quantity ||
+                        itemValidation.unitNetPrice ||
+                        itemValidation.taxRate)
+                        ? "border-slate-600"
+                        : "border-slate-400"
+                    }`}
+                  >
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                      <p className="text-[13px] font-semibold text-slate-900">
+                        Pozycja {index + 1}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                          {isManualItem
+                            ? `Recznie ${item.rowNumber}`
+                            : `Wiersz ${item.rowNumber}`}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeInvoiceOverrideItem(invoiceKey, item.rowNumber)
+                          }
+                          disabled={invoiceDraft.items.length <= 1}
+                          className="inline-flex items-center gap-1 rounded-full border border-rose-200 px-2.5 py-1 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                          Usun pozycje
+                        </button>
+                      </div>
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <label className="space-y-1.5 md:col-span-2">
+                        {fieldLabel("Nazwa pozycji", true)}
+                        <input
+                          className={editorFieldClassName(
+                            itemValidation?.name ?? false
+                          )}
+                          value={item.name}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "name",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1.5 md:col-span-2">
+                        {fieldLabel("Opis pozycji")}
+                        <textarea
+                          className={editorFieldClassName(
+                            false,
+                            !hasTextValue(item.description)
+                          )}
+                          rows={2}
+                          value={item.description}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "description",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1.5">
+                        {fieldLabel("Jednostka", true)}
+                        <input
+                          className={editorFieldClassName(
+                            itemValidation?.unit ?? false
+                          )}
+                          value={item.unit}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "unit",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1.5">
+                        {fieldLabel("Ilosc", true)}
+                        <input
+                          type="number"
+                          min="0.0001"
+                          step="0.0001"
+                          className={editorFieldClassName(
+                            itemValidation?.quantity ?? false
+                          )}
+                          value={item.quantity}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "quantity",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1.5">
+                        {fieldLabel("Cena netto", true)}
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.0001"
+                          className={editorFieldClassName(
+                            itemValidation?.unitNetPrice ?? false
+                          )}
+                          value={item.unitNetPrice}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "unitNetPrice",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                      <label className="space-y-1.5">
+                        {fieldLabel("Stawka VAT", !canDeriveTaxRate)}
+                        <select
+                          className={editorFieldClassName(
+                            itemValidation?.taxRate ?? false
+                          )}
+                          value={item.taxRate}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "taxRate",
+                              event.target.value as "" | KsefTaxRateValue
+                            )
+                          }
+                        >
+                          <option value="">Brak</option>
+                          {TAX_RATE_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="space-y-1.5 md:col-span-2">
+                        {fieldLabel("Kod pozycji")}
+                        <input
+                          className={editorFieldClassName(
+                            false,
+                            !hasTextValue(item.productCode)
+                          )}
+                          value={item.productCode}
+                          onChange={(event) =>
+                            updateInvoiceOverrideItemField(
+                              invoiceKey,
+                              item.rowNumber,
+                              "productCode",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {validationMessages.length > 0 && (
+          <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-rose-700">
+              <TriangleAlert className="h-4 w-4" />
+              Komunikaty walidacji
+            </div>
+            <div className="mt-3 space-y-2 text-sm leading-6 text-rose-700">
+              {validationMessages.map((error) => (
+                <p key={`${invoice.invoiceNumber}-${error}`}>{error}</p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {singleInvoiceError && (
+          <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+            <div className="flex items-center gap-2 font-semibold">
+              <TriangleAlert className="h-4 w-4" />
+              Nie udalo sie wygenerowac tej faktury
+            </div>
+            <p className="mt-2 leading-6">{singleInvoiceError}</p>
+          </div>
+        )}
+
+        {invoice.valid && invoice.summary && (
+          <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+            <div className="flex items-center gap-2 font-semibold">
+              <CircleCheckBig className="h-4 w-4" />
+              XML przeszedl walidacje XSD
+            </div>
+            <p className="mt-2">
+              {invoice.summary.netTotal.toFixed(2)} {invoice.summary.currency} netto,
+              VAT {invoice.summary.taxTotal.toFixed(2)}, brutto{" "}
+              {invoice.summary.grossTotal.toFixed(2)}.
+            </p>
+          </div>
+        )}
+
+        {invoice.xml && invoice.fileName && (
+          <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-950 p-4 text-white">
+            <summary className="cursor-pointer text-sm font-semibold">
+              Podglad XML
+            </summary>
+            <p className="mt-2 text-xs text-slate-400">{invoice.fileName}</p>
+            <textarea
+              readOnly
+              value={invoice.xml}
+              className="mt-3 h-[280px] w-full rounded-2xl border border-slate-800 bg-slate-900 p-4 font-mono text-xs leading-6 text-slate-100 outline-none"
+            />
+          </details>
+        )}
+      </div>
+    );
+  },
+  (previousProps, nextProps) =>
+    previousProps.invoice === nextProps.invoice &&
+    previousProps.invoiceKey === nextProps.invoiceKey &&
+    previousProps.invoiceDraft === nextProps.invoiceDraft &&
+    previousProps.myCompanyRole === nextProps.myCompanyRole &&
+    previousProps.buyerIdentifierType === nextProps.buyerIdentifierType &&
+    previousProps.copiedInvoiceItems === nextProps.copiedInvoiceItems &&
+    previousProps.singleInvoiceError === nextProps.singleInvoiceError &&
+    previousProps.isSingleInvoicePending === nextProps.isSingleInvoicePending
+);
+
 export function KsefExcelFlexibleImportCard({
   onGenerationSuccess,
 }: KsefExcelFlexibleImportCardProps) {
@@ -1036,6 +1781,8 @@ export function KsefExcelFlexibleImportCard({
   const [invoiceOverrides, setInvoiceOverrides] = useState<InvoiceOverridesState>(
     {}
   );
+  const [copiedInvoiceItems, setCopiedInvoiceItems] =
+    useState<CopiedInvoiceItemsState | null>(null);
   const [mappedImportResult, setMappedImportResult] = useState<
     KsefMappedImportResponse | undefined
   >(undefined);
@@ -1257,6 +2004,7 @@ export function KsefExcelFlexibleImportCard({
 
     setMappedImportResult(undefined);
     setSingleInvoiceErrorByKey({});
+    setCopiedInvoiceItems(null);
     mappedImportMutation.reset();
     singleInvoiceMutation.reset();
     analyzeMutation.mutate(file);
@@ -1309,6 +2057,7 @@ export function KsefExcelFlexibleImportCard({
     setInvoiceOverrides({});
     setMappedImportResult(undefined);
     setSingleInvoiceErrorByKey({});
+    setCopiedInvoiceItems(null);
     analyzeMutation.reset();
     mappedImportMutation.reset();
     singleInvoiceMutation.reset();
@@ -1322,6 +2071,7 @@ export function KsefExcelFlexibleImportCard({
     setInvoiceOverrides({});
     setMappedImportResult(undefined);
     setSingleInvoiceErrorByKey({});
+    setCopiedInvoiceItems(null);
     setDeriveTaxRateFromAmounts(true);
     setMyCompanyRole("SELLER");
     setSelectedCompanyProfileId("");
@@ -1456,6 +2206,189 @@ export function KsefExcelFlexibleImportCard({
           ],
         },
       };
+    });
+  }
+
+  function removeInvoiceOverrideItem(invoiceKey: string, rowNumber: number) {
+    setInvoiceOverrides((current) => {
+      const invoice = current[invoiceKey];
+      if (!invoice || invoice.items.length <= 1) {
+        return current;
+      }
+      const isSourceRow = invoice.rowNumbers.includes(rowNumber);
+
+      return {
+        ...current,
+        [invoiceKey]: {
+          ...invoice,
+          ignoredRowNumbers: isSourceRow
+            ? Array.from(new Set([...invoice.ignoredRowNumbers, rowNumber])).sort(
+                (left, right) => left - right
+              )
+            : invoice.ignoredRowNumbers.filter(
+                (ignoredRowNumber) => ignoredRowNumber !== rowNumber
+              ),
+          items: invoice.items.filter((item) => item.rowNumber !== rowNumber),
+        },
+      };
+    });
+  }
+
+  function copyInvoiceItems(
+    invoiceKey: string,
+    invoiceNumber: string,
+    items: InvoiceOverrideItemState[]
+  ) {
+    if (items.length === 0) {
+      return;
+    }
+
+    setCopiedInvoiceItems({
+      sourceInvoiceKey: invoiceKey,
+      sourceInvoiceNumber: invoiceNumber,
+      items: items.map(({ rowNumber: _rowNumber, ...item }) => ({ ...item })),
+    });
+  }
+
+  function applyCopiedItemsToInvoice(
+    invoiceKey: string,
+    mode: "add" | "replace"
+  ) {
+    if (!copiedInvoiceItems) {
+      return;
+    }
+
+    setInvoiceOverrides((current) => {
+      const invoice = current[invoiceKey];
+      if (!invoice || copiedInvoiceItems.sourceInvoiceKey === invoiceKey) {
+        return current;
+      }
+
+      const sourceRowNumbers = [...invoice.rowNumbers].sort((left, right) => left - right);
+      const currentMaxRowNumber = invoice.items.reduce(
+        (maxRowNumber, item) => Math.max(maxRowNumber, item.rowNumber),
+        0
+      );
+
+      if (mode === "add") {
+        const appendedItems = copiedInvoiceItems.items.map((item, index) => ({
+          ...item,
+          rowNumber: currentMaxRowNumber + index + 1,
+        }));
+
+        return {
+          ...current,
+          [invoiceKey]: {
+            ...invoice,
+            items: [...invoice.items, ...appendedItems],
+          },
+        };
+      }
+
+      const reusedSourceRowCount = Math.min(
+        sourceRowNumbers.length,
+        copiedInvoiceItems.items.length
+      );
+      const replacedSourceItems = copiedInvoiceItems.items
+        .slice(0, reusedSourceRowCount)
+        .map((item, index) => ({
+          ...item,
+          rowNumber: sourceRowNumbers[index],
+        }));
+      const extraItems = copiedInvoiceItems.items
+        .slice(reusedSourceRowCount)
+        .map((item, index) => ({
+          ...item,
+          rowNumber:
+            Math.max(currentMaxRowNumber, sourceRowNumbers[sourceRowNumbers.length - 1] ?? 0) +
+            index +
+            1,
+        }));
+      const ignoredRowNumbers = sourceRowNumbers.slice(reusedSourceRowCount);
+
+      return {
+        ...current,
+        [invoiceKey]: {
+          ...invoice,
+          ignoredRowNumbers,
+          items: [...replacedSourceItems, ...extraItems],
+        },
+      };
+    });
+  }
+
+  function applyCopiedItemsGlobally(mode: "add" | "replace") {
+    if (!copiedInvoiceItems || !mappedImportResult) {
+      return;
+    }
+
+    setInvoiceOverrides((current) => {
+      let next = current;
+
+      mappedImportResult.invoices.forEach((invoice) => {
+        const invoiceKey = invoiceOverrideKey(invoice.rowNumbers);
+        if (invoiceKey === copiedInvoiceItems.sourceInvoiceKey) {
+          return;
+        }
+
+        const draft = next[invoiceKey];
+        if (!draft) {
+          return;
+        }
+
+        const sourceRowNumbers = [...draft.rowNumbers].sort((left, right) => left - right);
+        const currentMaxRowNumber = draft.items.reduce(
+          (maxRowNumber, item) => Math.max(maxRowNumber, item.rowNumber),
+          0
+        );
+
+        if (mode === "add") {
+          const appendedItems = copiedInvoiceItems.items.map((item, index) => ({
+            ...item,
+            rowNumber: currentMaxRowNumber + index + 1,
+          }));
+
+          next = {
+            ...next,
+            [invoiceKey]: {
+              ...draft,
+              items: [...draft.items, ...appendedItems],
+            },
+          };
+          return;
+        }
+
+        const reusedSourceRowCount = Math.min(
+          sourceRowNumbers.length,
+          copiedInvoiceItems.items.length
+        );
+        const replacedSourceItems = copiedInvoiceItems.items
+          .slice(0, reusedSourceRowCount)
+          .map((item, index) => ({
+            ...item,
+            rowNumber: sourceRowNumbers[index],
+          }));
+        const extraItems = copiedInvoiceItems.items
+          .slice(reusedSourceRowCount)
+          .map((item, index) => ({
+            ...item,
+            rowNumber:
+              Math.max(currentMaxRowNumber, sourceRowNumbers[sourceRowNumbers.length - 1] ?? 0) +
+              index +
+              1,
+          }));
+
+        next = {
+          ...next,
+          [invoiceKey]: {
+            ...draft,
+            ignoredRowNumbers: sourceRowNumbers.slice(reusedSourceRowCount),
+            items: [...replacedSourceItems, ...extraItems],
+          },
+        };
+      });
+
+      return next;
     });
   }
 
@@ -1735,57 +2668,89 @@ export function KsefExcelFlexibleImportCard({
       {isWizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-0 sm:p-4">
           <div className="flex h-[100dvh] w-full max-w-6xl flex-col overflow-hidden rounded-none bg-white shadow-2xl sm:h-[96vh] sm:rounded-[2rem]">
-            <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-3">
-              <div className="shrink-0">
-                <p className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Kreator KSeF
-                </p>
-              </div>
+            <div className="border-b border-slate-200 px-5 py-3">
+              <div className="flex items-center gap-3">
+                <div className="shrink-0">
+                  <p className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Kreator KSeF
+                  </p>
+                </div>
 
-              <div className="min-w-0 flex-1 overflow-x-auto">
-                <div className="flex min-w-max items-center gap-1.5">
-                  {WIZARD_STEPS.map((step) => {
-                    const available = isStepAvailable(step.id);
-                    const active = wizardStep === step.id;
+                <div className="min-w-0 flex-1 overflow-x-auto">
+                  <div className="flex min-w-max items-center gap-1.5">
+                    {WIZARD_STEPS.map((step) => {
+                      const available = isStepAvailable(step.id);
+                      const active = wizardStep === step.id;
 
-                    return (
-                      <button
-                        key={step.id}
-                        type="button"
-                        disabled={!available}
-                        onClick={() => setWizardStep(step.id)}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold transition ${
-                          active
-                            ? "bg-sky-500 text-white"
-                            : available
-                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                            : "cursor-not-allowed bg-slate-100 text-slate-400"
-                        }`}
-                      >
-                        <span
-                          className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                      return (
+                        <button
+                          key={step.id}
+                          type="button"
+                          disabled={!available}
+                          onClick={() => setWizardStep(step.id)}
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-semibold transition ${
                             active
-                              ? "bg-white/20 text-white"
-                              : "bg-white text-slate-600"
+                              ? "bg-sky-500 text-white"
+                              : available
+                              ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                              : "cursor-not-allowed bg-slate-100 text-slate-400"
                           }`}
                         >
-                          {step.id}
-                        </span>
-                        {step.label}
-                      </button>
-                    );
-                  })}
+                          <span
+                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                              active
+                                ? "bg-white/20 text-white"
+                                : "bg-white text-slate-600"
+                            }`}
+                          >
+                            {step.id}
+                          </span>
+                          {step.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsWizardOpen(false)}
+                  className="shrink-0 rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+                >
+                  <X className="h-4.5 w-4.5" />
+                </button>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsWizardOpen(false)}
-                className="shrink-0 rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
-              >
-                <X className="h-4.5 w-4.5" />
-              </button>
+              {copiedInvoiceItems && (
+                <div className="mt-2 flex flex-wrap items-center gap-2 rounded-2xl border border-sky-200 bg-sky-50 px-3 py-2 text-[12px] text-sky-900">
+                  <span className="font-semibold">
+                    Skopiowano {copiedInvoiceItems.items.length} pozycji z faktury{" "}
+                    {copiedInvoiceItems.sourceInvoiceNumber}.
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => applyCopiedItemsGlobally("add")}
+                    className="rounded-full border border-sky-300 bg-white px-2.5 py-1 font-semibold text-sky-700 transition hover:bg-sky-100"
+                  >
+                    Dodaj globalnie
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyCopiedItemsGlobally("replace")}
+                    className="rounded-full border border-sky-300 bg-white px-2.5 py-1 font-semibold text-sky-700 transition hover:bg-sky-100"
+                  >
+                    Zastap globalnie
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCopiedInvoiceItems(null)}
+                    className="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-semibold text-slate-600 transition hover:bg-slate-100"
+                  >
+                    Wyczyść
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="flex-1 overflow-y-auto px-5 py-5">
@@ -2749,7 +3714,7 @@ export function KsefExcelFlexibleImportCard({
                         )}
                       </div>
 
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         {mappedImport.invoices.map((invoice) => {
                           const invoiceKey = invoiceOverrideKey(
                             invoice.rowNumbers
@@ -2815,10 +3780,10 @@ export function KsefExcelFlexibleImportCard({
                             key={`${
                               invoice.invoiceNumber
                             }-${invoice.rowNumbers.join("-")}`}
-                            className={`rounded-3xl border bg-white p-4 shadow-sm ${
+                            className={`rounded-3xl border-2 bg-slate-100/90 p-4 shadow-[0_8px_24px_rgba(15,23,42,0.08)] ${
                               validation.hasRequiredMissing
-                                ? "border-rose-200"
-                                : "border-slate-200"
+                                ? "border-slate-700"
+                                : "border-slate-500"
                             }`}
                           >
                             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -2883,13 +3848,13 @@ export function KsefExcelFlexibleImportCard({
                             </div>
 
                             <div className="mt-4 grid gap-3 md:grid-cols-3">
-                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
+                              <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
                                 <p className="text-slate-500">Wiersz arkusza</p>
                                 <p className="mt-1 font-semibold text-slate-900">
                                   {invoice.rowNumbers.join(", ")}
                                 </p>
                               </div>
-                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
+                              <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
                                 <p className="text-slate-500">
                                   Netto / VAT / Brutto
                                 </p>
@@ -2908,7 +3873,7 @@ export function KsefExcelFlexibleImportCard({
                                   ).toFixed(2)}
                                 </p>
                               </div>
-                              <div className="rounded-2xl bg-slate-50 px-3 py-2.5 text-[13px]">
+                              <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
                                 <p className="text-slate-500">Status formularza</p>
                                 <p className="mt-1 font-semibold text-slate-900">
                                   {validation.hasRequiredMissing
@@ -2919,7 +3884,7 @@ export function KsefExcelFlexibleImportCard({
                             </div>
 
                             {invoiceDraft && (
-                              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+                              <div className="mt-4 rounded-2xl border-2 border-slate-400 bg-slate-200/80 p-3.5">
                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                   <div>
                                     <p className="text-[13px] font-semibold text-slate-900">
@@ -3184,21 +4149,66 @@ export function KsefExcelFlexibleImportCard({
                                   </label>
                                 </div>
 
-                                <div className="mt-4 space-y-3">
+                                <div className="mt-4 space-y-4">
                                     <div className="flex flex-wrap items-center justify-between gap-3">
                                       <p className="text-[13px] font-semibold text-slate-900">
                                         Pozycje tej faktury
                                       </p>
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          addInvoiceOverrideItem(invoiceKey)
-                                        }
-                                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50"
-                                      >
-                                        <Plus className="h-3.5 w-3.5" />
-                                        Dodaj pozycje
-                                      </button>
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            copyInvoiceItems(
+                                              invoiceKey,
+                                              invoice.invoiceNumber,
+                                              invoiceDraft.items
+                                            )
+                                          }
+                                          disabled={invoiceDraft.items.length === 0}
+                                          className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                          Kopiuj pozycje
+                                        </button>
+                                        {copiedInvoiceItems &&
+                                          copiedInvoiceItems.sourceInvoiceKey !== invoiceKey && (
+                                            <>
+                                              <button
+                                                type="button"
+                                                onClick={() =>
+                                                  applyCopiedItemsToInvoice(
+                                                    invoiceKey,
+                                                    "add"
+                                                  )
+                                                }
+                                                className="rounded-xl border border-sky-200 bg-sky-50 px-2.5 py-1.5 text-[12px] font-semibold text-sky-700 transition hover:bg-sky-100"
+                                              >
+                                                Dodaj
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={() =>
+                                                  applyCopiedItemsToInvoice(
+                                                    invoiceKey,
+                                                    "replace"
+                                                  )
+                                                }
+                                                className="rounded-xl border border-sky-200 bg-sky-50 px-2.5 py-1.5 text-[12px] font-semibold text-sky-700 transition hover:bg-sky-100"
+                                              >
+                                                Zastap
+                                              </button>
+                                            </>
+                                          )}
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            addInvoiceOverrideItem(invoiceKey)
+                                          }
+                                          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50"
+                                        >
+                                          <Plus className="h-3.5 w-3.5" />
+                                          Dodaj pozycje
+                                        </button>
+                                      </div>
                                     </div>
                                     {invoiceDraft.items.map((item, index) => (
                                       (() => {
@@ -3214,15 +4224,15 @@ export function KsefExcelFlexibleImportCard({
                                         return (
                                           <div
                                             key={`${invoiceKey}-editor-${item.rowNumber}`}
-                                            className={`rounded-2xl border bg-white p-3.5 ${
+                                            className={`rounded-2xl border-2 bg-slate-100/95 p-3.5 shadow-[0_4px_14px_rgba(15,23,42,0.05)] ${
                                               itemValidation &&
                                               (itemValidation.name ||
                                                 itemValidation.unit ||
                                                 itemValidation.quantity ||
                                                 itemValidation.unitNetPrice ||
                                                 itemValidation.taxRate)
-                                                ? "border-rose-200"
-                                                : "border-slate-200"
+                                                ? "border-slate-600"
+                                                : "border-slate-400"
                                             }`}
                                           >
                                             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
@@ -3235,6 +4245,22 @@ export function KsefExcelFlexibleImportCard({
                                                     ? `Recznie ${item.rowNumber}`
                                                     : `Wiersz ${item.rowNumber}`}
                                                 </span>
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    removeInvoiceOverrideItem(
+                                                      invoiceKey,
+                                                      item.rowNumber
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    invoiceDraft.items.length <= 1
+                                                  }
+                                                  className="inline-flex items-center gap-1 rounded-full border border-rose-200 px-2.5 py-1 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                                >
+                                                  <Trash2 className="h-3 w-3" />
+                                                  Usun pozycje
+                                                </button>
                                               </div>
                                             </div>
                                             <div className="grid gap-3 md:grid-cols-2">

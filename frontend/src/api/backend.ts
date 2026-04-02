@@ -372,6 +372,7 @@ export type KsefMappedImportConfig = {
   overrides?: {
     invoices?: Array<{
       rowNumbers: number[];
+      ignoredRowNumbers?: number[];
       invoiceNumber?: string;
       issueDate?: string;
       saleDate?: string;
