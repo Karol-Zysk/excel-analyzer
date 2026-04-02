@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
   CircleCheckBig,
   Download,
@@ -390,31 +390,17 @@ export const InvoiceDraftCard = memo(
     applyCopiedItemsToInvoice,
   }: InvoiceDraftCardProps) {
     const [selectedRowNumbers, setSelectedRowNumbers] = useState<number[]>([]);
-    const hasInitializedSelectionRef = useRef(false);
 
     useEffect(() => {
       if (!invoiceDraft) {
         setSelectedRowNumbers([]);
-        hasInitializedSelectionRef.current = false;
         return;
       }
 
       const availableRowNumbers = invoiceDraft.items.map((item) => item.rowNumber);
 
       setSelectedRowNumbers((current) => {
-        if (!hasInitializedSelectionRef.current) {
-          hasInitializedSelectionRef.current = true;
-          return availableRowNumbers;
-        }
-
-        const preserved = current.filter((rowNumber) =>
-          availableRowNumbers.includes(rowNumber)
-        );
-        const added = availableRowNumbers.filter(
-          (rowNumber) => !current.includes(rowNumber)
-        );
-
-        return [...preserved, ...added];
+        return current.filter((rowNumber) => availableRowNumbers.includes(rowNumber));
       });
     }, [invoiceDraft]);
 
