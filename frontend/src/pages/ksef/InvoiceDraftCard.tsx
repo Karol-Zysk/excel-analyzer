@@ -1,5 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import {
+  ChevronDown,
+  ChevronUp,
   CircleCheckBig,
   Download,
   Plus,
@@ -10,7 +12,6 @@ import {
 import type {
   KsefBuyerIdentifierType,
   KsefMappedImportInvoiceResponse,
-  KsefMappedImportResponse,
   KsefMyCompanyRole,
   KsefPaymentMethodValue,
   KsefTaxRateValue,
@@ -69,30 +70,14 @@ function downloadXml(xml: string, fileName: string) {
   URL.revokeObjectURL(url);
 }
 
-function StatusBadge({
-  status,
+function CompanyBadge({
+  companyName,
 }: {
-  status: KsefMappedImportResponse["invoices"][number]["status"];
+  companyName: string;
 }) {
-  if (status === "generated") {
-    return (
-      <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-        XML gotowy
-      </span>
-    );
-  }
-
-  if (status === "needs_completion") {
-    return (
-      <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
-        Braki do uzupelnienia
-      </span>
-    );
-  }
-
   return (
-    <span className="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700">
-      Bledy danych
+    <span className="inline-flex max-w-full items-center rounded-full bg-slate-200 px-3.5 py-1.5 text-[13px] font-semibold text-slate-700">
+      <span className="truncate">{companyName || "Bez nazwy firmy"}</span>
     </span>
   );
 }
@@ -390,6 +375,7 @@ export const InvoiceDraftCard = memo(
     applyCopiedItemsToInvoice,
   }: InvoiceDraftCardProps) {
     const [selectedRowNumbers, setSelectedRowNumbers] = useState<number[]>([]);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     useEffect(() => {
       if (!invoiceDraft) {
@@ -453,6 +439,8 @@ export const InvoiceDraftCard = memo(
     const selectedItemsForCopy =
       invoiceDraft?.items.filter((item) => selectedRowNumbers.includes(item.rowNumber)) ??
       [];
+    const companyBadgeLabel =
+      invoiceDraft?.buyerName.trim() || invoice.preview.buyerName || "Bez nazwy firmy";
 
     function toggleSelectedForCopy(rowNumber: number) {
       setSelectedRowNumbers((current) =>
@@ -468,19 +456,19 @@ export const InvoiceDraftCard = memo(
           validation.hasRequiredMissing ? "border-slate-700" : "border-slate-500"
         }`}
       >
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div>
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
               <p className="text-sm font-semibold text-slate-900">
                 {invoice.invoiceNumber}
               </p>
-              <StatusBadge status={invoice.status} />
+              <CompanyBadge companyName={companyBadgeLabel} />
             </div>
             <p className="mt-1 text-xs text-slate-500">
               Wiersze arkusza: {invoice.rowNumbers.join(", ")}
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {invoiceDraft && (
               <button
                 type="button"
@@ -497,8 +485,8 @@ export const InvoiceDraftCard = memo(
                   <>
                     <Sparkles className="h-4 w-4" />
                     {invoice.xml
-                      ? "Wygeneruj te fakture ponownie"
-                      : "Generuj te fakture"}
+                      ? "Wygeneruj tę fakturę ponownie"
+                      : "Generuj tę fakturę"}
                   </>
                 )}
               </button>
@@ -516,8 +504,28 @@ export const InvoiceDraftCard = memo(
               <Download className="h-4 w-4" />
               Pobierz XML
             </button>
+            <button
+              type="button"
+              onClick={() => setIsCollapsed((current) => !current)}
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              {isCollapsed ? (
+                <>
+                  <ChevronDown className="h-4 w-4" />
+                  Rozwin
+                </>
+              ) : (
+                <>
+                  <ChevronUp className="h-4 w-4" />
+                  Zwin
+                </>
+              )}
+            </button>
           </div>
         </div>
+
+        {!isCollapsed && (
+          <>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] shadow-sm">
             <p className="text-slate-500">Wiersz arkusza</p>
@@ -887,6 +895,8 @@ export const InvoiceDraftCard = memo(
               className="mt-3 h-[280px] w-full rounded-2xl border border-slate-800 bg-slate-900 p-4 font-mono text-xs leading-6 text-slate-100 outline-none"
             />
           </details>
+        )}
+          </>
         )}
       </div>
     );

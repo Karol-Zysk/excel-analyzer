@@ -2777,7 +2777,7 @@ export function KsefExcelFlexibleImportCard({
                         )}
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-[31px]">
                         {mappedImport.invoices.map((invoice) => {
                           const invoiceKey = invoiceOverrideKey(
                             invoice.rowNumbers
