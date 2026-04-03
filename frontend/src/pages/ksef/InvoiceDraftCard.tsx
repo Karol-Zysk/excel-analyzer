@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+﻿import { memo, useEffect, useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -375,7 +375,7 @@ export const InvoiceDraftCard = memo(
     applyCopiedItemsToInvoice,
   }: InvoiceDraftCardProps) {
     const [selectedRowNumbers, setSelectedRowNumbers] = useState<number[]>([]);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     useEffect(() => {
       if (!invoiceDraft) {
@@ -485,8 +485,8 @@ export const InvoiceDraftCard = memo(
                   <>
                     <Sparkles className="h-4 w-4" />
                     {invoice.xml
-                      ? "Wygeneruj tę fakturę ponownie"
-                      : "Generuj tę fakturę"}
+                      ? "Wygeneruj t\u0119 faktur\u0119 ponownie"
+                      : "Generuj t\u0119 faktur\u0119"}
                   </>
                 )}
               </button>
@@ -507,16 +507,16 @@ export const InvoiceDraftCard = memo(
             <button
               type="button"
               onClick={() => setIsCollapsed((current) => !current)}
-              className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-50"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-[12px] font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               {isCollapsed ? (
                 <>
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="h-3.5 w-3.5" />
                   Rozwin
                 </>
               ) : (
                 <>
-                  <ChevronUp className="h-4 w-4" />
+                  <ChevronUp className="h-3.5 w-3.5" />
                   Zwin
                 </>
               )}
@@ -911,3 +911,4 @@ export const InvoiceDraftCard = memo(
     previousProps.singleInvoiceError === nextProps.singleInvoiceError &&
     previousProps.isSingleInvoicePending === nextProps.isSingleInvoicePending
 );
+
