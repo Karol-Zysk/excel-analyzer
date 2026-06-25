@@ -3170,13 +3170,6 @@ export class KsefService {
 
   private validateBusinessRules(payload: GenerateKsefXmlDto) {
     const errors: string[] = [];
-    const warsawToday = this.getTodayInWarsaw();
-
-    if (payload.issueDate > warsawToday) {
-      errors.push(
-        `Issue date ${payload.issueDate} cannot be later than today's date ${warsawToday}. KSeF rejects invoices dated in the future.`
-      );
-    }
 
     if (!this.isValidNip(payload.seller.nip)) {
       errors.push(`Seller NIP is invalid: ${payload.seller.nip}.`);
@@ -3276,17 +3269,6 @@ export class KsefService {
       .replace(/\s+/g, "_");
 
     return `${safeInvoiceNumber || "faktura"}-FA3.xml`;
-  }
-
-  private getTodayInWarsaw() {
-    const formatter = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "Europe/Warsaw",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    });
-
-    return formatter.format(new Date());
   }
 
   private isValidNip(value: string) {
