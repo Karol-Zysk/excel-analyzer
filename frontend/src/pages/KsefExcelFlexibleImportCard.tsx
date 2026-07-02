@@ -793,6 +793,8 @@ function buildMappedConfig(
       sellerEmail: optionalText(defaults.sellerEmail),
       sellerPhone: optionalText(defaults.sellerPhone),
       buyerIdentifierType: defaults.buyerIdentifierType,
+      defaultIssueDate: optionalText(defaults.defaultIssueDate),
+      defaultSaleDate: optionalText(defaults.defaultSaleDate),
       currency: optionalText(defaults.currency),
       placeOfIssue: optionalText(defaults.placeOfIssue),
       systemName: optionalText(defaults.systemName),
@@ -2004,6 +2006,34 @@ export function KsefExcelFlexibleImportCard({
                             />
                           </label>
                           <label className="space-y-1.5">
+                            {fieldLabel("Domyslna data wystawienia")}
+                            <input
+                              type="date"
+                              className={fieldClassName()}
+                              value={defaults.defaultIssueDate}
+                              onChange={(event) =>
+                                updateDefaultField(
+                                  "defaultIssueDate",
+                                  event.target.value
+                                )
+                              }
+                            />
+                          </label>
+                          <label className="space-y-1.5">
+                            {fieldLabel("Domyslna data sprzedazy")}
+                            <input
+                              type="date"
+                              className={fieldClassName()}
+                              value={defaults.defaultSaleDate}
+                              onChange={(event) =>
+                                updateDefaultField(
+                                  "defaultSaleDate",
+                                  event.target.value
+                                )
+                              }
+                            />
+                          </label>
+                          <label className="space-y-1.5">
                             {fieldLabel("Waluta")}
                             <input
                               className={fieldClassName()}
@@ -2552,6 +2582,42 @@ export function KsefExcelFlexibleImportCard({
                                 onChange={(event) =>
                                   updateDefaultField(
                                     "placeOfIssue",
+                                    event.target.value
+                                  )
+                                }
+                              />
+                            </label>
+                            <label
+                              className={
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
+                              }
+                            >
+                              {fieldLabel("Domyslna data wystawienia")}
+                              <input
+                                type="date"
+                                className={fieldClassName()}
+                                value={defaults.defaultIssueDate}
+                                onChange={(event) =>
+                                  updateDefaultField(
+                                    "defaultIssueDate",
+                                    event.target.value
+                                  )
+                                }
+                              />
+                            </label>
+                            <label
+                              className={
+                                wizardStep === 3 ? "space-y-1.5" : "hidden"
+                              }
+                            >
+                              {fieldLabel("Domyslna data sprzedazy")}
+                              <input
+                                type="date"
+                                className={fieldClassName()}
+                                value={defaults.defaultSaleDate}
+                                onChange={(event) =>
+                                  updateDefaultField(
+                                    "defaultSaleDate",
                                     event.target.value
                                   )
                                 }

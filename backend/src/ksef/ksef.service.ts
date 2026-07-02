@@ -3212,10 +3212,6 @@ export class KsefService {
       }
     });
 
-    if (payload.payment?.dueDate && payload.payment.dueDate < payload.issueDate) {
-      errors.push("Payment due date cannot be earlier than issue date.");
-    }
-
     return errors;
   }
 

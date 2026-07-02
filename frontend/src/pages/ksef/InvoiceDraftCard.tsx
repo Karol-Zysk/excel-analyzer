@@ -609,6 +609,24 @@ export const InvoiceDraftCard = memo(
                 />
               </label>
               <label className="space-y-1.5">
+                {fieldLabel("Data sprzedazy")}
+                <input
+                  type="date"
+                  className={editorFieldClassName(
+                    false,
+                    !hasTextValue(invoiceDraft.saleDate)
+                  )}
+                  value={invoiceDraft.saleDate}
+                  onChange={(event) =>
+                    updateInvoiceOverrideField(
+                      invoiceKey,
+                      "saleDate",
+                      event.target.value
+                    )
+                  }
+                />
+              </label>
+              <label className="space-y-1.5">
                 {fieldLabel(counterpartyNameLabel, true)}
                 <input
                   className={editorFieldClassName(validation.buyerName)}
@@ -911,4 +929,3 @@ export const InvoiceDraftCard = memo(
     previousProps.singleInvoiceError === nextProps.singleInvoiceError &&
     previousProps.isSingleInvoicePending === nextProps.isSingleInvoicePending
 );
-
